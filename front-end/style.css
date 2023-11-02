@@ -1,0 +1,17 @@
+#textInput {
+    width: 500px;
+}
+
+.myField {
+    margin: 30px;
+    padding: 10px;
+    text-align: center;
+}
+
+.wordSpan {
+    margin: 2px;
+}
+
+#predResult {
+    padding: 1px;
+}
