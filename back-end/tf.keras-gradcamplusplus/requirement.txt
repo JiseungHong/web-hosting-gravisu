@@ -5,3 +5,4 @@ numpy
 FastAPI
 uvicorn
 pydantic
+python-multipart
