@@ -30,6 +30,7 @@ document.getElementById("uploadButton").addEventListener("click", function () {
     }
 });
 
+// Following codes are the example codes for text return function.
 function makePostReqeust_axios(url, data, f) {
     axios.post(url, data).then(f);
 }
