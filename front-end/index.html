@@ -10,40 +10,58 @@
 
 <body>
     <div class="container">
-        <!-- <div class="group-25-Q4q" id="20:511">
-            <img class="basic-tag-ThK" src="./assets/tag.png" id="20:507" />
-            <div class="gra-visu-xPB" id="7:2">Gra-Visu</div>
-        </div> -->
 
-        <div class="nav">
+        <div class="header">
             <img class="title_icon" src="./assets/tag.png" />
             <div class="title">
                 Gra-Visu
             </div>
         </div>
 
-        <div class='myField'>
-            <h2> Input your text </h2>
-            <input id='textInput'></input>
-            <button id='submitBtn' onClick="handleSubmission()">
-                Submit
-            </button>
+        <div class="step1">
+            <div class='myField'>
+                <div class="step_title"> 1. Upload Your Image Dataset </div>
+                <input id='textInput' type="text" placeholder="Paste file path here" required></input>
+                <button id='submitButton' onClick="handleSubmission()">
+                    Upload
+                </button>
+                <form method="post">
+                    <input id='fileSystem' type="file" multiple accept="image/*" enctype='multipart/form-data'
+                        required></input>
+                    <button type="button" id="submitFileButton">Upload</button>
+                </form>
+                <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
+            </div>
         </div>
 
-        <form method="post">
-            <input type="file" id="imageInput" multiple accept="image/*" enctype='multipart/form-data'>
-            <button type="button" id="uploadButton">Upload Images</button>
-        </form>
+        <div class="step2">
+            <div class='myField'>
+                <div class="step_title"> 2. Input Your Training Model Information </div>
+                <form method="post">
+                    <div class="model_select">
+                        <select name="model_type" id="model">
+                            <option value="default">Select your model type</option>
+                            <option value="vgg16">VGG16</option>
+                            <option value="resnet50">ResNet50</option>
+                            <option value="googlenet">GoogLeNet</option>
+                        </select>
+                    </div>
 
-
-        <hr />
-
-        <div class='myField'>
-            <h2> Result </h2>
-            <div id='resultDiv'> </div>
+                    <input id='fileSystem' type="file" accept=".pkl, .pt" required></input>
+                    <input id='textInput' type="text" placeholder="How much classes you want?" required></input>
+                    <button type="button" id="submitFileButton">Upload</button>
+                </form>
+            </div>
         </div>
+
+        <div class="step4">
+            <div class='myField'>
+                <div class="step_title"> 4. Image Classification Result </div>
+                <div id='resultDiv'> </div>
+            </div>
+        </div>
+
     </div>
-
     <script src="script.js"></script>
 </body>
 
