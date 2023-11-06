@@ -1,10 +1,32 @@
 <html>
-    <body>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Gra-Visu page">
+    <title>Gra-Visu</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- <div class="group-25-Q4q" id="20:511">
+            <img class="basic-tag-ThK" src="./assets/tag.png" id="20:507" />
+            <div class="gra-visu-xPB" id="7:2">Gra-Visu</div>
+        </div> -->
+
+        <div class="nav">
+            <img class="title_icon" src="./assets/tag.png" />
+            <div class="title">
+                Gra-Visu
+            </div>
+        </div>
+
         <div class='myField'>
-            <h1> Input your text </h1>
+            <h2> Input your text </h2>
             <input id='textInput'></input>
             <button id='submitBtn' onClick="handleSubmission()">
-                Submit 
+                Submit
             </button>
         </div>
 
@@ -12,15 +34,17 @@
             <input type="file" id="imageInput" multiple accept="image/*" enctype='multipart/form-data'>
             <button type="button" id="uploadButton">Upload Images</button>
         </form>
-        
-    
+
+
         <hr />
-    
+
         <div class='myField'>
-            <h1> Result </h1>
+            <h2> Result </h2>
             <div id='resultDiv'> </div>
         </div>
+    </div>
 
-        <script src="script.js"></script>
-    </body>
+    <script src="script.js"></script>
+</body>
+
 </html>
