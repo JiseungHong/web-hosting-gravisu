@@ -21,14 +21,14 @@
         <div class="step1">
             <div class='myField'>
                 <div class="step_title"> 1. Upload Your Image Dataset </div>
-                <input id='textInput' type="text" placeholder="Paste file path here" required></input>
+                <!-- <input id='textInput' type="text" placeholder="Paste file path here" required></input>
                 <button id='submitButton' onClick="handleSubmission()">
                     Upload
-                </button>
+                </button> -->
                 <form method="post">
                     <input id='fileSystem' type="file" multiple accept="image/*" enctype='multipart/form-data'
                         required></input>
-                    <button type="button" id="submitFileButton">Upload</button>
+                    <button type="button" id="submitButton">Upload</button>
                 </form>
                 <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
             </div>
@@ -38,25 +38,16 @@
             <div class='myField'>
                 <div class="step_title"> 2. Input Your Training Model Information </div>
                 <form method="post">
-                    <div class="model_select">
-                        <select name="model_type" id="model">
-                            <option value="default">Select your model type</option>
-                            <option value="vgg16">VGG16</option>
-                            <option value="resnet50">ResNet50</option>
-                            <option value="googlenet">GoogLeNet</option>
-                        </select>
-                    </div>
-
-                    <input id='fileSystem' type="file" accept=".pkl, .pt" required></input>
-                    <input id='textInput' type="text" placeholder="How much classes you want?" required></input>
-                    <button type="button" id="submitFileButton">Upload</button>
+                    <input id='fileSystem' type="file" accept=".zip" required></input>
+                    <button type="button" id="submitButton">Upload</button>
+                    <!-- <input id='numInput' type="text" placeholder="How much classes you want?" required></input> -->
                 </form>
             </div>
         </div>
 
         <div class="step4">
             <div class='myField'>
-                <div class="step_title"> 4. Image Classification Result </div>
+                <div class="step_title"> 3. Image Classification Result </div>
                 <div id='resultDiv'> </div>
             </div>
         </div>
