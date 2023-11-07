@@ -1,0 +1,6 @@
+uvicorn/
+back-end/user_images
+image/
+model/
+back-end/heatmap
+**.pyc
