@@ -1,26 +1,59 @@
 <html>
-    <body>
-        <div class='myField'>
-            <h1> Input your text </h1>
-            <input id='textInput'></input>
-            <button id='submitBtn' onClick="handleSubmission()">
-                Submit 
-            </button>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Gra-Visu page">
+    <title>Gra-Visu</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <img class="title_icon" src="./assets/tag.png" />
+            <div class="title">
+                Gra-Visu
+            </div>
         </div>
 
-        <form method="post">
-            <input type="file" id="imageInput" multiple accept="image/*" enctype='multipart/form-data'>
-            <button type="button" id="uploadButton">Upload Images</button>
-        </form>
-        
-    
-        <hr />
-    
-        <div class='myField'>
-            <h1> Result </h1>
-            <div id='resultDiv'> </div>
+        <div class="step1">
+            <div class='myField'>
+                <div class="step_title"> 1. Upload Your Image Dataset </div>
+                <!-- <input id='textInput' type="text" placeholder="Paste file path here" required></input>
+                <button id='submitButton' onClick="handleSubmission()">
+                    Upload
+                </button> -->
+                <form method="post">
+                    <input id='fileSystem' type="file" multiple accept="image/*" enctype='multipart/form-data'
+                        required></input>
+                    <button type="button" id="submitButton">Upload</button>
+                </form>
+                <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
+            </div>
         </div>
 
-        <script src="script.js"></script>
-    </body>
+        <div class="step2">
+            <div class='myField'>
+                <div class="step_title"> 2. Input Your Training Model Information </div>
+                <form method="post">
+                    <input id='fileSystem' type="file" accept=".zip" required></input>
+                    <button type="button" id="submitButton">Upload</button>
+                    <!-- <input id='numInput' type="text" placeholder="How much classes you want?" required></input> -->
+                </form>
+            </div>
+        </div>
+
+        <div class="step4">
+            <div class='myField'>
+                <div class="step_title"> 3. Image Classification Result </div>
+                <div id='resultDiv'> </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+
 </html>

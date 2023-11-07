@@ -1,6 +1,8 @@
+./back-end/uvicorn/
+./back-end/user_images/
+gradcam++
 uvicorn/
 back-end/user_images
 image/
 model/
 back-end/heatmap
-**.pyc
