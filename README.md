@@ -15,8 +15,8 @@ hosting server.py
 * Make sure to modify the url in the javascript with your own ip address.
 * Use uvicorn to host the server ({python}:app).
 
-$ (gradcam++) pip install FastAPI uvicorn
+$ (gradcam++) cd back-end/tf.keras-gradcamplusplus
 
-$ (gradcam++) cd /backend
+$ (gradcam++) pip install -r requirement.txt
 
 $ (gradcam++) uvicorn server:app --host 0.0.0.0 --port 8000
