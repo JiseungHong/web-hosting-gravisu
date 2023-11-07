@@ -47,5 +47,36 @@ async def upload_images(files: List[UploadFile]):
     # Return a response to the client (e.g., success message)
     return {"message": "Images uploaded and stored in user_images folder."}
 
+global_class_num = 0
+global_index_num = 0
+
+'''
+Find the result images and return 4 image urls.
+'''
+def select_images(class_num: int = 0, index_num: int = 0) -> list:
+    return ['image_url1', 'image_url2', 'image_url3', 'image_url4']
+
+@app.post("/upload-model")
+async def upload_model(files: List[UploadFile]):
+    # TODO: save the uploaded model in the model folder.
+    
+    result = select_images()
+    # TODO: send the selected images to the Web.
+    pass
+
+@app.post("/next-button")
+async def next_button():
+    pass
+
+@app.post("/prev-button")
+async def prev_button():
+    pass
+
+@app.post("/class-dropdown")
+async def prev_button(class_num: int):
+    global global_class_num
+    global_class_num = class_num
+    pass
+
 if __name__=='__main__':
     uvicorn.run(app, host='0.0.0.0', port = 8000)
