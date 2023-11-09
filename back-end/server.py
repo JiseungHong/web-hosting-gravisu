@@ -3,6 +3,8 @@ from fastapi import FastAPI, Form, Request, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn, os
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
 class textField(BaseModel) :
   text: str
@@ -16,6 +18,8 @@ app.add_middleware(
     allow_methods=["POST"],
     allow_headers=["*"],
 )
+
+app.mount("/heatmap", StaticFiles(directory="heatmap"), name="heatmap")
 
 @app.post("/textreturn")
 def text_return(data: dict):
@@ -57,12 +61,13 @@ def select_images(class_num: int = 0, index_num: int = 0) -> list:
     return ['image_url1', 'image_url2', 'image_url3', 'image_url4']
 
 @app.post("/upload-model")
-async def upload_model(files: List[UploadFile]):
+async def upload_model():
     # TODO: save the uploaded model in the model folder.
     
-    result = select_images()
-    # TODO: send the selected images to the Web.
-    pass
+    # TODO: send images in the image path (server.py -> script.js)
+    # image_paths = select_images()
+    image_paths = ['dog1.png', 'dog2.png', 'dog3.png', 'dog4.png']
+    return {"image_paths": image_paths}
 
 @app.post("/next-button")
 async def next_button():
