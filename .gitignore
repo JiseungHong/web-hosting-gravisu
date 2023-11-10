@@ -4,3 +4,4 @@ user_images/
 images/
 model_folder/
 back-end/heatmap/
+__pycache__/

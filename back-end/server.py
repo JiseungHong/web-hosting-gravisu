@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 import pandas as pd 
 
 from new_utils import renew_model, renew_make_gradcam
+import shutil, zipfile, uuid
 
 class textField(BaseModel) :
   text: str
@@ -83,9 +84,37 @@ def select_images(csv_location, white_image_loc,  class_id : int = 0 , column_id
     
     return heatmap_address
 
-
 @app.post("/upload-model")
-async def upload_model():
+async def upload_model(zipFile: UploadFile):
+    if zipFile.filename.endswith(".zip"):
+        # Assuming you have a "model" folder where you want to save the uploaded model
+        model_folder = "model"
+
+        # Create the model folder if it doesn't exist
+        if os.path.exists(model_folder):
+            for filename in os.listdir(model_folder):
+                file_path = os.path.join(model_folder, filename)
+                os.unlink(file_path)
+        else:
+            os.makedirs(model_folder)
+
+        # Generate a unique filename for the uploaded ZIP file
+        unique_filename = str(uuid.uuid4()) + ".zip"
+        model_path = os.path.join(model_folder, unique_filename)
+
+        # Save the uploaded ZIP file to the model folder
+        with open(model_path, "wb") as model_file:
+            shutil.copyfileobj(await zipFile.read(), model_file)
+
+        # Unzip the uploaded file (you'll need to have a library like zipfile installed)
+        with zipfile.ZipFile(model_path, "r") as zip_ref:
+            zip_ref.extractall(model_folder)
+        return {"message": "Model uploaded and stored in model_folder folder."}
+    else:
+        return {"error": "Invalid file format. Please upload a .zip file."}
+
+@app.post("/run-gradcam")
+async def run_gradcam():
     model_location = renew_model(model_folder) 
 
     # 1) renew save_heatmap folder 
