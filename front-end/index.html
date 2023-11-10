@@ -26,9 +26,9 @@
                     Upload
                 </button> -->
                 <form method="post">
-                    <input id='fileSystem' type="file" multiple accept="image/*" enctype='multipart/form-data'
+                    <input id='fileSystem' class="imageClass" type="file" multiple accept="image/*" enctype='multipart/form-data'
                         required></input>
-                    <button type="button" class="upload-button" id="submitButton">Upload</button>
+                    <button type="button" class="upload-button" id="submitButton" onClick="function1(event)">Upload</button>
                 </form>
                 <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
             </div>
@@ -39,7 +39,7 @@
                 <div class="step_title"> 2. Input Your Training Model Information </div>
                 <form method="post">
                     <input id='fileSystem' type="file" accept=".zip" required></input>
-                    <button type="button" class="save-model-and-display-button" id="submitButton">Upload</button>
+                    <button type="button" class="save-model-and-display-button" id="submitButton" onClick="function2(event)">Upload</button>
                     <!-- <input id='numInput' type="text" placeholder="How much classes you want?" required></input> -->
                 </form>
             </div>
