@@ -1,6 +1,13 @@
+let Maximum_Classes = []
+let current_column = 0
+let current_class = 0
+
 // Upload images (Front end -> Back end)
 function function1(e){
   e.preventDefault();
+
+  current_column = 0
+  current_class = 0
 
   // const imageInput = document.getElementById("fileSystem");
   const imageInput = document.querySelector('.imageClass');
@@ -37,6 +44,10 @@ function function1(e){
 // Upload Model
 function function2(e){
   e.preventDefault();
+  
+  current_column = 0
+  current_class = 0
+
   const fileInput = document.querySelector('.save-model-button');
   if (fileInput.files.length === 0) {
     console.error("No file selected.");
@@ -111,6 +122,11 @@ function function3(e){
 
       resultDiv.appendChild(rowDiv);
     }
+
+    // (!) // Maximum class number and Maximum column number.
+    // const max_value = data.max_value;
+    // Maximum_Classes = max_value
+    // // TODO: code for dropdown - use Maximum class number (max_value.length)
   })
   .catch((error) => {
     console.error(error);
@@ -120,6 +136,14 @@ function function3(e){
 // Next Button
 function move_next(e){
   e.preventDefault();
+
+  // (!) // Error handling for boundary values.
+  // if (current_column >= Maximum_Classes[current_class]){
+  //   // TODO: error handling
+  // } else {
+  //   current_column = current_column + 1;
+  // }
+
   fetch("http://127.0.0.1:8000/next-button", {
     method: "POST",
   })
@@ -167,6 +191,14 @@ function move_next(e){
 // Previous Button
 function move_prev(e){
   e.preventDefault();
+
+  // (!) // Error handling for boundary values.
+  // if (current_column <= 0){
+  //   // TODO: error handling
+  // } else {
+  //   current_column = current_column - 1;
+  // }
+
   fetch("http://127.0.0.1:8000/prev-button", {
     method: "POST",
   })
