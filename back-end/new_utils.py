@@ -14,7 +14,6 @@ import numpy as np
 import tensorflow as tf
 import pandas as pd 
 
-
 def find_last_conv_layer(model) : 
     layers = model.layers
     last_conv_layer = None
@@ -32,8 +31,6 @@ def preprocess_image(img_path, target_size=(224, 224)):
     img /= 255
 
     return img
-
-
 
 def show_imgwithheat(img_path, heatmap,alpha=0.4):
     """Show the image with heatmap and save the result.
@@ -101,13 +98,6 @@ def new_grad_cam_plus(model, img, label_name=None, category_id=None):
     return category_id, heatmap
 
 
-def load_class(dataframe, class_id) :
-    selected_rows= dataframe[dataframe['prediction']==class_id] 
-    select_n = min(4, len(selected_rows))
-    random_selected_rows = selected_rows.sample(n=select_n) 
-
-    return select_n, random_selected_rows
-
 # when model update, 1) renew model_location folder, 2) return model_location 
 def renew_model(model_folder) :
     #if os.path.exists(model_folder):
@@ -129,11 +119,11 @@ def renew_model(model_folder) :
 
 # Input : model_location / user_imagese_folder / save_heatmap 
 # output : dataframe
-def renew_make_gradcam(model_location, user_images_folder, save_heatmap) : 
+def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location) : 
     loaded_model = keras.models.load_model(model_location)
     #loaded_model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     
-    num_class = loaded_model.layers[-1].output_shape[1]
+    num_class = loaded_model.layers[-1].input_shape[1]
 
     images = [] 
     for image_name in os.listdir(user_images_folder):
@@ -159,7 +149,23 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap) :
         #save_path = img_path.replace('\\', '/')
         # cv2 는 한글 주소 못 읽어냄.. ㅂㄷㅂㄷ 
         cv2.imwrite(save_path, imposed_img)
-        data.append([id+1, img_name, img_path, category_id, save_path]) 
+        data.append([id+1, img_name, img_path, category_id, save_path, 1]) 
        
-    data_df = pd.DataFrame(data, columns=['id', 'img_name', 'img_path', 'prediction', 'heatmap_path'])
-    return data_df 
+    data_df = pd.DataFrame(data, columns=['id', 'img_name', 'img_path', 'prediction', 'heatmap_path', 'column_id'])
+    
+    # make column_num 
+    for class_ in range(num_class) : 
+        selected_rows= data_df[data_df['prediction']==class_]
+        num_data = len(selected_rows)
+        num_iterations = num_data // 4
+
+        # 4개씩 묶어서 column_id 값을 부여
+        column_id = 1 
+        for i in range(num_iterations):
+            data_df.loc[selected_rows.index[i * 4: (i + 1) * 4], 'column_id'] = column_id
+            column_id += 1
+        
+        if num_data % 4 > 0:
+            data_df.loc[selected_rows.index[num_iterations * 4:], 'column_id'] = column_id
+    
+    data_df.to_csv(csv_location, index=False)

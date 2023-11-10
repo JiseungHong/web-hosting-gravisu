@@ -1,10 +1,14 @@
 // Uploading images (Front end -> Back end)
-document.querySelectorAll('.upload-button').forEach(function(button) {
-  button.addEventListener("click", function () {
-    const imageInput = document.getElementById("fileSystem");
+// document.querySelectorAll('.upload-button').forEach(function(button) {
+//   button.addEventListener("click", function () {
+function function1(e){
+    e.preventDefault();
+
+    // const imageInput = document.getElementById("fileSystem");
+    const imageInput = document.querySelector('.imageClass');
     const formData = new FormData();
     const imageNumberDiv = document.getElementById("imageNumber");
-
+    console.log(typeof(formData))
     // Check if any files are selected
     if (imageInput.files.length > 0) {
       // Append each selected image file to the FormData object
@@ -17,7 +21,7 @@ document.querySelectorAll('.upload-button').forEach(function(button) {
         method: "POST",
         body: formData,
       })
-      .then((response) => response.json())
+      .then((response) => {return response.json();})
       .then((data) => {
         // Handle the server's response, e.g., display a success message
         console.log(data);
@@ -30,11 +34,14 @@ document.querySelectorAll('.upload-button').forEach(function(button) {
       // Handle the case where no files are selected
       console.log("No files selected.");
     }
-  });
-});
+}
+  // });
+// });
 
-document.querySelectorAll('.save-model-and-display-button').forEach(function(button) {
-  button.addEventListener("click", function () {
+// document.querySelectorAll('.save-model-and-display-button').forEach(function(button) {
+//   button.addEventListener("click", function () {
+function function2(e){
+    e.preventDefault();
     fetch("http://127.0.0.1:8000/upload-model", {
       method: "POST",
     })
@@ -77,40 +84,4 @@ document.querySelectorAll('.save-model-and-display-button').forEach(function(but
     .catch((error) => {
       console.error(error);
     });
-  });
-});
-
-
-// Following codes are the example codes for text return function.
-function makePostReqeust_axios(url, data, f) {
-  axios.post(url, data).then(f);
-}
-
-function makePostRequest(url, data, f) {
-  let http = new XMLHttpRequest();
-
-  http.open("POST", url, true);
-  http.setRequestHeader("Content-Type", "application/json");
-
-  http.onreadystatechange = function () {
-    if (http.readyState == 4 && http.status == 200)
-      // if successful
-      f(http.responseText);
-  };
-  http.send(JSON.stringify(data));
-}
-
-function handleSubmission() {
-  let requestAddress = "http://127.0.0.1:8000";
-  let input = document.getElementById("textInput").value;
-
-  makePostRequest(requestAddress + "/textreturn", { text: input }, finished);
-}
-
-function finished(response) {
-  let result = JSON.parse(response);
-  console.log(result);
-  let resultHTML = result["text"];
-
-  document.getElementById("resultDiv").innerHTML = resultHTML;
 }

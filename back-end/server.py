@@ -5,9 +5,22 @@ from pydantic import BaseModel
 import uvicorn, os
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
+import pandas as pd 
+
+from new_utils import renew_model, renew_make_gradcam
 
 class textField(BaseModel) :
   text: str
+
+user_images_folder = f"images" # = f"user_images"
+model_folder = f"model_folder" # tf_keras_vgg16_mura_model.h5
+save_heatmap = f"heatmap"
+
+# Arbitrary location for csv. File name involved.
+csv_location = f"test.csv"
+
+# Arbitrary White (Blank) image
+white_image_loc = f"white.png"
 
 app = FastAPI()
 
@@ -51,37 +64,60 @@ async def upload_images(files: List[UploadFile]):
     # Return a response to the client (e.g., success message)
     return {"message": "Images uploaded and stored in user_images folder."}
 
-global_class_num = 0
-global_index_num = 0
-
 '''
 Find the result images and return 4 image urls.
 '''
-def select_images(class_num: int = 0, index_num: int = 0) -> list:
-    return ['image_url1', 'image_url2', 'image_url3', 'image_url4']
+def select_images(csv_location, white_image_loc,  class_id : int = 0 , column_id : int =1) -> list:
+    dataframe = pd.read_csv(csv_location)
+    max_column_id = max(dataframe.loc[dataframe['prediction'] == class_id, 'column_id'].tolist())
+    
+    # 혹 coulmn_id 가 실제 column의 개수보다 많이 들어오면, 메세지를 출력한 다음, 마지막으로 값으로 수정함. 
+    if column_id > max_column_id : 
+        print("column id is bigger than max column_id")
+        column_id = max_column_id
+    selected_rows= dataframe[(dataframe['prediction'] == class_id) & (dataframe['column_id'] == column_id)]
+
+    heatmap_address = selected_rows['heatmap_path'].tolist() 
+    while len(heatmap_address) < 4 : 
+        heatmap_address.append(white_image_loc)
+    
+    return heatmap_address
+
 
 @app.post("/upload-model")
 async def upload_model():
-    # TODO: save the uploaded model in the model folder.
+    model_location = renew_model(model_folder) 
+
+    # 1) renew save_heatmap folder 
+    # 2) make gradcam & save heatmap in save_heatmap forlder
+    # 3) save csv with infomation at 'csv_location' 
+    renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
+
+    # Initialize global column/ class id.
+    global global_column_id 
+    global_column_id = 1
     
-    # TODO: send images in the image path (server.py -> script.js)
-    # image_paths = select_images()
-    image_paths = ['dog1.png', 'dog2.png', 'dog3.png', 'dog4.png']
-    return {"image_paths": image_paths}
+    global global_class_id
+    global_class_id = 0 
+
+    result = select_images(csv_location, white_image_loc)
+    return result
 
 @app.post("/next-button")
 async def next_button():
-    pass
+    global_column_id += 1 
+    return select_images(csv_location, white_image_loc, global_class_id, global_column_id)
 
 @app.post("/prev-button")
 async def prev_button():
-    pass
+    global_column_id -= 1 
+    return select_images(csv_location, white_image_loc, global_class_id, global_column_id)
 
 @app.post("/class-dropdown")
 async def prev_button(class_num: int):
     global global_class_num
     global_class_num = class_num
-    pass
+    return select_images(csv_location, white_image_loc, global_class_id, global_column_id)
 
 if __name__=='__main__':
     uvicorn.run(app, host='0.0.0.0', port = 8000)

@@ -1,8 +1,6 @@
-./back-end/uvicorn/
-./back-end/user_images/
-gradcam++
+gradcam++/
 uvicorn/
-back-end/user_images
-image/
-model/
-back-end/heatmap
+user_images/
+images/
+model_folder/
+back-end/heatmap/
