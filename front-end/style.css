@@ -121,15 +121,32 @@
   display: none;
 }
 
-#fileSystem {
+#fileBox {
   position: relative;
   top: 13px;
   border-radius: 10px;
   border: 3px dashed #a5a5a5;
   background: #f5f5f5;
   width: 100%;
-  height: 100px;
+  height: 200px;
   flex-shrink: 0;
+}
+
+.drag_drop {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #000000;
+  line-height: 200%;
+}
+
+.child {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #numInput {
@@ -147,6 +164,26 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+.fileButton {
+  margin: 10px 0px;
+  border-radius: 10px;
+  background: #262626;
+  width: 200px;
+  height: 40px;
+  flex-shrink: 0;
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 40px;
+  cursor: pointer;
+}
+
+#file {
+  display: none;
 }
 
 #submitButton {
@@ -169,7 +206,7 @@
   cursor: pointer;
 }
 
-#fileSystem:valid + #submitButton {
+#file:valid + #submitButton {
   /* condition need to be fixed after removing img upload at part 1*/
   opacity: 1;
   pointer-events: auto;
