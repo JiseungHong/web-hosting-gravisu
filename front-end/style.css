@@ -186,6 +186,11 @@
   display: none;
 }
 
+#fileSystem:valid .fileButton {
+  /* condition need to be fixed after removing img upload at part 1*/
+  display: none;
+}
+
 #submitButton {
   position: relative;
   top: 25px;
@@ -206,7 +211,7 @@
   cursor: pointer;
 }
 
-#file:valid + #submitButton {
+#fileSystem:valid #submitButton {
   /* condition need to be fixed after removing img upload at part 1*/
   opacity: 1;
   pointer-events: auto;

@@ -25,7 +25,7 @@
                 <button id='submitButton' onClick="handleSubmission()">
                     Upload
                 </button> -->
-                <form method="post">
+                <form method="post" id="fileSystem">
                     <div id='fileBox'>
                         <div class="child">
                             <div class="drag_drop">Drag and drop files here<br>OR</div>
@@ -35,17 +35,17 @@
                             <input name="file" id='file' type="file" multiple accept="image/*"
                                 enctype='multipart/form-data' required></input>
                         </div>
+                        <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
                     </div>
                     <button type="button" class="upload-button" id="submitButton">Upload</button>
                 </form>
-                <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
             </div>
         </div>
 
         <div class="step2">
             <div class='myField'>
                 <div class="step_title"> 2. Input Your Training Model Information </div>
-                <form method="post">
+                <form method="post" id="fileSystem">
                     <div id='fileBox'>
                         <div class="child">
                             <div class="drag_drop">Drag and drop files here<br>OR</div>
