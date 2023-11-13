@@ -5,9 +5,9 @@
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "header header"
-    "step1 step4"
-    "step2 step4"
-    "step3 step4";
+    "step1 step3"
+    "step2 step3"
+    "submit step3";
   align-items: start;
   align-content: start;
   /* padding-top: 56.25%; */
@@ -20,8 +20,8 @@
       "header"
       "step1"
       "step2"
-      "step3"
-      "step4";
+      "submit"
+      "step3";
   }
 }
 
@@ -31,13 +31,12 @@
 .step2 {
   grid-area: step2;
 }
+.submit {
+  grid-area: submit;
+}
 .step3 {
   grid-area: step3;
 }
-.step4 {
-  grid-area: step4;
-}
-
 .header {
   grid-area: header;
   grid-column-start: 1;
