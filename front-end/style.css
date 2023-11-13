@@ -179,13 +179,22 @@
   font-weight: 400;
   line-height: 40px;
   cursor: pointer;
+  overflow: hidden;
+  position: relative;
 }
 
-#file {
-  display: none;
+.hidden {
+  cursor: pointer;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  -moz-opacity: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
 }
 
-#fileSystem:valid .fileButton {
+#fileSystem:required:valid .fileButton {
   /* condition need to be fixed after removing img upload at part 1*/
   display: none;
 }
@@ -204,16 +213,16 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  opacity: 0.4;
+  opacity: 1;
+  pointer-events: auto;
   transition: 0.2s;
-  pointer-events: none;
   cursor: pointer;
 }
 
-#fileSystem:valid #submitButton {
+#submitButton:disabled {
   /* condition need to be fixed after removing img upload at part 1*/
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 .wordSpan {

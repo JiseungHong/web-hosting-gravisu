@@ -21,23 +21,20 @@
         <div class="step1">
             <div class='myField'>
                 <div class="step_title"> 1. Upload Your Image Dataset </div>
-                <!-- <input id='textInput' type="text" placeholder="Paste file path here" required></input>
-                <button id='submitButton' onClick="handleSubmission()">
-                    Upload
-                </button> -->
-                <form method="post" id="fileSystem">
+                <form method="post">
                     <div id='fileBox'>
                         <div class="child">
                             <div class="drag_drop">Drag and drop files here<br>OR</div>
-                            <label for="file">
-                                <div class="fileButton">Browse</div>
-                            </label>
-                            <input name="file" id='file' type="file" multiple accept="image/*"
-                                enctype='multipart/form-data' required></input>
+                            <div class="fileButton">
+                                Browse
+                                <input class="hidden" id='fileSystem1' type="file" multiple accept="image/*"
+                                    enctype='multipart/form-data' required></input>
+                            </div>
                         </div>
                         <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
                     </div>
-                    <button type="button" class="upload-button" id="submitButton">Upload</button>
+                    <button type="button" class="upload-button" id="submitButton" onClick="function1(event)"
+                        disabled="true">Upload</button>
                 </form>
             </div>
         </div>
@@ -45,25 +42,25 @@
         <div class="step2">
             <div class='myField'>
                 <div class="step_title"> 2. Input Your Training Model Information </div>
-                <form method="post" id="fileSystem">
+                <form method="post">
                     <div id='fileBox'>
                         <div class="child">
                             <div class="drag_drop">Drag and drop files here<br>OR</div>
-                            <label for="file">
-                                <div class="fileButton">Browse</div>
-                            </label>
-                            <input name="file" id='file' type="file" accept=".zip" required></input>
+                            <div class="fileButton">
+                                Browse
+                                <input class="hidden" id='fileSystem2' type="file" accept=".zip" required></input>
+                            </div>
                         </div>
                     </div>
-                    <button type="button" class="save-model-and-display-button" id="submitButton">Upload</button>
-                    <!-- <input id='numInput' type="text" placeholder="How much classes you want?" required></input> -->
+                    <button type="button" class="save-model-and-display-button" id="submitButton"
+                        onClick="function2(event)" disabled="true">Upload</button>
                 </form>
             </div>
         </div>
 
         <div class="submit">
             <div class='myField'>
-                <button type="button" onClick="function2(event)" id="submitButton">Run Gra-Visu</button>
+                <button type="button" id="submitButton" onClick="function3(event)">Run Gra-Visu</button>
             </div>
         </div>
 
@@ -75,7 +72,7 @@
         </div>
 
     </div>
-    <script src="script.js"></script>
 </body>
+<script src="script.js"></script>
 
 </html>

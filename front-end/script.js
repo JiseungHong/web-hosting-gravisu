@@ -1,16 +1,43 @@
-let Maximum_Classes = []
-let current_column = 0
-let current_class = 0
+let Maximum_Classes = [];
+let current_column = 0;
+let current_class = 0;
+
+window.onload = function () {
+  // Enable buttons when files are valid
+  let userFile1 = document.getElementById("fileSystem1");
+  let userFile2 = document.getElementById("fileSystem2");
+  let submitButton1 = document.getElementsByClassName("upload-button")[0];
+  let submitButton2 = document.getElementsByClassName(
+    "save-model-and-display-button"
+  )[0];
+
+  userFile1.addEventListener("change", stateHandle);
+  userFile2.addEventListener("change", stateHandle);
+
+  function stateHandle() {
+    console.log("working");
+    if (userFile1.value !== "") {
+      submitButton1.disabled = false;
+    } else {
+      submitButton1.disabled = true;
+    }
+    if (userFile2.value !== "") {
+      submitButton2.disabled = false;
+    } else {
+      submitButton2.disabled = true;
+    }
+  }
+};
 
 // Upload images (Front end -> Back end)
-function function1(e){
+function function1(e) {
   e.preventDefault();
 
-  current_column = 0
-  current_class = 0
+  current_column = 0;
+  current_class = 0;
 
   // const imageInput = document.getElementById("fileSystem");
-  const imageInput = document.querySelector('.imageClass');
+  const imageInput = document.querySelector(".imageClass");
   const formData = new FormData();
   const imageNumberDiv = document.getElementById("imageNumber");
 
@@ -26,15 +53,17 @@ function function1(e){
       method: "POST",
       body: formData,
     })
-    .then((response) => {return response.json();})
-    .then((data) => {
-      // Handle the server's response, e.g., display a success message
-      console.log(data);
-      imageNumberDiv.innerHTML = `You have uploaded ${imageInput.files.length} images.`;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // Handle the server's response, e.g., display a success message
+        console.log(data);
+        imageNumberDiv.innerHTML = `You have uploaded ${imageInput.files.length} images.`;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   } else {
     // Handle the case where no files are selected
     console.log("No files selected.");
@@ -42,99 +71,99 @@ function function1(e){
 }
 
 // Upload Model
-function function2(e){
+function function2(e) {
   e.preventDefault();
-  
-  current_column = 0
-  current_class = 0
 
-  const fileInput = document.querySelector('.save-model-button');
+  current_column = 0;
+  current_class = 0;
+
+  const fileInput = document.querySelector(".save-model-button");
   if (fileInput.files.length === 0) {
     console.error("No file selected.");
     return;
   }
-  
+
   // Save the model.
   const formData = new FormData();
   const zipFile = fileInput.files[0];
-  formData.append('zipFile', zipFile);
+  formData.append("zipFile", zipFile);
 
   // Send the FormData object to the server using a POST request
   fetch("http://127.0.0.1:8000/upload-model-zip", {
     method: "POST",
     body: formData,
   })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    // Data error handling.
-    if (data.error) {
-      throw new Error(data.error);
-    }
-  })
-  .catch((error) => {
-    console.error("Fetch error:", error.message);
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Data error handling.
+      if (data.error) {
+        throw new Error(data.error);
+      }
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error.message);
+    });
 }
 
 // Run GradCam++.
-function function3(e){
+function function3(e) {
   e.preventDefault();
   fetch("http://127.0.0.1:8000/run-gradcam", {
     method: "POST",
   })
-  .then((response) => {
-    if (response.status === 200) {
-      return response.json(); // Parse JSON response
-    } else {
-      throw new Error("Failed to fetch image paths from the server.");
-    }
-  })
-  .then((data) => {
-    const imagePaths = data.image_paths;
-    const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json(); // Parse JSON response
+      } else {
+        throw new Error("Failed to fetch image paths from the server.");
+      }
+    })
+    .then((data) => {
+      const imagePaths = data.image_paths;
+      const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
 
-    // Create and display img elements for each image path
-    const resultDiv = document.getElementById("resultDiv");
-    resultDiv.innerHTML = "";
+      // Create and display img elements for each image path
+      const resultDiv = document.getElementById("resultDiv");
+      resultDiv.innerHTML = "";
 
-    for (let i = 0; i < imagePaths.length; i += 2) {
-      // Create a row div to hold two images
-      const rowDiv = document.createElement("div");
-      rowDiv.className = "image-row"; // Add a class for styling
+      for (let i = 0; i < imagePaths.length; i += 2) {
+        // Create a row div to hold two images
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "image-row"; // Add a class for styling
 
-      for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
-        const imagePath = imagePaths[j];
-        const imageUrl = baseUrl + imagePath;
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = "Image";
-        img.style.width = "50%"; // Set the width to 50% for resizing
-        img.style.height = "auto"; // Maintain the aspect ratio
-        img.style.margin = "0"; // Reset margin
+        for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
+          const imagePath = imagePaths[j];
+          const imageUrl = baseUrl + imagePath;
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = "Image";
+          img.style.width = "50%"; // Set the width to 50% for resizing
+          img.style.height = "auto"; // Maintain the aspect ratio
+          img.style.margin = "0"; // Reset margin
 
-        rowDiv.appendChild(img);
+          rowDiv.appendChild(img);
+        }
+
+        resultDiv.appendChild(rowDiv);
       }
 
-      resultDiv.appendChild(rowDiv);
-    }
-
-    // (!) // Maximum class number and Maximum column number.
-    // const max_value = data.max_value;
-    // Maximum_Classes = max_value
-    // // TODO: code for dropdown - use Maximum class number (max_value.length)
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+      // (!) // Maximum class number and Maximum column number.
+      // const max_value = data.max_value;
+      // Maximum_Classes = max_value
+      // // TODO: code for dropdown - use Maximum class number (max_value.length)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 // Next Button
-function move_next(e){
+function move_next(e) {
   e.preventDefault();
 
   // (!) // Error handling for boundary values.
@@ -147,49 +176,49 @@ function move_next(e){
   fetch("http://127.0.0.1:8000/next-button", {
     method: "POST",
   })
-  .then((response) => {
-    if (response.status === 200) {
-      return response.json(); // Parse JSON response
-    } else {
-      throw new Error("Failed to fetch image paths from the server.");
-    }
-  })
-  .then((data) => {
-    const imagePaths = data.image_paths;
-    const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
-
-    // Create and display img elements for each image path
-    const resultDiv = document.getElementById("resultDiv");
-    resultDiv.innerHTML = "";
-
-    for (let i = 0; i < imagePaths.length; i += 2) {
-      // Create a row div to hold two images
-      const rowDiv = document.createElement("div");
-      rowDiv.className = "image-row"; // Add a class for styling
-
-      for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
-        const imagePath = imagePaths[j];
-        const imageUrl = baseUrl + imagePath;
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = "Image";
-        img.style.width = "50%"; // Set the width to 50% for resizing
-        img.style.height = "auto"; // Maintain the aspect ratio
-        img.style.margin = "0"; // Reset margin
-
-        rowDiv.appendChild(img);
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json(); // Parse JSON response
+      } else {
+        throw new Error("Failed to fetch image paths from the server.");
       }
+    })
+    .then((data) => {
+      const imagePaths = data.image_paths;
+      const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
 
-      resultDiv.appendChild(rowDiv);
-    }
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+      // Create and display img elements for each image path
+      const resultDiv = document.getElementById("resultDiv");
+      resultDiv.innerHTML = "";
+
+      for (let i = 0; i < imagePaths.length; i += 2) {
+        // Create a row div to hold two images
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "image-row"; // Add a class for styling
+
+        for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
+          const imagePath = imagePaths[j];
+          const imageUrl = baseUrl + imagePath;
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = "Image";
+          img.style.width = "50%"; // Set the width to 50% for resizing
+          img.style.height = "auto"; // Maintain the aspect ratio
+          img.style.margin = "0"; // Reset margin
+
+          rowDiv.appendChild(img);
+        }
+
+        resultDiv.appendChild(rowDiv);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 // Previous Button
-function move_prev(e){
+function move_prev(e) {
   e.preventDefault();
 
   // (!) // Error handling for boundary values.
@@ -202,43 +231,43 @@ function move_prev(e){
   fetch("http://127.0.0.1:8000/prev-button", {
     method: "POST",
   })
-  .then((response) => {
-    if (response.status === 200) {
-      return response.json(); // Parse JSON response
-    } else {
-      throw new Error("Failed to fetch image paths from the server.");
-    }
-  })
-  .then((data) => {
-    const imagePaths = data.image_paths;
-    const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
-
-    // Create and display img elements for each image path
-    const resultDiv = document.getElementById("resultDiv");
-    resultDiv.innerHTML = "";
-
-    for (let i = 0; i < imagePaths.length; i += 2) {
-      // Create a row div to hold two images
-      const rowDiv = document.createElement("div");
-      rowDiv.className = "image-row"; // Add a class for styling
-
-      for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
-        const imagePath = imagePaths[j];
-        const imageUrl = baseUrl + imagePath;
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = "Image";
-        img.style.width = "50%"; // Set the width to 50% for resizing
-        img.style.height = "auto"; // Maintain the aspect ratio
-        img.style.margin = "0"; // Reset margin
-
-        rowDiv.appendChild(img);
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json(); // Parse JSON response
+      } else {
+        throw new Error("Failed to fetch image paths from the server.");
       }
+    })
+    .then((data) => {
+      const imagePaths = data.image_paths;
+      const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
 
-      resultDiv.appendChild(rowDiv);
-    }
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+      // Create and display img elements for each image path
+      const resultDiv = document.getElementById("resultDiv");
+      resultDiv.innerHTML = "";
+
+      for (let i = 0; i < imagePaths.length; i += 2) {
+        // Create a row div to hold two images
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "image-row"; // Add a class for styling
+
+        for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
+          const imagePath = imagePaths[j];
+          const imageUrl = baseUrl + imagePath;
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = "Image";
+          img.style.width = "50%"; // Set the width to 50% for resizing
+          img.style.height = "auto"; // Maintain the aspect ratio
+          img.style.margin = "0"; // Reset margin
+
+          rowDiv.appendChild(img);
+        }
+
+        resultDiv.appendChild(rowDiv);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
