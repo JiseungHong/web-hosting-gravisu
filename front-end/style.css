@@ -6,8 +6,7 @@
   grid-template-areas:
     "header header"
     "step1 step3"
-    "step2 step3"
-    "submit step3";
+    "step2 step3";
   align-items: start;
   align-content: start;
   /* padding-top: 56.25%; */
@@ -20,7 +19,6 @@
       "header"
       "step1"
       "step2"
-      "submit"
       "step3";
   }
 }
@@ -30,9 +28,6 @@
 }
 .step2 {
   grid-area: step2;
-}
-.submit {
-  grid-area: submit;
 }
 .step3 {
   grid-area: step3;
@@ -85,23 +80,6 @@
   align-items: center;
   color: #000000;
 }
-
-/* #textInput {
-  position: relative;
-  top: 13px;
-  border-radius: 10px;
-  border: 3px solid #262626;
-  background: #fff;
-  width: 100%;
-  height: 50px;
-  flex-shrink: 0;
-  padding-left: 15px;
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-} */
 
 .text_response {
   position: relative;
@@ -223,6 +201,71 @@
   /* condition need to be fixed after removing img upload at part 1*/
   opacity: 0.4;
   pointer-events: none;
+}
+
+.inst_class {
+  position: relative;
+  top: 13px;
+  width: 100%;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+.inst_text {
+  position: relative;
+  top: 13px;
+  flex-shrink: 0;
+  color: #000;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.inst_num {
+  border-radius: 10px;
+  border: 2px solid #262626;
+  background: #fff;
+  width: 55px;
+  height: 30px;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 40px;
+  position: relative;
+  left: -122.5px;
+}
+
+.gallery {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "result1 result2"
+    "result3 result4";
+  align-items: start;
+  align-content: start;
+  overflow: auto;
+}
+
+.result1 {
+  grid-area: result1;
+  clip-path: rect();
+}
+
+.mask {
+  position: relative;
+  mask-image: url(/front-end/assets/imageframe.png);
+  mask-size: 100%;
+}
+
+.pagination {
+  text-align: center;
 }
 
 .wordSpan {

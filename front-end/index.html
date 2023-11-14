@@ -27,7 +27,7 @@
                             <div class="drag_drop">Drag and drop files here<br>OR</div>
                             <div class="fileButton">
                                 Browse
-                                <input class="hidden" id='fileSystem1' type="file" multiple accept="image/*"
+                                <input class="imageClass hidden" id='fileSystem1' type="file" multiple accept="image/*"
                                     enctype='multipart/form-data' required></input>
                             </div>
                         </div>
@@ -52,21 +52,39 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="save-model-and-display-button" id="submitButton"
-                        onClick="function2(event)" disabled="true">Upload</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="submit">
-            <div class='myField'>
-                <button type="button" id="submitButton" onClick="function3(event)">Run Gra-Visu</button>
+                    <button type="button" class="save-model-button" id="submitButton" onClick="function2(event)"
+                        disabled="true">Upload</button>
+                </form><br>
+                <button type="button" class="run-button" id="submitButton" onClick="function3(event)">Run
+                    Gra-Visu</button>
             </div>
         </div>
 
         <div class="step3">
             <div class='myField'>
                 <div class="step_title"> 3. Image Classification Result </div>
+                <div class="inst_text">&emsp;&emsp;&emsp;&emsp;Images of &emsp;&emsp;&emsp;&emsp;th class
+                    <input class="inst_num" type="number" min="1" max="4"></input>
+                    <!-- TODO: Receive min&max value from server -->
+                </div>
+                <div class="gallery">
+                    <div class="result1">
+                        <div class="mask"></div>
+                    </div>
+                    <div class="result2">
+                        <div class="mask"></div>
+                    </div>
+                    <div class="result3">
+                        <div class="mask"></div>
+                    </div>
+                    <div class="result4">
+                        <div class="mask"></div>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <a href="#">&laquo;</a>
+                    <a href="#">&raquo;</a>
+                </div>
                 <div id='resultDiv'> </div>
             </div>
         </div>

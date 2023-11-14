@@ -2,32 +2,28 @@ let Maximum_Classes = [];
 let current_column = 0;
 let current_class = 0;
 
-window.onload = function () {
-  // Enable buttons when files are valid
-  let userFile1 = document.getElementById("fileSystem1");
-  let userFile2 = document.getElementById("fileSystem2");
-  let submitButton1 = document.getElementsByClassName("upload-button")[0];
-  let submitButton2 = document.getElementsByClassName(
-    "save-model-and-display-button"
-  )[0];
+// Enable buttons when files are valid
+let userFile1 = document.getElementById("fileSystem1");
+let userFile2 = document.getElementById("fileSystem2");
+let submitButton1 = document.getElementsByClassName("upload-button")[0];
+let submitButton2 = document.getElementsByClassName("save-model-button")[0];
 
-  userFile1.addEventListener("change", stateHandle);
-  userFile2.addEventListener("change", stateHandle);
+userFile1.addEventListener("change", stateHandle);
+userFile2.addEventListener("change", stateHandle);
 
-  function stateHandle() {
-    console.log("working");
-    if (userFile1.value !== "") {
-      submitButton1.disabled = false;
-    } else {
-      submitButton1.disabled = true;
-    }
-    if (userFile2.value !== "") {
-      submitButton2.disabled = false;
-    } else {
-      submitButton2.disabled = true;
-    }
+function stateHandle() {
+  console.log("working");
+  if (userFile1.value !== "") {
+    submitButton1.disabled = false;
+  } else {
+    submitButton1.disabled = true;
   }
-};
+  if (userFile2.value !== "") {
+    submitButton2.disabled = false;
+  } else {
+    submitButton2.disabled = true;
+  }
+}
 
 // Upload images (Front end -> Back end)
 function function1(e) {
