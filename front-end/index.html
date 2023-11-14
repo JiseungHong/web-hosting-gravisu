@@ -21,16 +21,21 @@
         <div class="step1">
             <div class='myField'>
                 <div class="step_title"> 1. Upload Your Image Dataset </div>
-                <!-- <input id='textInput' type="text" placeholder="Paste file path here" required></input>
-                <button id='submitButton' onClick="handleSubmission()">
-                    Upload
-                </button> -->
                 <form method="post">
-                    <input id='fileSystem' class="imageClass" type="file" multiple accept="image/*" enctype='multipart/form-data'
-                        required></input>
-                    <button type="button" class="upload-button" id="submitButton" onClick="function1(event)">Upload</button>
+                    <div id='fileBox'>
+                        <div class="child">
+                            <div class="drag_drop">Drag and drop files here<br>OR</div>
+                            <div class="fileButton">
+                                Browse
+                                <input class="imageClass hidden" id='fileSystem1' type="file" multiple accept="image/*"
+                                    enctype='multipart/form-data' required></input>
+                            </div>
+                        </div>
+                        <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
+                    </div>
+                    <button type="button" class="upload-button" id="submitButton" onClick="function1(event)"
+                        disabled="true">Upload</button>
                 </form>
-                <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
             </div>
         </div>
 
@@ -38,22 +43,54 @@
             <div class='myField'>
                 <div class="step_title"> 2. Input Your Training Model Information </div>
                 <form method="post">
-                    <input id='fileSystem' type="file" accept=".zip" required></input>
-                    <button type="button" class="save-model-button" id="submitButton" onClick="function2(event)">Upload</button>
-                    <!-- <input id='numInput' type="text" placeholder="How much classes you want?" required></input> -->
-                </form>
+                    <div id='fileBox'>
+                        <div class="child">
+                            <div class="drag_drop">Drag and drop files here<br>OR</div>
+                            <div class="fileButton">
+                                Browse
+                                <input class="hidden" id='fileSystem2' type="file" accept=".zip" required></input>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="save-model-button" id="submitButton" onClick="function2(event)"
+                        disabled="true">Upload</button>
+                </form><br>
+                <button type="button" class="run-button" id="submitButton" onClick="function3(event)">Run
+                    Gra-Visu</button>
             </div>
         </div>
 
-        <div class="step4">
+        <div class="step3">
             <div class='myField'>
                 <div class="step_title"> 3. Image Classification Result </div>
+                <div class="inst_text">&emsp;&emsp;&emsp;&emsp;Images of &emsp;&emsp;&emsp;&emsp;th class
+                    <input class="inst_num" type="number" min="1" max="4"></input>
+                    <!-- TODO: Receive min&max value from server -->
+                </div>
+                <div class="gallery">
+                    <div class="result1">
+                        <div class="mask"></div>
+                    </div>
+                    <div class="result2">
+                        <div class="mask"></div>
+                    </div>
+                    <div class="result3">
+                        <div class="mask"></div>
+                    </div>
+                    <div class="result4">
+                        <div class="mask"></div>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <a href="#">&laquo;</a>
+                    <a href="#">&raquo;</a>
+                </div>
                 <div id='resultDiv'> </div>
             </div>
         </div>
 
     </div>
-    <script src="script.js"></script>
 </body>
+<script src="script.js"></script>
 
 </html>
