@@ -260,7 +260,7 @@
 
 .mask {
   position: relative;
-  mask-image: url(/front-end/assets/imageframe.png);
+  mask-image: url(assets/imageframe.png);
   mask-size: 100%;
 }
 
