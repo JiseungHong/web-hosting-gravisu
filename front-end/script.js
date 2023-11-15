@@ -110,7 +110,7 @@ function function2(e) {
 function function3(e) {
   e.preventDefault();
   fetch("http://127.0.0.1:8000/run-gradcam", {
-    method: "POST",
+    method: "POST"
   })
     .then((response) => {
       if (response.status === 200) {
@@ -122,36 +122,24 @@ function function3(e) {
     .then((data) => {
       const imagePaths = data.image_paths;
       const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
+  
+      // Loop through each imagePath and set it as the background for the corresponding result div
+      imagePaths.forEach((path, index) => {
+        // Construct the full image URL
+        const imageUrl = baseUrl + path;
 
-      // Create and display img elements for each image path
-      const resultDiv = document.getElementById("resultDiv");
-      resultDiv.innerHTML = "";
-
-      for (let i = 0; i < imagePaths.length; i += 2) {
-        // Create a row div to hold two images
-        const rowDiv = document.createElement("div");
-        rowDiv.className = "image-row"; // Add a class for styling
-
-        for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
-          const imagePath = imagePaths[j];
-          const imageUrl = baseUrl + imagePath;
-          const img = document.createElement("img");
-          img.src = imageUrl;
-          img.alt = "Image";
-          img.style.width = "50%"; // Set the width to 50% for resizing
-          img.style.height = "auto"; // Maintain the aspect ratio
-          img.style.margin = "0"; // Reset margin
-
-          rowDiv.appendChild(img);
-        }
-
-        resultDiv.appendChild(rowDiv);
-      }
-
-      // (!) // Maximum class number and Maximum column number.
-      // const max_value = data.max_value;
-      // Maximum_Classes = max_value
-      // // TODO: code for dropdown - use Maximum class number (max_value.length)
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = "Image";
+        
+        const maskDiv = document.querySelector('.result' + (index + 1) + ' .mask');
+        if (maskDiv) {
+          console.log('good', maskDiv);
+          maskDiv.innerHTML = "";
+          maskDiv.appendChild(img);
+          // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
+        } else {console.log('err!!', maskDiv);}
+      });
     })
     .catch((error) => {
       console.error(error);

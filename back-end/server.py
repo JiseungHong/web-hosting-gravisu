@@ -86,6 +86,8 @@ def select_images(csv_location, white_image_loc,  class_id : int = 0 , column_id
 
 @app.post("/upload-model")
 async def upload_model(zipFile: UploadFile):
+    return {"message": "NOT IMPLEMENTED; upload dummy zip file."}
+    
     if zipFile.filename.endswith(".zip"):
         # Assuming you have a "model" folder where you want to save the uploaded model
         model_folder = "model"
@@ -118,7 +120,7 @@ async def run_gradcam():
     model_location = renew_model(model_folder) 
 
     # 1) renew save_heatmap folder 
-    # 2) make gradcam & save heatmap in save_heatmap forlder
+    # 2) make gradcam & save heatmap in save_heatmap folder
     # 3) save csv with infomation at 'csv_location' 
     renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
 
@@ -130,23 +132,31 @@ async def run_gradcam():
     global_class_id = 0 
 
     result = select_images(csv_location, white_image_loc)
-    return result
+    default_maximum_value = [3, 3, 3]
+    
+    result = [img[8:] for img in result]
+    print(result)
+    return {'image_paths': result, 'max_value': default_maximum_value}
 
 @app.post("/next-button")
 async def next_button():
     global_column_id += 1 
-    return select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    result = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    return {'image_paths': result}
 
 @app.post("/prev-button")
 async def prev_button():
     global_column_id -= 1 
-    return select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    result = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    return {'image_paths': result}
 
 @app.post("/class-dropdown")
 async def prev_button(class_num: int):
     global global_class_num
     global_class_num = class_num
-    return select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    
+    result = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    return {'image_paths': result}
 
 if __name__=='__main__':
     uvicorn.run(app, host='0.0.0.0', port = 8000)
