@@ -150,12 +150,12 @@ function function3(e) {
 function move_next(e) {
   e.preventDefault();
 
-  // (!) // Error handling for boundary values.
-  // if (current_column >= Maximum_Classes[current_class]){
-  //   // TODO: error handling
-  // } else {
-  //   current_column = current_column + 1;
-  // }
+  // Error handling for boundary values.
+  if (current_column >= Maximum_Classes[current_class]){
+    // TODO: error handling
+  } else {
+    current_column = current_column + 1;
+  }
 
   fetch("http://127.0.0.1:8000/next-button", {
     method: "POST",
@@ -170,31 +170,24 @@ function move_next(e) {
     .then((data) => {
       const imagePaths = data.image_paths;
       const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
+  
+      // Loop through each imagePath and set it as the background for the corresponding result div
+      imagePaths.forEach((path, index) => {
+        // Construct the full image URL
+        const imageUrl = baseUrl + path;
 
-      // Create and display img elements for each image path
-      const resultDiv = document.getElementById("resultDiv");
-      resultDiv.innerHTML = "";
-
-      for (let i = 0; i < imagePaths.length; i += 2) {
-        // Create a row div to hold two images
-        const rowDiv = document.createElement("div");
-        rowDiv.className = "image-row"; // Add a class for styling
-
-        for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
-          const imagePath = imagePaths[j];
-          const imageUrl = baseUrl + imagePath;
-          const img = document.createElement("img");
-          img.src = imageUrl;
-          img.alt = "Image";
-          img.style.width = "50%"; // Set the width to 50% for resizing
-          img.style.height = "auto"; // Maintain the aspect ratio
-          img.style.margin = "0"; // Reset margin
-
-          rowDiv.appendChild(img);
-        }
-
-        resultDiv.appendChild(rowDiv);
-      }
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = "Image";
+        
+        const maskDiv = document.querySelector('.result' + (index + 1) + ' .mask');
+        if (maskDiv) {
+          console.log('good', maskDiv);
+          maskDiv.innerHTML = "";
+          maskDiv.appendChild(img);
+          // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
+        } else {console.log('err!!', maskDiv);}
+      });
     })
     .catch((error) => {
       console.error(error);
@@ -205,12 +198,12 @@ function move_next(e) {
 function move_prev(e) {
   e.preventDefault();
 
-  // (!) // Error handling for boundary values.
-  // if (current_column <= 0){
-  //   // TODO: error handling
-  // } else {
-  //   current_column = current_column - 1;
-  // }
+  // Error handling for boundary values.
+  if (current_column <= 0){
+    // TODO: error handling
+  } else {
+    current_column = current_column - 1;
+  }
 
   fetch("http://127.0.0.1:8000/prev-button", {
     method: "POST",
@@ -225,31 +218,24 @@ function move_prev(e) {
     .then((data) => {
       const imagePaths = data.image_paths;
       const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
+  
+      // Loop through each imagePath and set it as the background for the corresponding result div
+      imagePaths.forEach((path, index) => {
+        // Construct the full image URL
+        const imageUrl = baseUrl + path;
 
-      // Create and display img elements for each image path
-      const resultDiv = document.getElementById("resultDiv");
-      resultDiv.innerHTML = "";
-
-      for (let i = 0; i < imagePaths.length; i += 2) {
-        // Create a row div to hold two images
-        const rowDiv = document.createElement("div");
-        rowDiv.className = "image-row"; // Add a class for styling
-
-        for (let j = i; j < i + 2 && j < imagePaths.length; j++) {
-          const imagePath = imagePaths[j];
-          const imageUrl = baseUrl + imagePath;
-          const img = document.createElement("img");
-          img.src = imageUrl;
-          img.alt = "Image";
-          img.style.width = "50%"; // Set the width to 50% for resizing
-          img.style.height = "auto"; // Maintain the aspect ratio
-          img.style.margin = "0"; // Reset margin
-
-          rowDiv.appendChild(img);
-        }
-
-        resultDiv.appendChild(rowDiv);
-      }
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = "Image";
+        
+        const maskDiv = document.querySelector('.result' + (index + 1) + ' .mask');
+        if (maskDiv) {
+          console.log('good', maskDiv);
+          maskDiv.innerHTML = "";
+          maskDiv.appendChild(img);
+          // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
+        } else {console.log('err!!', maskDiv);}
+      });
     })
     .catch((error) => {
       console.error(error);
