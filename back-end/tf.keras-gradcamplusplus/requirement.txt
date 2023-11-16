@@ -6,3 +6,8 @@ FastAPI
 uvicorn
 pydantic
 python-multipart
+torch
+pandas
+tensorflow
+matplotlib
+salesforce-lavis

@@ -1,4 +1,4 @@
-from typing import List, Annotated
+from typing import List
 from fastapi import FastAPI, Form, Request, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
