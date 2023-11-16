@@ -20,18 +20,3 @@ $ (gradcam++) cd back-end/tf.keras-gradcamplusplus
 $ (gradcam++) pip install -r requirement.txt
 
 $ (gradcam++) uvicorn server:app --host 0.0.0.0 --port 8000
-
-
-
-
-=====================================================
-First - Change python version as 3.8 for lavis model 
-
-$ python -m venv new_grad
-
-$ new_grad\Scripts\activate 
-
-$ (new_grad) cd back-end/tf.keras-gradcamplusplus
-
-$ (new_grad) cd back-end/tf.keras-gradcamplusplus
-

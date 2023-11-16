@@ -6,4 +6,3 @@ FastAPI
 uvicorn
 pydantic
 python-multipart
-salesforce-lavis
