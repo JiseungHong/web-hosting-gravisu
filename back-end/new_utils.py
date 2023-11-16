@@ -204,6 +204,7 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
             data_df.loc[selected_rows.index[num_iterations * 4:], 'column_id'] = column_id
     
     data_df.to_csv(csv_location, index=False)
+    return num_class
 
 
 
