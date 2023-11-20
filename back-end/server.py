@@ -1,4 +1,4 @@
-from typing import List, Annotated
+from typing import List
 from fastapi import FastAPI, Form, Request, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -14,7 +14,7 @@ class textField(BaseModel) :
   text: str
 
 user_images_folder = f"images" # = f"user_images"
-model_folder = f"model_folder" # tf_keras_vgg16_mura_model.h5
+model_folder = f"model" # tf_keras_vgg16_mura_model.h5
 save_heatmap = f"heatmap"
 
 # Arbitrary location for csv. File name involved.
@@ -86,17 +86,15 @@ def select_images(csv_location, white_image_loc,  class_id : int = 0 , column_id
 
 @app.post("/upload-model")
 async def upload_model(zipFile: UploadFile):
-    return {"message": "NOT IMPLEMENTED; upload dummy zip file."}
+    # return {"message": "NOT IMPLEMENTED; upload dummy zip file."}
     
     if zipFile.filename.endswith(".zip"):
-        # Assuming you have a "model" folder where you want to save the uploaded model
-        model_folder = "model"
-
         # Create the model folder if it doesn't exist
         if os.path.exists(model_folder):
-            for filename in os.listdir(model_folder):
-                file_path = os.path.join(model_folder, filename)
-                os.unlink(file_path)
+            for file_path in os.listdir(model_folder):
+                full_path = os.path.join(model_folder, file_path)
+                if os.path.isfile(full_path):
+                    os.unlink(full_path)
         else:
             os.makedirs(model_folder)
 
@@ -106,12 +104,32 @@ async def upload_model(zipFile: UploadFile):
 
         # Save the uploaded ZIP file to the model folder
         with open(model_path, "wb") as model_file:
-            shutil.copyfileobj(await zipFile.read(), model_file)
+            model_file.write(await zipFile.read())
 
         # Unzip the uploaded file (you'll need to have a library like zipfile installed)
+        extracted = False
         with zipfile.ZipFile(model_path, "r") as zip_ref:
-            zip_ref.extractall(model_folder)
-        return {"message": "Model uploaded and stored in model_folder folder."}
+            # zip_ref.extractall(model_folder)
+            for file in zip_ref.namelist():
+                if file.endswith('.h5'):
+                    # Extract file name and create a direct path under model_folder
+                    file_name = os.path.basename(file)
+                    extract_path = os.path.join(model_folder, file_name)
+                    
+                    # Extract the file to the direct path
+                    with open(extract_path, "wb") as f:
+                        f.write(zip_ref.read(file))
+                    extracted = True
+                    continue
+                # if file.endswith('.h5'):
+                #     # Extract only .h5 files
+                #     zip_ref.extract(file, model_folder)
+        
+        os.unlink(model_path)
+        if extracted:
+            return {"message": "Model (.h5) uploaded and stored in model_folder folder."}
+        else:
+            return {"error": "No .h5 file found in the uploaded zip."}
     else:
         return {"error": "Invalid file format. Please upload a .zip file."}
 

@@ -73,7 +73,7 @@ function function2(e) {
   current_column = 0;
   current_class = 0;
 
-  const fileInput = document.querySelector(".save-model-button");
+  const fileInput = document.getElementById("fileSystem2");
   if (fileInput.files.length === 0) {
     console.error("No file selected.");
     return;
@@ -85,7 +85,7 @@ function function2(e) {
   formData.append("zipFile", zipFile);
 
   // Send the FormData object to the server using a POST request
-  fetch("http://127.0.0.1:8000/upload-model-zip", {
+  fetch("http://127.0.0.1:8000/upload-model", {
     method: "POST",
     body: formData,
   })
