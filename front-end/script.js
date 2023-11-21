@@ -110,7 +110,7 @@ function function2(e) {
 function function3(e) {
   e.preventDefault();
   fetch("http://127.0.0.1:8000/run-gradcam", {
-    method: "POST"
+    method: "POST",
   })
     .then((response) => {
       if (response.status === 200) {
@@ -122,23 +122,27 @@ function function3(e) {
     .then((data) => {
       const imagePaths = data.image_paths;
       const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
-  
+
       // Loop through each imagePath and set it as the background for the corresponding result div
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
 
-        const img = document.createElement('img');
+        const img = document.createElement("img");
         img.src = imageUrl;
         img.alt = "Image";
-        
-        const maskDiv = document.querySelector('.result' + (index + 1) + ' .mask');
+
+        const maskDiv = document.querySelector(
+          ".result" + (index + 1) + " .mask"
+        );
         if (maskDiv) {
-          console.log('good', maskDiv);
+          console.log("good", maskDiv);
           maskDiv.innerHTML = "";
           maskDiv.appendChild(img);
           // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
-        } else {console.log('err!!', maskDiv);}
+        } else {
+          console.log("err!!", maskDiv);
+        }
       });
     })
     .catch((error) => {
@@ -151,7 +155,7 @@ function move_next(e) {
   e.preventDefault();
 
   // Error handling for boundary values.
-  if (current_column >= Maximum_Classes[current_class]){
+  if (current_column >= Maximum_Classes[current_class]) {
     // TODO: error handling
   } else {
     current_column = current_column + 1;
@@ -170,23 +174,27 @@ function move_next(e) {
     .then((data) => {
       const imagePaths = data.image_paths;
       const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
-  
+
       // Loop through each imagePath and set it as the background for the corresponding result div
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
 
-        const img = document.createElement('img');
+        const img = document.createElement("img");
         img.src = imageUrl;
         img.alt = "Image";
-        
-        const maskDiv = document.querySelector('.result' + (index + 1) + ' .mask');
+
+        const maskDiv = document.querySelector(
+          ".result" + (index + 1) + " .mask"
+        );
         if (maskDiv) {
-          console.log('good', maskDiv);
+          console.log("good", maskDiv);
           maskDiv.innerHTML = "";
           maskDiv.appendChild(img);
           // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
-        } else {console.log('err!!', maskDiv);}
+        } else {
+          console.log("err!!", maskDiv);
+        }
       });
     })
     .catch((error) => {
@@ -199,7 +207,7 @@ function move_prev(e) {
   e.preventDefault();
 
   // Error handling for boundary values.
-  if (current_column <= 0){
+  if (current_column <= 0) {
     // TODO: error handling
   } else {
     current_column = current_column - 1;
@@ -218,23 +226,27 @@ function move_prev(e) {
     .then((data) => {
       const imagePaths = data.image_paths;
       const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
-  
+
       // Loop through each imagePath and set it as the background for the corresponding result div
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
 
-        const img = document.createElement('img');
+        const img = document.createElement("img");
         img.src = imageUrl;
         img.alt = "Image";
-        
-        const maskDiv = document.querySelector('.result' + (index + 1) + ' .mask');
+
+        const maskDiv = document.querySelector(
+          ".result" + (index + 1) + " .mask"
+        );
         if (maskDiv) {
-          console.log('good', maskDiv);
+          console.log("good", maskDiv);
           maskDiv.innerHTML = "";
           maskDiv.appendChild(img);
           // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
-        } else {console.log('err!!', maskDiv);}
+        } else {
+          console.log("err!!", maskDiv);
+        }
       });
     })
     .catch((error) => {
