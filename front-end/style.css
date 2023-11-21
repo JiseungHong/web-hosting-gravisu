@@ -47,8 +47,14 @@
   margin-bottom: 10px;
 }
 .footer {
+  position: relative;
+  z-index: -1;
   grid-area: footer;
-  margin-top: 30px;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  position: relative;
+  width: 100%;
+  height: 120px;
 }
 
 .title_icon {
@@ -89,13 +95,9 @@
 }
 
 .text_response {
-  position: relative;
-  top: 37px;
-  flex-shrink: 0;
-  /* padding-left: 15px; */
   color: red;
   font-family: Montserrat;
-  font-size: 16px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -210,12 +212,8 @@
   pointer-events: none;
 }
 
-.inst_class {
-  position: relative;
-  top: 13px;
-  width: 100%;
-  height: 50px;
-  flex-shrink: 0;
+.run-button {
+  margin-top: 30px;
 }
 
 .inst_text {
@@ -304,17 +302,26 @@
   top: 47px;
 }
 
-.image_left {
+#arrow {
   display: inline-flex;
   background: #fff;
   position: relative;
   align-items: center;
   justify-content: center;
   border: none;
+  opacity: 1;
+  pointer-events: auto;
+  transition: 0.2s;
   cursor: pointer;
 }
-.image_left img {
+#arrow img {
   height: 30px;
+}
+
+#arrow:disabled {
+  /* condition need to be fixed after removing img upload at part 1*/
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 #current_column {
@@ -354,10 +361,23 @@
   height: 25px;
 }
 
-.wordSpan {
-  margin: 2px;
+.stat_text {
+  position: relative;
+  top: 75px;
+  flex-shrink: 0;
+  color: #000;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
-#predResult {
-  padding: 1px;
+.chart {
+  position: relative;
+  top: 90px;
+}
+.chart img {
+  width: 100%;
 }
