@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd 
 
-from new_utils import renew_model, renew_make_gradcam
+from new_utils import renew_model, renew_make_gradcam, visual_histogram
 
 # load_class 함수 -> select_images 함수로 변경
 
@@ -21,6 +21,7 @@ save_heatmap = f"./heatmap"
 
 # 임의로 저장한 csv_location. 파일 이름까지 포함되어야함. 
 csv_location = f"./test.csv"
+histogram_save_location = f"./heatmap/histogram"
 
 # 임의의 white image 
 white_image_loc = f"./heatmap/white.png"
@@ -91,6 +92,22 @@ def select_images(csv_location, white_image_loc,  class_id : int = 1 , column_id
     
     return heatmap_address
 
+# 특정 Class_id 에 해당하는 histogram 이미지의 주소 값을 불러옵니다. 
+# 만약 histogram 이미지가 존재하지 않는다면, 'No-Data' 이미지를 대신 불러옵니다. 
+def load_histogram(class_id, histogram_save_location, save_heatmap) : 
+    histogram_path = os.path.join(histogram_save_location, f'histogram_{class_id}.png').replace('\\', '/')
+
+    # 생성된 경로에 이미지 파일이 존재하는지 확인
+    if os.path.exists(histogram_path):
+        # 이미지 파일이 존재하면 해당 경로를 반환
+        return histogram_path
+    
+    else:
+        return os.path.join(save_heatmap, 'No_Data.png').replace('\\', '/')
+
+
+
+
 
 @app.post("/upload-model")
 async def upload_model(files: List[UploadFile]): # input 불필요 
@@ -104,6 +121,10 @@ async def upload_model(files: List[UploadFile]): # input 불필요
     # 2) make gradcam & save heatmap in save_heatmap forlder
     # 3) save csv with infomation at 'csv_location' 
     num_class = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
+    
+    # 모든 Class에 대해서 Image captioining 결과를 histogram으로 만들어 save_folder 위치에 저장하기 
+    visual_histogram(num_class, csv_location, save_folder = histogram_save_location)
+
     df = pd.read_csv(csv_location)
     # max_column_id 반영하기
 
@@ -127,10 +148,13 @@ async def upload_model(files: List[UploadFile]): # input 불필요
     # csv_location 에서 데이터를 불러와서, 조건에 맞는 4개의 heatmap 이미지 주소값을 불러옴 
 
     result = select_images(csv_location, white_image_loc)
+    histogram_path = load_histogram(class_id = 1, histogram_save_location= histogram_save_location, save_heatmap= save_heatmap)
+    
     # TODO: send the selected images to the Web.
-    return result, max_column_id
+    return result, max_column_id, histogram_path
 
 # 아래는 global 변수 값만을 변경하여, 4개의 image 씩 보내도록 설정
+# image captioining histogram은 Class_id 가 변경되었을 때에만 바뀌도록 설정해야함. 
 @app.post("/next-button")
 async def next_button():
     global_column_id += 1 
@@ -142,12 +166,16 @@ async def prev_button():
     return select_images(csv_location, white_image_loc, global_class_id, global_column_id)
 
 
+# Histogram 추가 완료.  
 @app.post("/class-dropdown")
 async def prev_button(class_num: int):
     global_class_id = class_num
     # class_dropdown 시 column_id 1로 세팅하기 
     global_column_id = 1
-    return select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+
+    heatmap_path = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    histogram_path = load_histogram(global_class_id, histogram_save_location, save_heatmap)
+    return heatmap_path, histogram_path 
     
 
 if __name__=='__main__':

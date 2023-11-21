@@ -134,11 +134,11 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
     images = [] 
 
     # 이 부분을 수정해야함. 
-    exception_file = "white.png"
+    exception_file = ["white.png", "no_data.png"]
     if os.path.exists(save_heatmap):
         for file_name in os.listdir(save_heatmap):
             file_path = os.path.join(save_heatmap, file_name)
-            if os.path.isfile(file_path) and file_name != exception_file:
+            if os.path.isfile(file_path) and file_name not in exception_file:
                 os.remove(file_path)
     
     else : 
@@ -245,45 +245,54 @@ def resize_and_fill(image_path, target_size):
     return filled_image
 
 
-def visual_histogram(class_id, csv_location, save_folder=None) : 
+# 실행 시, 모든 Class 에 대해서 histogram image 를 save_folder 위치에 저장하는 코드로 변경 
+def visual_histogram(num_class, csv_location, save_folder=None) : 
+    
     if save_folder is not None : 
         if os.path.exists(save_folder): shutil.rmtree(save_folder)
         os.makedirs(save_folder)
-        save_path = os.path.join(save_folder, "histogram.png").replace('\\', '/')
+        
 
     dataframe = pd.read_csv(csv_location)
-    filtered_df = dataframe[dataframe['prediction'] == class_id]
-    if len(filtered_df) == 0 : 
-        print("No data in this class")
-        return 
-
-    result_image_caption = filtered_df['image_caption'].tolist()
-
     # 무시할 단어 목록 (예: 관사, 조사) 설정하기 
     ignore_words = ["a", "an", "the", "of", "in", "on", "with", "and", "is"]
 
-    all_words = ' '.join(result_image_caption).split()
 
-    # 각 단어의 빈도를 계산하며 무시할 단어는 제외합니다.
-    word_frequencies = Counter(word for word in all_words if word not in ignore_words)
+    for class_id in range(1, num_class+1) : 
+        filtered_df = dataframe[dataframe['prediction'] == class_id]
+        save_path = os.path.join(save_folder, f"histogram_{class_id}.png").replace('\\', '/')
 
-    # 빈도 수가 상위 10개인 값만 가져오기 
+        # 데이터가 없는 Class의 경우 생략하기 
+        # 다른 함수에서 image 파일이 없을 경우, no_data 이미지가 나올 수 있도록 수정하기 
+        if len(filtered_df) == 0 : 
+            continue
 
-    top_words = word_frequencies.most_common(10)
+        result_image_caption = filtered_df['image_caption'].tolist()
 
-    words = [word for word, freq in top_words]
-    frequencies = [freq for word, freq in top_words]
+    
+    
+        all_words = ' '.join(result_image_caption).split()
 
-    # 히스토그램 생성
-    plt.figure(figsize=(12, 6))
-    plt.bar(words, frequencies)
-    plt.xlabel('Words')
-    plt.ylabel('Frequency')
-    plt.xticks(rotation=45)
+        # 각 단어의 빈도를 계산하며 무시할 단어는 제외합니다.
+        word_frequencies = Counter(word for word in all_words if word not in ignore_words)
 
-    if save_folder is None :
-        plt.show()
-    else :
-        plt.savefig(save_path, bbox_inches='tight')
+        # 빈도 수가 상위 10개인 값만 가져오기 
+
+        top_words = word_frequencies.most_common(10)
+
+        words = [word for word, freq in top_words]
+        frequencies = [freq for word, freq in top_words]
+
+        # 히스토그램 생성
+        plt.figure(figsize=(12, 6))
+        plt.bar(words, frequencies)
+        plt.xlabel('Words')
+        plt.ylabel('Frequency')
+        plt.xticks(rotation=45)
+
+        if save_folder is None :
+            plt.show()
+        else :
+            plt.savefig(save_path, bbox_inches='tight')
     
     #plt.show()
