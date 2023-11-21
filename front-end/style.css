@@ -213,7 +213,7 @@
 
 .inst_text {
   position: relative;
-  top: 13px;
+  top: 18px;
   flex-shrink: 0;
   color: #000;
   text-align: center;
@@ -236,12 +236,12 @@
   font-weight: 400;
   line-height: 40px;
   position: relative;
-  left: -122.5px;
+  margin: 0px 5px;
 }
 
 .gallery {
   position: relative;
-  top: 26px;
+  top: 30px;
   width: 100%;
   height: 480px;
   display: grid;
