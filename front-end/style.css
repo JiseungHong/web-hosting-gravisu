@@ -6,7 +6,9 @@
   grid-template-areas:
     "header header"
     "step1 step3"
-    "step2 step3";
+    "step2 step3"
+    ". step3"
+    "footer footer";
   align-items: start;
   align-content: start;
   /* padding-top: 56.25%; */
@@ -19,7 +21,8 @@
       "header"
       "step1"
       "step2"
-      "step3";
+      "step3"
+      "footer";
   }
 }
 
@@ -42,6 +45,17 @@
   left: 0px;
   top: 0px;
   background: #262626;
+  margin-bottom: 10px;
+}
+.footer {
+  position: relative;
+  z-index: -1;
+  grid-area: footer;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  position: relative;
+  width: 100%;
+  height: 120px;
 }
 
 .title_icon {
@@ -66,8 +80,8 @@
 }
 
 .myField {
-  padding: 50px 55px 0px;
-  /* margin: 30px; */
+  padding: 40px 55px 0px;
+  margin-bottom: 30px;
 }
 
 .step_title {
@@ -82,13 +96,9 @@
 }
 
 .text_response {
-  position: relative;
-  top: 37px;
-  flex-shrink: 0;
-  /* padding-left: 15px; */
   color: red;
   font-family: Montserrat;
-  font-size: 16px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -203,17 +213,13 @@
   pointer-events: none;
 }
 
-.inst_class {
-  position: relative;
-  top: 13px;
-  width: 100%;
-  height: 50px;
-  flex-shrink: 0;
+.run-button {
+  margin-top: 30px;
 }
 
 .inst_text {
   position: relative;
-  top: 13px;
+  top: 18px;
   flex-shrink: 0;
   color: #000;
   text-align: center;
@@ -236,14 +242,13 @@
   font-weight: 400;
   line-height: 40px;
   position: relative;
-  left: -122.5px;
+  margin: 0px 5px;
 }
 
 .gallery {
   position: relative;
-  top: 26px;
+  top: 30px;
   width: 100%;
-  height: 480px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
@@ -276,43 +281,104 @@
 }
 
 .im {
+  aspect-ratio: 4/3;
   object-fit: cover;
   object-position: 50% 50%;
   width: 100%;
-  /* height: 75%; */
 }
 
 .mask {
+  width: 100%;
   mask-size: contain;
   -webkit-mask-size: contain;
-  max-width: 100%;
-  max-height: 100%;
   mask-image: url(assets/imageframe.png);
   -webkit-mask-image: url(assets/imageframe.png);
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
-  /* mask-size: 100%; */
 }
 
 .pagination {
+  position: relative;
   text-align: center;
+  top: 47px;
 }
 
-.image-button {
+#arrow {
   display: inline-flex;
+  background: #fff;
+  position: relative;
   align-items: center;
   justify-content: center;
   border: none;
+  opacity: 1;
+  pointer-events: auto;
+  transition: 0.2s;
   cursor: pointer;
 }
-.image-button img {
-  height: 50%;
+#arrow img {
+  height: 30px;
 }
 
-.wordSpan {
-  margin: 2px;
+#arrow:disabled {
+  /* condition need to be fixed after removing img upload at part 1*/
+  opacity: 0.3;
+  pointer-events: none;
 }
 
-#predResult {
-  padding: 1px;
+#current_column {
+  display: inline-flex;
+  position: relative;
+  color: #000;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  top: -17px;
+  left: 13px;
+  margin-left: 20px;
+}
+
+#max_column {
+  display: inline-flex;
+  position: relative;
+  color: #000;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  top: 0px;
+  left: -11px;
+  margin-right: 20px;
+}
+
+.border {
+  display: inline-flex;
+}
+.border img {
+  height: 25px;
+}
+
+.stat_text {
+  position: relative;
+  top: 75px;
+  flex-shrink: 0;
+  color: #000;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.chart {
+  position: relative;
+  top: 90px;
+}
+.chart img {
+  width: 100%;
 }

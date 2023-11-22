@@ -79,6 +79,9 @@ function function2(e) {
     return;
   }
 
+  const modelLoadingDiv = document.getElementById("modelLoading");
+  modelLoadingDiv.innerHTML = "Uploading model...";
+
   // Save the model.
   const formData = new FormData();
   const zipFile = fileInput.files[0];
@@ -93,6 +96,7 @@ function function2(e) {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      modelLoadingDiv.innerHTML = "Model upload complete.";
       return response.json();
     })
     .then((data) => {
@@ -150,9 +154,15 @@ function function3(e) {
     });
 }
 
+let left_arrow = document.getElementsByClassName("left_arrow")[0];
+let right_arrow = document.getElementsByClassName("right_arrow")[0];
+
 // Next Button
 function move_next(e) {
   e.preventDefault();
+
+  let current_column = document.getElementById("current_column").value;
+  let max_column = document.getElementById("max_column").value;
 
   // Error handling for boundary values.
   if (current_column >= Maximum_Classes[current_class]) {

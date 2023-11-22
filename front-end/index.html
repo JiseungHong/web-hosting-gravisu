@@ -30,8 +30,8 @@
                                 <input class="imageClass hidden" id='fileSystem1' type="file" multiple accept="image/*"
                                     enctype='multipart/form-data' required></input>
                             </div>
+                            <div class="text_response" id="imageNumber"></div>
                         </div>
-                        <div class="text_response" id="imageNumber"></div> <!-- 다운로드한 이미지 수 출력 -->
                     </div>
                     <button type="button" class="upload-button" id="submitButton" onClick="function1(event)"
                         disabled="true">Upload</button>
@@ -50,11 +50,12 @@
                                 Browse
                                 <input class="hidden" id='fileSystem2' type="file" accept=".zip" required></input>
                             </div>
+                            <div class="text_response" id="modelLoading"></div>
                         </div>
                     </div>
                     <button type="button" class="save-model-button" id="submitButton" onClick="function2(event)"
                         disabled="true">Upload</button>
-                </form><br>
+                </form>
                 <button type="button" class="run-button" id="submitButton" onClick="function3(event)">Run
                     Gra-Visu</button>
             </div>
@@ -63,8 +64,7 @@
         <div class="step3">
             <div class='myField'>
                 <div class="step_title"> 3. Image Classification Result </div>
-                <div class="inst_text">&emsp;&emsp;&emsp;&emsp;Images of &emsp;&emsp;&emsp;&emsp;th class
-                    <input class="inst_num" type="number" min="1" max="4"></input>
+                <div class="inst_text">Images of <input class="inst_num" type="number" min="1" max="4"></input>th class
                     <!-- TODO: Receive min&max value from server -->
                 </div>
                 <div class="gallery">
@@ -91,18 +91,22 @@
                     </div>
                 </div>
                 <div class="pagination">
-                    <button class="image_left"><img src="assets/left_arrow.png" alt="left"></button>
-                    <button class="image_left"><img src="assets/right_arrow.png" alt="right"></button>
+                    <button type="button" class="left_arrow" id="arrow" onClick="move_prev(event)" disabled="true"><img
+                            src="assets/left_arrow.png" alt="left"></button>
+                    <div id="current_column">0</div> <!-- TODO: Receive current column from server -->
+                    <div class="border"><img src="assets/number_line.png" alt="border"></div>
+                    <div id="max_column">0</div> <!-- TODO: Receive max column from server -->
+                    <button type="button" class="right_arrow" id="arrow" onClick="move_next(event)" disabled="true"><img
+                            src="assets/right_arrow.png" alt="right"></button>
                 </div>
-                <div id='resultDiv'> </div>
-                <div class="inst_text">
-                    Keyword Statistics
-                </div>
-                <!-- TODO: input chart image here -->
-                <div class="chart"></div>
+                <!-- <div id='resultDiv'> </div> -->
+                <div class="stat_text">Keyword Statistics</div>
+                <!-- TODO: input chart image here (appendchild도 가능할 것 같습니다!) -->
+                <div class="chart"><img src="assets/background.png" /></div>
             </div>
         </div>
 
+        <div class="footer"><br></div>
     </div>
 </body>
 <script src="script.js"></script>
