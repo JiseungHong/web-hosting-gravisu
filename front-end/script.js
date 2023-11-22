@@ -1,6 +1,6 @@
 let Maximum_Classes = [];
-let current_column = 0;
-let current_class = 0;
+let current_column = 1;
+let current_class = 1;
 
 // Enable buttons when files are valid
 let userFile1 = document.getElementById("fileSystem1");
@@ -45,7 +45,7 @@ function function1(e) {
     }
 
     // Send the FormData object to the server using a POST request
-    fetch("http://127.0.0.1:8000/upload-images", {
+    fetch("http://110.76.86.172:8000/upload-images", {
       method: "POST",
       body: formData,
     })
@@ -88,7 +88,7 @@ function function2(e) {
   formData.append("zipFile", zipFile);
 
   // Send the FormData object to the server using a POST request
-  fetch("http://127.0.0.1:8000/upload-model", {
+  fetch("http://110.76.86.172:8000/upload-model", {
     method: "POST",
     body: formData,
   })
@@ -113,7 +113,7 @@ function function2(e) {
 // Run GradCam++.
 function function3(e) {
   e.preventDefault();
-  fetch("http://127.0.0.1:8000/run-gradcam", {
+  fetch("http://110.76.86.172:8000/run-gradcam", {
     method: "POST",
   })
     .then((response) => {
@@ -125,29 +125,38 @@ function function3(e) {
     })
     .then((data) => {
       const imagePaths = data.image_paths;
-      const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
+      const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
 
       // Loop through each imagePath and set it as the background for the corresponding result div
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
-
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = "Image";
-
-        const maskDiv = document.querySelector(
-          ".result" + (index + 1) + " .mask"
-        );
-        if (maskDiv) {
-          console.log("good", maskDiv);
-          maskDiv.innerHTML = "";
-          maskDiv.appendChild(img);
-          // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
+        const imgElement = document.querySelector(".result" + (index + 1) + " .mask .im");
+        if (imgElement) {
+          imgElement.src = imageUrl;
+          console.log("Image src updated for", imgElement);
         } else {
-          console.log("err!!", maskDiv);
+          console.log("No img element found for result" + (index + 1));
         }
       });
+
+      Maximum_Classes = data.max_value;
+      current_column = 1;
+      current_class = 0;
+      document.getElementById('current_column').textContent = current_column;
+      document.getElementById('max_column').textContent = Maximum_Classes[current_class];
+
+      const drop_down = document.querySelector(".inst_text .inst_num");
+      drop_down.textContent = current_class+1;
+      drop_down.max = Maximum_Classes.length;
+
+      const chartElement = document.querySelector(".chart .chart_content");
+      if (chartElement) {
+        chartElement.src = baseUrl + data.histogram;
+        console.log("Chart src updated for", chartElement);
+      } else {
+        console.log("No chart element found for chart_element");
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -161,9 +170,6 @@ let right_arrow = document.getElementsByClassName("right_arrow")[0];
 function move_next(e) {
   e.preventDefault();
 
-  let current_column = document.getElementById("current_column").value;
-  let max_column = document.getElementById("max_column").value;
-
   // Error handling for boundary values.
   if (current_column >= Maximum_Classes[current_class]) {
     // TODO: error handling
@@ -171,7 +177,7 @@ function move_next(e) {
     current_column = current_column + 1;
   }
 
-  fetch("http://127.0.0.1:8000/next-button", {
+  fetch("http://110.76.86.172:8000/next-button", {
     method: "POST",
   })
     .then((response) => {
@@ -183,29 +189,22 @@ function move_next(e) {
     })
     .then((data) => {
       const imagePaths = data.image_paths;
-      const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
+      const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
 
       // Loop through each imagePath and set it as the background for the corresponding result div
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
-
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = "Image";
-
-        const maskDiv = document.querySelector(
-          ".result" + (index + 1) + " .mask"
-        );
-        if (maskDiv) {
-          console.log("good", maskDiv);
-          maskDiv.innerHTML = "";
-          maskDiv.appendChild(img);
-          // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
+        const imgElement = document.querySelector(".result" + (index + 1) + " .mask .im");
+        if (imgElement) {
+          imgElement.src = imageUrl;
+          console.log("Image src updated for", imgElement);
         } else {
-          console.log("err!!", maskDiv);
+          console.log("No img element found for result" + (index + 1));
         }
       });
+
+        document.getElementById('current_column').textContent = current_column;
     })
     .catch((error) => {
       console.error(error);
@@ -223,7 +222,7 @@ function move_prev(e) {
     current_column = current_column - 1;
   }
 
-  fetch("http://127.0.0.1:8000/prev-button", {
+  fetch("http://110.76.86.172:8000/prev-button", {
     method: "POST",
   })
     .then((response) => {
@@ -235,29 +234,22 @@ function move_prev(e) {
     })
     .then((data) => {
       const imagePaths = data.image_paths;
-      const baseUrl = "http://127.0.0.1:8000/heatmap/"; // Base URL for serving images
+      const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
 
       // Loop through each imagePath and set it as the background for the corresponding result div
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
-
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = "Image";
-
-        const maskDiv = document.querySelector(
-          ".result" + (index + 1) + " .mask"
-        );
-        if (maskDiv) {
-          console.log("good", maskDiv);
-          maskDiv.innerHTML = "";
-          maskDiv.appendChild(img);
-          // maskDiv.innerHTML = `<img src="${imageUrl}" alt="Image description">`;
+        const imgElement = document.querySelector(".result" + (index + 1) + " .mask .im");
+        if (imgElement) {
+          imgElement.src = imageUrl;
+          console.log("Image src updated for", imgElement);
         } else {
-          console.log("err!!", maskDiv);
+          console.log("No img element found for result" + (index + 1));
         }
       });
+
+        document.getElementById('current_column').textContent = current_column;
     })
     .catch((error) => {
       console.error(error);

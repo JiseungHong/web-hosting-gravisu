@@ -21,7 +21,7 @@ $ Set-ExecutionPolicy Restricted -Scope Process
 When Mac
 1. Install pyenv
 
-* https://steemit.com/kr/@anpigon/-virtualenv-python--1546840427366
+* https://leesh90.github.io/environment/2021/04/03/python-install/
 
 $ brew install pyenv pyenv-virtualenv
 

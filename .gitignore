@@ -1,9 +1,10 @@
 gradcam++/
 uvicorn/
 user_images/
-images/
+images/*
 model_folder/
 model/
 back-end/heatmap/
 __pycache__/
 *.csv
+heatmap/
