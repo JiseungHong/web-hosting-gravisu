@@ -18,6 +18,20 @@ $ Set-ExecutionPolicy Restricted -Scope Process
 
 4. Then make Virtual environment
 
+When Mac
+1. Install pyenv
+
+* https://steemit.com/kr/@anpigon/-virtualenv-python--1546840427366
+
+$ brew install pyenv pyenv-virtualenv
+
+$ pyenv install 3.8.10
+
+2. Activate Virtual environment
+
+$ pyenv virtualenv 3.8.10 uvicorn
+
+$ pyenv activate uvicorn
 =============================
 
 
