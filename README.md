@@ -1,59 +1,98 @@
-# web-hosting-gravisu
-Both the server and the web code for deploying (web-hosting) the gravisu (GradCam Visualization).
+# README
 
+---
 
-===================
-Need to change python version as 3.8 for Image captioining(lavis) model 
+**GRAVISU**
 
-When Window
-1. Install pyenv 
+---
 
+🔗 [GRAVISU website](http://wlqmfl.com/project/gravisu/index.html)
+
+Building an user-friendly web which provides explanation of CNN based machine learning models (GradCam).
+
+---
+
+**Code**
+
+---
+
+- Front End
+
+index.html
+
+: Outlines a web page for GRAVISU, a tool designed for image dataset uploading, model training, and image classification result visualization. It features a three-step user interface: the first step for uploading an image dataset, the second for uploading training model information, and the third for displaying image classification results and statistics.
+
+script.js
+
+: Enables uploading and processing image datasets and model files on a web application via FastAPI. It includes functionality to enable upload buttons when files are selected, handles the uploading of images and a model file to the server, and manages the display of image classification results and navigation through them using next and previous buttons.
+
+- Back End
+
+server.py
+
+: This Python code using FastAPI sets up a web server to handle various POST requests for uploading images and a model file, running GradCAM++ for image classification, and navigating through classification results. It includes endpoints to upload images and a machine learning model (in .zip format), perform image classification and image captioning using GradCAM++, and display the results along with the visualization of histograms. The server also facilitates navigation through the classification results with next, previous, and class selection buttons, and handles CORS for cross-origin requests.
+
+new_utils.py
+
+: This Python code utilizes a trained machine learning model to perform Grad-CAM++ visualization on a set of images, which helps in understanding the regions of the image most relevant to the model's predictions. It also includes functionality to preprocess images, generate heatmaps overlaying the original images, and create histograms based on image captions, illustrating the frequency of specific words.
+
+---
+
+**Quick Start**
+
+---
+
+Running GRAVISU composes of 3 steps.
+
+1. Upload test images
+
+Upload the [test images](https://idk) by clicking the *Browse* button in *1. Upload Your Image Dataset*. Then press *Upload* button. Wait until the message *You have uploaded 2 images.* appears.
+
+❗️ Note that the images **must** be one of .jpg, .jpeg, .png, or .gif format.
+
+2. Upload your model
+
+Upload the [test model](https://drive.google.com/file/d/1fYH0bVg8zi30dhljJoquQ21bBacHrnBZ/view?usp=sharing) by clicking the *Browse* button in *2. Input Your Training Model Information*. While the server is saving the model, the message *Uploading model…* will appear. Wait until the message *Model upload complete.* appears.
+
+❗️ Note that the model **must** be sent by .zip format.
+
+3. Run GRAVISU 
+
+Click Run *Gra-Visu* button to run! It’ll take some time.
+
+- When the image appears, move onto the next/ previous image by clicking the left/ right button. Also, you can view the images by its class by clicking the dropdown *Images of N th class*.
+- You can also view the histogram of keyword statistics, based on the image captioning.
+
+---
+
+**Hosting the Server**
+
+---
+
+We use [Uvicorn](https://www.uvicorn.org) and FastAPI for server hosting. Also, you should be using python version 3.8.10 by using pyenv:
+
+Windows
+
+1. Install pyenv
 2. Open powershell as Administrator
-
-3. Change policy of powershell & change python version 
-$ Set-ExecutionPolicy RemoteSigned -Scope Process
-$ pyenv install 3.8.10   
-$ pyenv global 3.8.10
-$ Set-ExecutionPolicy Restricted -Scope Process 
-
+3. Change policy of powershell & change python version $ Set-ExecutionPolicy RemoteSigned -Scope Process
+    
+    `$ pyenv install 3.8.10`
+    
+    `$ pyenv global 3.8.10 $ Set-ExecutionPolicy Restricted -Scope Process`
+    
 4. Then make Virtual environment
 
-When Mac
-1. Install pyenv
+Mac OS
 
-* https://leesh90.github.io/environment/2021/04/03/python-install/
+1. Refer to: [https://leesh90.github.io/environment/2021/04/03/python-install/](https://leesh90.github.io/environment/2021/04/03/python-install/)
 
-$ brew install pyenv pyenv-virtualenv
+Then, run server.py:
 
-$ pyenv install 3.8.10
+`$ cd back-end`
 
-2. Activate Virtual environment
+`$ pip install -r tf.keras-gradcamplusplus/requirement.txt`
 
-$ pyenv virtualenv 3.8.10 uvicorn
+`$ uvicorn server:app --host 0.0.0.0 --port 8000` or  `$ python3 server.py`
 
-$ pyenv activate uvicorn
-=============================
-
-
-**How to host the server (server.py)**
-Virtual environment is preferred.
-
-$ python -m venv gradcam++
-
-$ source gradcam++/bin/activate
-$ (window) gradcam++\Scripts\activate
-
-hosting server.py
-* Change directory to where the python script ({python}.py) exists.
-* Make sure to modify the url in the javascript with your own ip address.
-* Use uvicorn to host the server ({python}:app).
-
-$ (gradcam++) cd back-end/tf.keras-gradcamplusplus
-
-$ (gradcam++) pip install -r requirement.txt
-
-$ (gradcam++) uvicorn server:app --host 0.0.0.0 --port 8000
-
-
-
-
+❗️ Note that currently running web is accessible only for those who use [KAIST](https://www.kaist.ac.kr/kr/) Wifi/ Ethernet.

@@ -30,22 +30,16 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=False,
-    allow_methods=["POST"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
 app.mount("/heatmap", StaticFiles(directory="heatmap"), name="heatmap")
 # app.mount("/white", StaticFiles(directory="white"), name="white")
 
-@app.post("/textreturn")
-def text_return(data: dict):
-    if "text" in data:
-        input_text = data["text"]
-        return {'text': input_text}
-    else:
-        return {'error': 'Invalid request payload'}
-
-user_images_folder = "user_images"
+@app.get("/hello")
+def hello():
+    return {'message': 'HELLO CS492 TAs!'}
 
 @app.post("/upload-images")
 async def upload_images(files: List[UploadFile]):
