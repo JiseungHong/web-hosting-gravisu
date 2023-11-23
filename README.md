@@ -10,7 +10,6 @@
 
 Building a user-friendly web which provides explanation of CNN based machine learning models (GradCam).
 
-
 ---
 
 **Code**
@@ -37,7 +36,6 @@ new_utils.py
 
 : This Python code utilizes a trained machine learning model to perform Grad-CAM++ visualization on a set of images, which helps in understanding the regions of the image most relevant to the model's predictions. It also includes functionality to preprocess images, generate heatmaps overlaying the original images, and create histograms based on image captions, illustrating the frequency of specific words.
 
-
 ---
 
 **Quick Start**
@@ -48,7 +46,7 @@ Running GRAVISU composes of 3 steps.
 
 1. Upload test images
 
-Upload the [test images](https://idk) by clicking the *Browse* button in *1. Upload Your Image Dataset*. Then press *Upload* button. Wait until the message *You have uploaded N images.* appears.
+Upload the [test images](https://idk) by clicking the *Browse* button in *1. Upload Your Image Dataset*. Then press *Upload* button. Wait until the message *You have uploaded 2 images.* appears.
 
 ❗️ Note that the images **must** be one of .jpg, .jpeg, .png, or .gif format.
 
@@ -62,9 +60,8 @@ Upload the [test model](https://drive.google.com/file/d/1fYH0bVg8zi30dhljJoquQ21
 
 Click Run *Gra-Visu* button to run! It’ll take some time.
 
-- When the image appears, move onto the next/ previous image by clicking the left/ right button. Also, you can view the images by its class by clicking the dropdown *Images of M th class*.
+- When the image appears, move onto the next/ previous image by clicking the left/ right button. Also, you can view the images by its class by clicking the dropdown *Images of N th class*.
 - You can also view the histogram of keyword statistics, based on the image captioning.
-
 
 ---
 
@@ -72,7 +69,7 @@ Click Run *Gra-Visu* button to run! It’ll take some time.
 
 ---
 
-We use [Uvicorn](https://www.uvicorn.org) and FastAPI for server hosting. Also, you should be using python version 3.8.10 by using pyenv:
+We use [Uvicorn](https://www.uvicorn.org) and [FastAPI](https://fastapi.tiangolo.com) for server hosting. Also, you should be using python version 3.8.10 by using pyenv:
 
 Windows
 
@@ -90,7 +87,6 @@ Mac OS
 
 1. Refer to: [https://leesh90.github.io/environment/2021/04/03/python-install/](https://leesh90.github.io/environment/2021/04/03/python-install/)
 
-
 Then, run server.py:
 
 `$ cd back-end`
@@ -100,3 +96,13 @@ Then, run server.py:
 `$ uvicorn server:app --host 0.0.0.0 --port 8000` or  `$ python3 server.py`
 
 ❗️ Note that the currently running web application is accessible only to those using [KAIST](https://www.kaist.ac.kr/kr/) Wifi/Ethernet.
+
+---
+
+**Reference**
+
+---
+
+[Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization](https://arxiv.org/abs/1610.02391)
+
+[Grad-CAM++: Improved Visual Explanations for Deep Convolutional Networks](https://arxiv.org/abs/1710.11063)
