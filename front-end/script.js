@@ -1,6 +1,11 @@
 let Maximum_Classes = [];
 let current_column = 1;
 let current_class = 1;
+let imgDrop;
+let modelDrop;
+
+const dragDropImg = document.querySelector(".imgFileBox");
+const dragDropModel = document.querySelector(".modelFileBox");
 
 // Enable buttons when files are valid
 let userFile1 = document.getElementById("fileSystem1");
@@ -26,6 +31,42 @@ function stateHandle() {
   }
 }
 
+dragDropImg.addEventListener("dragover", (event) => {
+  event.preventDefault();
+  document.getElementById("img_drop").innerHTML = "Release to upload";
+});
+
+dragDropImg.addEventListener("dragleave", () => {
+  document.getElementById("img_drop").innerHTML =
+    "Drag and drop files here<br>OR";
+});
+
+dragDropImg.addEventListener("drop", (event) => {
+  event.preventDefault();
+  imgDrop = event.dataTransfer.files;
+  document.getElementById("img_drop").innerHTML =
+    "Drag and drop files here<br>OR";
+  submitButton1.disabled = false;
+});
+
+dragDropModel.addEventListener("dragover", (event) => {
+  event.preventDefault();
+  document.getElementById("model_drop").innerHTML = "Release to upload";
+});
+
+dragDropModel.addEventListener("dragleave", () => {
+  document.getElementById("model_drop").innerHTML =
+    "Drag and drop files here<br>OR";
+});
+
+dragDropModel.addEventListener("drop", (event) => {
+  event.preventDefault();
+  modelDrop = event.dataTransfer;
+  document.getElementById("model_drop").innerHTML =
+    "Drag and drop files here<br>OR";
+  submitButton2.disabled = false;
+});
+
 // Upload images (Front end -> Back end)
 function function1(e) {
   e.preventDefault();
@@ -39,10 +80,17 @@ function function1(e) {
   const imageNumberDiv = document.getElementById("imageNumber");
 
   // Check if any files are selected
-  if (imageInput.files.length > 0) {
+  if (imageInput.files.length > 0 || imgDrop.length > 0) {
     // Append each selected image file to the FormData object
-    for (let i = 0; i < imageInput.files.length; i++) {
-      formData.append("files", imageInput.files[i]);
+    if (imageInput.files.length > 0) {
+      for (let i = 0; i < imageInput.files.length; i++) {
+        formData.append("files", imageInput.files[i]);
+      }
+    }
+    if (imgDrop.length > 0) {
+      for (let i = 0; i < imgDrop.length; i++) {
+        formData.append("files", imgDrop[i]);
+      }
     }
 
     // Send the FormData object to the server using a POST request
@@ -74,8 +122,8 @@ function function2(e) {
   current_column = 0;
   current_class = 0;
 
-  const fileInput = document.getElementById("fileSystem2");
-  if (fileInput.files.length === 0) {
+  modelDrop = document.getElementById("fileSystem2");
+  if (modelDrop.length === 0) {
     console.error("No file selected.");
     return;
   }
@@ -85,7 +133,7 @@ function function2(e) {
 
   // Save the model.
   const formData = new FormData();
-  const zipFile = fileInput.files[0];
+  const zipFile = modelDrop.files[0];
   formData.append("zipFile", zipFile);
 
   // Send the FormData object to the server using a POST request

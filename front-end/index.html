@@ -22,9 +22,9 @@
             <div class='myField'>
                 <div class="step_title"> 1. Upload Your Image Dataset </div>
                 <form method="post">
-                    <div id='fileBox'>
+                    <div id='fileBox' class="imgFileBox">
                         <div class="child">
-                            <div class="drag_drop">Drag and drop files here<br>OR</div>
+                            <div id="img_drop" class="drag_drop">Drag and drop files here<br>OR</div>
                             <div class="fileButton">
                                 Browse
                                 <input class="imageClass hidden" id='fileSystem1' type="file" multiple accept="image/*"
@@ -43,9 +43,9 @@
             <div class='myField'>
                 <div class="step_title"> 2. Input Your Training Model Information </div>
                 <form method="post">
-                    <div id='fileBox'>
+                    <div id='fileBox' class="modelFileBox">
                         <div class="child">
-                            <div class="drag_drop">Drag and drop files here<br>OR</div>
+                            <div id="model_drop" class="drag_drop">Drag and drop files here<br>OR</div>
                             <div class="fileButton">
                                 Browse
                                 <input class="hidden" id='fileSystem2' type="file" accept=".zip" required></input>
