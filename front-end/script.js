@@ -110,6 +110,9 @@ function function2(e) {
     });
 }
 
+let left_arrow = document.getElementsByClassName("left_arrow")[0];
+let right_arrow = document.getElementsByClassName("right_arrow")[0];
+
 // Run GradCam++.
 function function3(e) {
   e.preventDefault();
@@ -131,7 +134,9 @@ function function3(e) {
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
-        const imgElement = document.querySelector(".result" + (index + 1) + " .mask .im");
+        const imgElement = document.querySelector(
+          ".result" + (index + 1) + " .mask .im"
+        );
         if (imgElement) {
           imgElement.src = imageUrl;
           console.log("Image src updated for", imgElement);
@@ -143,12 +148,18 @@ function function3(e) {
       Maximum_Classes = data.max_value;
       current_column = 1;
       current_class = 0;
-      document.getElementById('current_column').textContent = current_column;
-      document.getElementById('max_column').textContent = Maximum_Classes[current_class];
+      document.getElementById("current_column").textContent = current_column;
+      document.getElementById("max_column").textContent =
+        Maximum_Classes[current_class];
 
       const drop_down = document.querySelector(".inst_text .inst_num");
-      drop_down.textContent = current_class+1;
+      drop_down.textContent = current_class + 1;
       drop_down.max = Maximum_Classes.length;
+      document.getElementById(
+        "class_num"
+      ).textContent += ` (max: ${Maximum_Classes})`;
+
+      right_arrow.disabled = false;
 
       const chartElement = document.querySelector(".chart .chart_content");
       if (chartElement) {
@@ -163,17 +174,19 @@ function function3(e) {
     });
 }
 
-let left_arrow = document.getElementsByClassName("left_arrow")[0];
-let right_arrow = document.getElementsByClassName("right_arrow")[0];
-
 // Next Button
 function move_next(e) {
   e.preventDefault();
 
   // Error handling for boundary values.
-  if (current_column >= Maximum_Classes[current_class]) {
+  if (current_column + 1 >= Maximum_Classes[current_class]) {
     // TODO: error handling
+    right_arrow.disabled = true;
   } else {
+    if (current_column === 1) {
+      left_arrow.disabled = false;
+    }
+    right_arrow.disabled = false;
     current_column = current_column + 1;
   }
 
@@ -195,7 +208,9 @@ function move_next(e) {
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
-        const imgElement = document.querySelector(".result" + (index + 1) + " .mask .im");
+        const imgElement = document.querySelector(
+          ".result" + (index + 1) + " .mask .im"
+        );
         if (imgElement) {
           imgElement.src = imageUrl;
           console.log("Image src updated for", imgElement);
@@ -204,7 +219,7 @@ function move_next(e) {
         }
       });
 
-        document.getElementById('current_column').textContent = current_column;
+      document.getElementById("current_column").textContent = current_column;
     })
     .catch((error) => {
       console.error(error);
@@ -216,9 +231,14 @@ function move_prev(e) {
   e.preventDefault();
 
   // Error handling for boundary values.
-  if (current_column <= 0) {
+  if (current_column - 1 <= 1) {
     // TODO: error handling
+    left_arrow.disabled = true;
   } else {
+    if (current_column === Maximum_Classes[current_class]) {
+      right_arrow.disabled = false;
+    }
+    left_arrow.disabled = false;
     current_column = current_column - 1;
   }
 
@@ -240,7 +260,9 @@ function move_prev(e) {
       imagePaths.forEach((path, index) => {
         // Construct the full image URL
         const imageUrl = baseUrl + path;
-        const imgElement = document.querySelector(".result" + (index + 1) + " .mask .im");
+        const imgElement = document.querySelector(
+          ".result" + (index + 1) + " .mask .im"
+        );
         if (imgElement) {
           imgElement.src = imageUrl;
           console.log("Image src updated for", imgElement);
@@ -249,7 +271,7 @@ function move_prev(e) {
         }
       });
 
-        document.getElementById('current_column').textContent = current_column;
+      document.getElementById("current_column").textContent = current_column;
     })
     .catch((error) => {
       console.error(error);
