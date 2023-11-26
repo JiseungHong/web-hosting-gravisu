@@ -46,15 +46,17 @@ Running GRAVISU composes of 3 steps.
 
 1. Upload test images
 
-Upload the [test images](https://idk) by clicking the *Browse* button in *1. Upload Your Image Dataset*. Then press *Upload* button. Wait until the message *You have uploaded 2 images.* appears.
+Upload the [test images](https://drive.google.com/file/d/1cfk0XSWgBIUw08bqVwThoRWK1lJhYLAq/view?usp=sharing) by clicking the *Browse* button in *1. Upload Your Image Dataset*. Then press *Upload* button. Wait until the message *You have uploaded 2 images.* appears.
 
-❗️ Note that the images **must** be one of .jpg, .jpeg, .png, or .gif format.
+❗️ Note that the images **must** be one of .jpg, .jpeg, .png, or .gif format (e.g. Scroll the images in the test_images folder to upload.)
 
 2. Upload your model
 
 Upload the [test model](https://drive.google.com/file/d/1fYH0bVg8zi30dhljJoquQ21bBacHrnBZ/view?usp=sharing) by clicking the *Browse* button in *2. Input Your Training Model Information*. While the server is saving the model, the message *Uploading model…* will appear. Wait until the message *Model upload complete.* appears.
 
-❗️ Note that the model **must** be sent by .zip format.
+❗️ Note that the model **must** be sent by .zip format. (e.g. test_model.zip)
+
+❗️ Note that the model **must** be a CNN based model.
 
 3. Run GRAVISU 
 
