@@ -7,6 +7,7 @@ let userFile1 = document.getElementById("fileSystem1");
 let userFile2 = document.getElementById("fileSystem2");
 let submitButton1 = document.getElementsByClassName("upload-button")[0];
 let submitButton2 = document.getElementsByClassName("save-model-button")[0];
+let runButton = document.getElementsByClassName("run-button")[0];
 
 userFile1.addEventListener("change", stateHandle);
 userFile2.addEventListener("change", stateHandle);
@@ -55,7 +56,7 @@ function function1(e) {
       .then((data) => {
         // Handle the server's response, e.g., display a success message
         console.log(data);
-        imageNumberDiv.innerHTML = `You have uploaded ${imageInput.files.length} images.`;
+        imageNumberDiv.textContent = `You have uploaded ${imageInput.files.length} images.`;
       })
       .catch((error) => {
         console.error(error);
@@ -80,7 +81,7 @@ function function2(e) {
   }
 
   const modelLoadingDiv = document.getElementById("modelLoading");
-  modelLoadingDiv.innerHTML = "Uploading model...";
+  modelLoadingDiv.textContent = "Uploading model...";
 
   // Save the model.
   const formData = new FormData();
@@ -96,7 +97,6 @@ function function2(e) {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      modelLoadingDiv.innerHTML = "Model upload complete.";
       return response.json();
     })
     .then((data) => {
@@ -108,6 +108,9 @@ function function2(e) {
     .catch((error) => {
       console.error("Fetch error:", error.message);
     });
+
+  modelLoadingDiv.textContent = "Model upload complete.";
+  runButton.disabled = false;
 }
 
 let left_arrow = document.getElementsByClassName("left_arrow")[0];
@@ -116,6 +119,10 @@ let right_arrow = document.getElementsByClassName("right_arrow")[0];
 // Run GradCam++.
 function function3(e) {
   e.preventDefault();
+
+  runButton.textContent = "Running...";
+  runButton.disabled = true;
+
   fetch("http://110.76.86.172:8000/run-gradcam", {
     method: "POST",
   })
@@ -172,6 +179,9 @@ function function3(e) {
     .catch((error) => {
       console.error(error);
     });
+
+  runButton.textContent = "Run Gra-Visu";
+  runButton.disabled = false;
 }
 
 // Next Button
