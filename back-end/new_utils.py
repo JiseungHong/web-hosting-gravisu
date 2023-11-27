@@ -124,7 +124,7 @@ def renew_model(model_folder) :
 
 # Input : model_location / user_imagese_folder / save_heatmap 
 # output : dataframe
-def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location) : 
+def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location, masking = False) : 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     loaded_model = keras.models.load_model(model_location)
     #loaded_model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -179,12 +179,12 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
         cv2.imwrite(save_path, imposed_img)
 
         # Grad cam 결과로 masking 이미지 만들기 
-        target_size = (400, 300)
-        conv_img = resize_and_fill(save_path, target_size)
-        conv_img_path = os.path.join(conv_folder, img_name).replace('\\', '/')
-
-        
-        cv2.imwrite(conv_img_path, conv_img)
+        if masking is True : 
+            target_size = (400, 300)
+            conv_img = resize_and_fill(save_path, target_size)
+            conv_img_path = os.path.join(conv_folder, img_name).replace('\\', '/')
+            cv2.imwrite(conv_img_path, conv_img)
+        else : conv_img_path = "None"
 
         # image captioning 결과
         model, vis_processors, _ = load_model_and_preprocess(name="blip_caption", model_type="large_coco", is_eval=True, device=device)
@@ -198,7 +198,7 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
 
     # make column_num 
     for class_ in range(num_class) : 
-        selected_rows= data_df[data_df['prediction']==class_]
+        selected_rows= data_df[data_df['prediction']==class_ +1]
         num_data = len(selected_rows)
         num_iterations = num_data // 4
 
