@@ -64,6 +64,7 @@
   height: 24px;
   left: 35px;
   top: 23px;
+  cursor: pointer;
 }
 
 .title {
@@ -77,6 +78,7 @@
   display: flex;
   align-items: center;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .myField {
@@ -285,6 +287,7 @@
   object-fit: cover;
   object-position: 50% 50%;
   width: 100%;
+  cursor: pointer;
 }
 
 .mask {
