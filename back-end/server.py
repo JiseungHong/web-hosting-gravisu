@@ -34,12 +34,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+global_column_id = 1;
+global_class_id = 1;
+
 app.mount("/heatmap", StaticFiles(directory="heatmap"), name="heatmap")
 # app.mount("/white", StaticFiles(directory="white"), name="white")
 
 @app.get("/hello")
 def hello():
     return {'message': 'HELLO CS492 TAs!'}
+
+@app.post("/test")
+async def test():
+    # Initialize global column/ class id.
+    global global_column_id 
+    global_column_id = 1
+    
+    global global_class_id
+    global_class_id = 1
+    
+    result = ['dog1.png', 'dog2.png', 'dog3.png', 'dog4.png']
+    max_column_id = [6, 6, 8]
+    histogram_path = 'heatmap/histogram/histogram_1.png'
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
 
 @app.post("/upload-images")
 async def upload_images(files: List[UploadFile]):
@@ -84,7 +101,7 @@ def load_histogram(class_id, histogram_save_location, save_heatmap) :
         # Return the image path.
         return histogram_path
     else:
-        return os.path.join(save_heatmap, 'No_Data.png').replace('\\', '/')
+        return os.path.join(save_heatmap, 'white.png').replace('\\', '/')
 
 
 @app.post("/upload-model")
@@ -169,28 +186,55 @@ async def run_gradcam():
     histogram_path = load_histogram(class_id = 1, histogram_save_location= histogram_save_location, save_heatmap= save_heatmap)
     
     result = [img[8:] for img in result]
-    print(result, max_column_id)
+    
+    print('RUN')
+    print("class:", global_class_id, "column:", global_column_id)
+    print(result, histogram_path[8:], max_column_id)
     return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
 
 @app.post("/next-button")
 async def next_button():
-    global_column_id += 1 
+    global global_column_id
+    global_column_id += 1
     result = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    result = [img[8:] for img in result]
+    
+    print('NEXT')
+    print("class:", global_class_id, "column:", global_column_id)
+    print(result)
     return {'image_paths': result}
 
 @app.post("/prev-button")
 async def prev_button():
-    global_column_id -= 1 
+    global global_column_id
+    global_column_id -= 1
     result = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    result = [img[8:] for img in result]
+    
+    print('PREV')
+    print("class:", global_class_id, "column:", global_column_id)
+    print(result)
     return {'image_paths': result}
 
 @app.post("/class-dropdown")
-async def prev_button(class_num: int):
+async def class_dropdown(class_num: int = Form(...)):
+    global global_column_id
+    global global_class_id
     global_class_id = class_num
-    global_column_id = 0
+    global_column_id = 1
     
     result = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
-    return {'image_paths': result}
+    histogram_path = load_histogram(class_id = class_num, histogram_save_location= histogram_save_location, save_heatmap= save_heatmap)
+    ######### test
+    # result = ['dog5.png', 'dog6.png', 'dog7.png', 'dog4.png']
+    # histogram_path = 'heatmap/histogram/histogram_3.png'
+    #########
+    result = [img[8:] for img in result]
+    
+    print('DROPDOWN')
+    print("class:", global_class_id, "column:", global_column_id)
+    print(result, histogram_path[8:])
+    return {'image_paths': result, 'histogram': histogram_path[8:]}
 
 if __name__=='__main__':
     uvicorn.run(app, host='110.76.86.172', port = 8000)
