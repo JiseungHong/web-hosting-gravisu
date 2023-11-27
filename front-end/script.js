@@ -3,6 +3,7 @@ let current_column = 1;
 let current_class = 1;
 let imgDrop;
 let modelDrop;
+let modelUpload;
 
 const dragDropImg = document.querySelector(".imgFileBox");
 const dragDropModel = document.querySelector(".modelFileBox");
@@ -61,7 +62,10 @@ dragDropModel.addEventListener("dragleave", () => {
 
 dragDropModel.addEventListener("drop", (event) => {
   event.preventDefault();
-  modelDrop = event.dataTransfer;
+  modelDrop = event.dataTransfer.files;
+  for (let file of modelDrop) {
+    modelUpload.push(file);
+  }
   document.getElementById("model_drop").innerHTML =
     "Drag and drop files here<br>OR";
   submitButton2.disabled = false;
@@ -122,8 +126,14 @@ function function2(e) {
   current_column = 0;
   current_class = 0;
 
-  modelDrop = document.getElementById("fileSystem2");
-  if (modelDrop.length === 0) {
+  const fileInput = document.getElementById("fileSystem2");
+  if (fileInput.files.length !== 0) {
+    for (let file of fileInput.files) {
+      modelUpload.push(file);
+    }
+  }
+
+  if (modelUpload.length === 0) {
     console.error("No file selected.");
     return;
   }
@@ -133,7 +143,7 @@ function function2(e) {
 
   // Save the model.
   const formData = new FormData();
-  const zipFile = modelDrop.files[0];
+  const zipFile = modelUpload.files[0];
   formData.append("zipFile", zipFile);
 
   // Send the FormData object to the server using a POST request
