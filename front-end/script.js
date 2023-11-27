@@ -224,10 +224,13 @@ function function3(e) {
 
       document.getElementById("current_column").textContent = current_column;
       max_column = Maximum_Classes[current_class];
-      if (max_column === 0 || max_column === 1) {
+      if (max_column == 0 || max_column == 1) {
         document.getElementById("max_column").textContent = 1;
+        left_arrow.disabled = true;
+        right_arrow.disabled = true;
       } else {
         document.getElementById("max_column").textContent = max_column;
+        left_arrow.disabled = true;
         right_arrow.disabled = false;
       }
 
@@ -266,15 +269,14 @@ function move_next(e) {
   if (current_column >= maxColumn) {
     right_arrow.disabled = true;
   } else {
-    if (current_column + 1 === maxColumn) {
-      right_arrow.disabled = true;
-    }
+    right_arrow.disabled = false;
     if (current_column === 1 && maxColumn > 1) {
       left_arrow.disabled = false;
     }
-    right_arrow.disabled = false;
     current_column = current_column + 1;
-    document.getElementById("current_column").textContent = current_column;
+    if (current_column == maxColumn) {
+      right_arrow.disabled = true;
+    }
   }
 
   fetch("http://110.76.86.172:8000/next-button", {
@@ -323,15 +325,14 @@ function move_prev(e) {
   if (current_column <= 1) {
     left_arrow.disabled = true;
   } else {
-    if (current_column - 1 === 1) {
-      left_arrow.disabled = true;
-    }
-    if (current_column === maxColumn && maxColumn > 1) {
+    left_arrow.disabled = false;
+    if (current_column == maxColumn && maxColumn > 1) {
       right_arrow.disabled = false;
     }
-    left_arrow.disabled = false;
     current_column = current_column - 1;
-    document.getElementById("current_column").textContent = current_column;
+    if (current_column === 1) {
+      left_arrow.disabled = true;
+    }
   }
 
   fetch("http://110.76.86.172:8000/prev-button", {
@@ -417,10 +418,14 @@ function handleInputChange(event) {
       );
       max_column = Maximum_Classes[current_class];
       document.getElementById("current_column").textContent = current_column;
-      if (max_column == 0) {
+      if (max_column == 0 || max_column == 1) {
         document.getElementById("max_column").textContent = 1;
+        left_arrow.disabled = true;
+        right_arrow.disabled = true;
       } else {
         document.getElementById("max_column").textContent = max_column;
+        left_arrow.disabled = true;
+        right_arrow.disabled = false;
       }
 
       const chartElement = document.querySelector(".chart .chart_content");
