@@ -41,6 +41,20 @@ app.mount("/heatmap", StaticFiles(directory="heatmap"), name="heatmap")
 def hello():
     return {'message': 'HELLO CS492 TAs!'}
 
+@app.post("/test")
+async def test():
+    # Initialize global column/ class id.
+    global global_column_id 
+    global_column_id = 1
+    
+    global global_class_id
+    global_class_id = 1
+    
+    result = ['dog1.png', 'dog2.png', 'dog3.png', 'dog4.png']
+    max_column_id = [6, 6, 8]
+    histogram_path = 'heatmap/histogram/histogram_1.png'
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+
 @app.post("/upload-images")
 async def upload_images(files: List[UploadFile]):
     # Ensure the user_images folder exists, and clear its contents if it exists
@@ -185,12 +199,18 @@ async def prev_button():
     return {'image_paths': result}
 
 @app.post("/class-dropdown")
-async def prev_button(class_num: int):
+async def prev_button(class_num: int = Form(...)):
     global_class_id = class_num
     global_column_id = 0
     
-    result = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
-    return {'image_paths': result}
+    # result = select_images(csv_location, white_image_loc, global_class_id, global_column_id)
+    # histogram_path = load_histogram(class_id = 1, histogram_save_location= histogram_save_location, save_heatmap= save_heatmap)
+    # print(result, histogram_path)
+    ######### test
+    result = ['dog5.png', 'dog6.png', 'dog7.png', 'dog4.png']
+    histogram_path = 'heatmap/histogram/histogram_3.png'
+    #########
+    return {'image_paths': result, 'histogram': histogram_path[8:]}
 
 if __name__=='__main__':
     uvicorn.run(app, host='110.76.86.172', port = 8000)

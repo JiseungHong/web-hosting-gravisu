@@ -113,7 +113,10 @@ function function2(e) {
 // Run GradCam++.
 function function3(e) {
   e.preventDefault();
-  fetch("http://110.76.86.172:8000/run-gradcam", {
+  // fetch("http://110.76.86.172:8000/run-gradcam", {
+  //////////////////////////// test
+  fetch("http://110.76.86.172:8000/test", {
+  //////////////////////////// test
     method: "POST",
   })
     .then((response) => {
@@ -147,7 +150,7 @@ function function3(e) {
       document.getElementById('max_column').textContent = Maximum_Classes[current_class];
 
       const drop_down = document.querySelector(".inst_text .inst_num");
-      drop_down.textContent = current_class+1;
+      drop_down.value = current_class+1;
       drop_down.max = Maximum_Classes.length;
 
       const chartElement = document.querySelector(".chart .chart_content");
@@ -255,3 +258,57 @@ function move_prev(e) {
       console.error(error);
     });
 }
+
+function handleInputChange(event) {
+  const number = parseInt(event.target.value, 10);
+  const formData = new FormData();
+  formData.append('class_num', number)
+
+  fetch("http://110.76.86.172:8000/class-dropdown", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json(); // Parse JSON response
+      } else {
+        throw new Error("Failed to fetch image paths from the server.");
+      }
+    })
+    .then((data) => {
+      const imagePaths = data.image_paths;
+      const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
+
+      // Loop through each imagePath and set it as the background for the corresponding result div
+      imagePaths.forEach((path, index) => {
+        // Construct the full image URL
+        const imageUrl = baseUrl + path;
+        const imgElement = document.querySelector(".result" + (index + 1) + " .mask .im");
+        if (imgElement) {
+          imgElement.src = imageUrl;
+          console.log("Image src updated for", imgElement);
+        } else {
+          console.log("No img element found for result" + (index + 1));
+        }
+      });
+
+      current_column = 1;
+      current_class = number-1;
+
+      console.log('current class', current_class, 'current column', current_column, Maximum_Classes)
+      document.getElementById('current_column').textContent = current_column;
+      document.getElementById('max_column').textContent = Maximum_Classes[current_class];
+
+      const chartElement = document.querySelector(".chart .chart_content");
+      if (chartElement) {
+        chartElement.src = baseUrl + data.histogram;
+        console.log("Chart src updated for", chartElement);
+      } else {
+        console.log("No chart element found for chart_element");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
