@@ -1,9 +1,9 @@
 let Maximum_Classes = [];
 let current_column = 1;
 let current_class = 1;
-let imgDrop;
+let imgDrop = [];
 let modelDrop;
-let modelUpload;
+let modelUpload = new DataTransfer();
 
 const dragDropImg = document.querySelector(".imgFileBox");
 const dragDropModel = document.querySelector(".modelFileBox");
@@ -19,7 +19,6 @@ userFile1.addEventListener("change", stateHandle);
 userFile2.addEventListener("change", stateHandle);
 
 function stateHandle() {
-  console.log("working");
   if (userFile1.value !== "") {
     submitButton1.disabled = false;
   } else {
@@ -63,8 +62,8 @@ dragDropModel.addEventListener("dragleave", () => {
 dragDropModel.addEventListener("drop", (event) => {
   event.preventDefault();
   modelDrop = event.dataTransfer.files;
-  for (let file of modelDrop) {
-    modelUpload.push(file);
+  for (let i = 0; i < modelDrop.length; i++) {
+    modelUpload.items.add(modelDrop[i]);
   }
   document.getElementById("model_drop").innerHTML =
     "Drag and drop files here<br>OR";
@@ -84,15 +83,17 @@ function function1(e) {
   const imageNumberDiv = document.getElementById("imageNumber");
 
   // Check if any files are selected
-  if (imageInput.files.length > 0 || imgDrop.length > 0) {
+  const imageInputLen = imageInput.files.length;
+  const imgDropLen = imgDrop.length;
+  if (imageInputLen > 0 || imgDropLen > 0) {
     // Append each selected image file to the FormData object
-    if (imageInput.files.length > 0) {
-      for (let i = 0; i < imageInput.files.length; i++) {
+    if (imageInputLen > 0) {
+      for (let i = 0; i < imageInputLen; i++) {
         formData.append("files", imageInput.files[i]);
       }
     }
-    if (imgDrop.length > 0) {
-      for (let i = 0; i < imgDrop.length; i++) {
+    if (imgDropLen > 0) {
+      for (let i = 0; i < imgDropLen; i++) {
         formData.append("files", imgDrop[i]);
       }
     }
@@ -107,8 +108,10 @@ function function1(e) {
       })
       .then((data) => {
         // Handle the server's response, e.g., display a success message
+        imageNumberDiv.textContent = `You have uploaded ${
+          imageInputLen + imgDropLen
+        } images.`;
         console.log(data);
-        imageNumberDiv.textContent = `You have uploaded ${imageInput.files.length} images.`;
       })
       .catch((error) => {
         console.error(error);
@@ -128,8 +131,8 @@ function function2(e) {
 
   const fileInput = document.getElementById("fileSystem2");
   if (fileInput.files.length !== 0) {
-    for (let file of fileInput.files) {
-      modelUpload.push(file);
+    for (let i = 0; i < fileInput.files.length; i++) {
+      modelUpload.items.add(fileInput.files[i]);
     }
   }
 
@@ -162,13 +165,12 @@ function function2(e) {
       if (data.error) {
         throw new Error(data.error);
       }
+      modelLoadingDiv.textContent = "Model upload complete.";
+      runButton.disabled = false;
     })
     .catch((error) => {
       console.error("Fetch error:", error.message);
     });
-
-  modelLoadingDiv.textContent = "Model upload complete.";
-  runButton.disabled = false;
 }
 
 let left_arrow = document.getElementsByClassName("left_arrow")[0];
@@ -180,6 +182,8 @@ function function3(e) {
 
   runButton.textContent = "Running...";
   runButton.disabled = true;
+  submitButton1.disabled = true;
+  submitButton2.disabled = true;
 
   fetch("http://110.76.86.172:8000/run-gradcam", {
     //////////////////////////// test
@@ -195,6 +199,7 @@ function function3(e) {
       }
     })
     .then((data) => {
+      console.log("Gra-Visu running...");
       const imagePaths = data.image_paths;
       const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
 
@@ -219,20 +224,19 @@ function function3(e) {
 
       document.getElementById("current_column").textContent = current_column;
       max_column = Maximum_Classes[current_class];
-      if (max_column == 0) {
+      if (max_column === 0 || max_column === 1) {
         document.getElementById("max_column").textContent = 1;
       } else {
         document.getElementById("max_column").textContent = max_column;
+        right_arrow.disabled = false;
       }
 
       const drop_down = document.querySelector(".inst_text .inst_num");
       drop_down.value = current_class + 1;
       drop_down.max = Maximum_Classes.length;
-      document.getElementById(
-        "class_num"
-      ).textContent += ` (max: ${Maximum_Classes})`;
-
-      right_arrow.disabled = false;
+      // document.getElementById(
+      //   "class_num"
+      // ).textContent += ` (max: ${Maximum_Classes.length})`;
 
       const chartElement = document.querySelector(".chart .chart_content");
       if (chartElement) {
@@ -241,29 +245,36 @@ function function3(e) {
       } else {
         console.log("No chart element found for chart_element");
       }
+
+      runButton.textContent = "Run Gra-Visu";
+      runButton.disabled = false;
+      submitButton1.disabled = false;
+      submitButton2.disabled = false;
     })
     .catch((error) => {
       console.error(error);
     });
-
-  runButton.textContent = "Run Gra-Visu";
-  runButton.disabled = false;
 }
 
 // Next Button
 function move_next(e) {
   e.preventDefault();
 
+  const maxColumn = document.getElementById("max_column").textContent;
+
   // Error handling for boundary values.
-  if (current_column + 1 >= Maximum_Classes[current_class]) {
-    // TODO: error handling
+  if (current_column >= maxColumn) {
     right_arrow.disabled = true;
   } else {
-    if (current_column === 1) {
+    if (current_column + 1 === maxColumn) {
+      right_arrow.disabled = true;
+    }
+    if (current_column === 1 && maxColumn > 1) {
       left_arrow.disabled = false;
     }
     right_arrow.disabled = false;
     current_column = current_column + 1;
+    document.getElementById("current_column").textContent = current_column;
   }
 
   fetch("http://110.76.86.172:8000/next-button", {
@@ -306,16 +317,21 @@ function move_next(e) {
 function move_prev(e) {
   e.preventDefault();
 
+  const maxColumn = document.getElementById("max_column").textContent;
+
   // Error handling for boundary values.
-  if (current_column - 1 <= 1) {
-    // TODO: error handling
+  if (current_column <= 1) {
     left_arrow.disabled = true;
   } else {
-    if (current_column === Maximum_Classes[current_class]) {
+    if (current_column - 1 === 1) {
+      left_arrow.disabled = true;
+    }
+    if (current_column === maxColumn && maxColumn > 1) {
       right_arrow.disabled = false;
     }
     left_arrow.disabled = false;
     current_column = current_column - 1;
+    document.getElementById("current_column").textContent = current_column;
   }
 
   fetch("http://110.76.86.172:8000/prev-button", {

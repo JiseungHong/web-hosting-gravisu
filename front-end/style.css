@@ -64,6 +64,7 @@
   height: 24px;
   left: 35px;
   top: 23px;
+  cursor: pointer;
 }
 
 .title {
@@ -77,6 +78,7 @@
   display: flex;
   align-items: center;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .myField {
