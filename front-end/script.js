@@ -113,9 +113,9 @@ function function2(e) {
 // Run GradCam++.
 function function3(e) {
   e.preventDefault();
-  // fetch("http://110.76.86.172:8000/run-gradcam", {
+  fetch("http://110.76.86.172:8000/run-gradcam", {
   //////////////////////////// test
-  fetch("http://110.76.86.172:8000/test", {
+  // fetch("http://110.76.86.172:8000/test", {
   //////////////////////////// test
     method: "POST",
   })
@@ -146,8 +146,14 @@ function function3(e) {
       Maximum_Classes = data.max_value;
       current_column = 1;
       current_class = 0;
+
       document.getElementById('current_column').textContent = current_column;
-      document.getElementById('max_column').textContent = Maximum_Classes[current_class];
+      max_column = Maximum_Classes[current_class];
+      if (max_column == 0){
+        document.getElementById('max_column').textContent = 1;
+      } else {
+      document.getElementById('max_column').textContent = max_column;
+      }
 
       const drop_down = document.querySelector(".inst_text .inst_num");
       drop_down.value = current_class+1;
@@ -207,7 +213,7 @@ function move_next(e) {
         }
       });
 
-        document.getElementById('current_column').textContent = current_column;
+      document.getElementById('current_column').textContent = current_column;
     })
     .catch((error) => {
       console.error(error);
@@ -252,7 +258,7 @@ function move_prev(e) {
         }
       });
 
-        document.getElementById('current_column').textContent = current_column;
+      document.getElementById('current_column').textContent = current_column;
     })
     .catch((error) => {
       console.error(error);
@@ -296,8 +302,13 @@ function handleInputChange(event) {
       current_class = number-1;
 
       console.log('current class', current_class, 'current column', current_column, Maximum_Classes)
+      max_column = Maximum_Classes[current_class];
       document.getElementById('current_column').textContent = current_column;
-      document.getElementById('max_column').textContent = Maximum_Classes[current_class];
+      if (max_column == 0){
+        document.getElementById('max_column').textContent = 1;
+      } else {
+      document.getElementById('max_column').textContent = max_column;
+      }
 
       const chartElement = document.querySelector(".chart .chart_content");
       if (chartElement) {
