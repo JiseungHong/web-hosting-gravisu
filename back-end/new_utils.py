@@ -198,7 +198,7 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
 
     # make column_num 
     for class_ in range(num_class) : 
-        selected_rows= data_df[data_df['prediction']==class_]
+        selected_rows= data_df[data_df['prediction']==class_ +1]
         num_data = len(selected_rows)
         num_iterations = num_data // 4
 
