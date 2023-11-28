@@ -8,7 +8,7 @@
 
 🔗 [GRAVISU website](http://wlqmfl.com/project/gravisu/index.html)
 
-Building a user-friendly web which provides explanation of CNN based machine learning models (GradCam).
+Building a user-friendly web which provides explanation of CNN based machine learning models (GradCAM).
 
 ---
 
@@ -95,7 +95,7 @@ Then, run server.py:
 
 `$ pip install -r tf.keras-gradcamplusplus/requirement.txt`
 
-`$ uvicorn server:app --host 0.0.0.0 --port 8000` or  `$ python3 server.py`
+`$ uvicorn server:app --host your.server.IP.address --port 8000` or  `$ python3 server.py`
 
 ❗️ Note that the currently running web application is accessible only to those using [KAIST](https://www.kaist.ac.kr/kr/) Wifi/Ethernet.
 
@@ -108,3 +108,5 @@ Then, run server.py:
 [Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization](https://arxiv.org/abs/1610.02391)
 
 [Grad-CAM++: Improved Visual Explanations for Deep Convolutional Networks](https://arxiv.org/abs/1710.11063)
+
+[LAVIS - A Library for Language-Vision Intelligence](https://github.com/salesforce/LAVIS)
