@@ -166,8 +166,6 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
     for id, img_name in enumerate(images) : 
         img_path = os.path.join(user_images_folder, img_name).replace('\\', '/')
         #img_path = img_path.replace('\\', '/')
-        
-        
 
         img = preprocess_image(img_path)
         category_id, heatmap = new_grad_cam_plus(loaded_model, img)
