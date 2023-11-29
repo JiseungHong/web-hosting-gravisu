@@ -97,6 +97,71 @@
   color: #000000;
 }
 
+.help_button {
+  position: relative;
+  margin: 7px;
+  object-fit: cover;
+  object-position: 50% 50%;
+  width: 16px;
+  height: 16px;
+}
+
+.help_image {
+  position: absolute;
+  z-index: 1;
+  object-fit: cover;
+  width: 160px;
+  top: -11px;
+  left: 256px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease-out;
+}
+
+.help_button:hover + .help_image {
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.2s ease-out;
+}
+
+.help_model {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  object-fit: cover;
+  width: 160px;
+  top: -11px;
+  left: 346px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease-out;
+}
+
+.help_button:hover + .help_model {
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.2s ease-out;
+}
+
+.help_result {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  object-fit: cover;
+  width: 175px;
+  top: -21px;
+  left: 254px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease-out;
+}
+
+.help_button:hover + .help_result {
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.2s ease-out;
+}
+
 .text_response {
   color: red;
   font-family: Montserrat;

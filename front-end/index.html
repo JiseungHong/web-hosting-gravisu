@@ -20,7 +20,9 @@
 
         <div class="step1">
             <div class='myField'>
-                <div class="step_title"> 1. Upload Your Image Dataset </div>
+                <div class="step_title"> 1. Upload Your Image Dataset <img class="help_button"
+                        src="assets/help_circle.png" /><img class="help_image" src="assets/help_image.png" />
+                </div>
                 <form method="post">
                     <div id='fileBox' class="imgFileBox">
                         <div class="child">
@@ -41,7 +43,9 @@
 
         <div class="step2">
             <div class='myField'>
-                <div class="step_title"> 2. Input Your Training Model Information </div>
+                <div class="step_title"> 2. Input Your Training Model Information <img class="help_button"
+                        src="assets/help_circle.png" /><img class="help_model" src="assets/help_model.png" />
+                </div>
                 <form method="post">
                     <div id='fileBox' class="modelFileBox">
                         <div class="child">
@@ -63,7 +67,8 @@
 
         <div class="step3">
             <div class='myField'>
-                <div class="step_title"> 3. Image Classification Result </div>
+                <div class="step_title"> 3. Image Classification Result <img class="help_button"
+                        src="assets/help_circle.png" /><img class="help_result" src="assets/help_result.png" /></div>
                 <div class="inst_text" id="class_num">Images of <input class="inst_num" type="number" min="1" max="1"
                         oninput="handleInputChange(event)"></input>th class
                     <!-- TODO: Receive min&max value from server -->
