@@ -41,6 +41,7 @@ new_utils.py
 **Quick Start**
 
 ---
+❗️ Note that this section takes 11 images and a CNN based model which classifies images based on 3 classes: wrist, shoulder, and arm. Even though it processes only 11 images, running GRAVISU takes about 8 minutes. The process involves: image classification + GradCAM + image captioning + histogram generation.
 
 Running GRAVISU composes of 3 steps.
 
