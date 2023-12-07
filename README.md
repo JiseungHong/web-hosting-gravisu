@@ -47,7 +47,7 @@ Running GRAVISU composes of 3 steps.
 
 1. Upload test images
 
-Upload the [test images](https://drive.google.com/file/d/1ah-9AwDFFnsmx80MmG0nxDFMebtTGIEd/view?usp=sharing) by clicking the *Browse* button in *1. Upload Your Image Dataset*. Then press *Upload* button. Wait until the message <span style="color:red;">*You have uploaded N images.*</span> appears.
+Upload the [test images](https://drive.google.com/file/d/1DHLnGGxQohNg0QqMQepa1KHaoi6QGhOG/view?usp=sharing) by clicking the *Browse* button in *1. Upload Your Image Dataset*. Then press *Upload* button. Wait until the message <span style="color:red;">*You have uploaded N images.*</span> appears.
 
 ❗️ Note that the images **must** be one of .jpg, .jpeg, .png, or .gif format (e.g. Scroll the images in the test_images folder to upload.)
 
