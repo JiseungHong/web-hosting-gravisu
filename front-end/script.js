@@ -81,6 +81,7 @@ function function1(e) {
   const imageInput = document.querySelector(".imageClass");
   const formData = new FormData();
   const imageNumberDiv = document.getElementById("imageNumber");
+  imageNumberDiv.textContent = "Uploading images...";
 
   // Check if any files are selected
   const imageInputLen = imageInput.files.length;
