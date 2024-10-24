@@ -6,7 +6,8 @@ on:
 
 jobs:
   call-openhands-resolver:
-    uses: All-Hands-AI/openhands-resolver/.github/workflows/openhands-resolver.yml@main
+    # uses: All-Hands-AI/openhands-resolver/.github/workflows/openhands-resolver.yml@main
+    uses: JiseungHong/openhands-resolver/.github/workflows/openhands-resolver.yml@main
     if: github.event.label.name == 'fix-me'
     with:
       issue_number: ${{ github.event.issue.number }}
