@@ -73,8 +73,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # (Check!) Make sure to uncomment this before PR.
-          # pip install openhands-resolver
+          pip install openhands-resolver
 
       - name: Attempt to resolve issue
         env:
@@ -84,9 +83,7 @@ jobs:
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
           PYTHONPATH: ""
         run: |
-          # (Check!) Make sure to uncomment this before PR.
-          # cd /tmp && python -m openhands_resolver.resolve_issues \
-          cd /tmp && python -m openhands_resolver/resolve_issues
+          cd /tmp && python -m openhands_resolver.resolve_issues \
             --repo ${{ github.repository }} \
             --issue-numbers ${{ env.ISSUE_NUMBER }}
 
