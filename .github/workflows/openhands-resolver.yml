@@ -92,26 +92,29 @@ jobs:
         id: check_results
         run: |
           if cd /tmp && grep -q '"success":true' output/output1.jsonl; then
-            echo "MODEL1_RESOLUTION_SUCCESS=true" >> $GITHUB_ENV
+            echo "MODEL1_RESOLUTION_SUCCESS=true" >> $GITHUB_OUTPUT
           else
-            echo "MODEL1_RESOLUTION_SUCCESS=false" >> $GITHUB_ENV
+            echo "MODEL1_RESOLUTION_SUCCESS=false" >> $GITHUB_OUTPUT
           fi
           if cd /tmp && grep -q '"success":true' output/output2.jsonl; then
-            echo "MODEL2_RESOLUTION_SUCCESS=true" >> $GITHUB_ENV
+            echo "MODEL2_RESOLUTION_SUCCESS=true" >> $GITHUB_OUTPUT
           else
-            echo "MODEL2_RESOLUTION_SUCCESS=false" >> $GITHUB_ENV
+            echo "MODEL2_RESOLUTION_SUCCESS=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create draft PR or branch for model 1
-        if: env.MODEL1_RESOLUTION_SUCCESS == 'true'
+      - name: Create draft PR or branch
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          LLM_MODELS: ${{ secrets.LLM_MODELS }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
           PYTHONPATH: ""
         run: |
-          cd /tmp && python -m openhands_resolver.send_pull_request \
-            --issue-number ${{ env.ISSUE_NUMBER }} \
-            --pr-type draft | tee pr_result.txt && \
-            --llm-model 1 \
+          if [ "${{ steps.check_result.outputs.MODEL1_RESOLUTION_SUCCESS }}" == "true" ]; then
+            cd /tmp && python -m openhands_resolver.send_pull_request \
+              --issue-number ${{ env.ISSUE_NUMBER }} \
+              --pr-type draft | tee pr_result.txt && \
+              --llm-model 1 \
               grep "draft created" pr_result.txt | sed 's/.*\///g' > pr_number.txt
           else
             cd /tmp && python -m openhands_resolver.send_pull_request \
@@ -120,17 +123,11 @@ jobs:
               --send-on-failure | tee branch_result.txt && \
               grep "branch created" branch_result.txt | sed 's/.*\///g; s/.expand=1//g' > branch_name.txt
           fi
-
-      - name: Create draft PR or branch for model 2
-        if: env.MODEL2_RESOLUTION_SUCCESS == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-          PYTHONPATH: ""
-        run: |
-          cd /tmp && python -m openhands_resolver.send_pull_request \
-            --issue-number ${{ env.ISSUE_NUMBER }} \
-            --pr-type draft | tee pr_result.txt && \
-            --llm-model 2 \
+          if [ "${{ steps.check_result.outputs.MODEL2_RESOLUTION_SUCCESS }}" == "true" ]; then
+            cd /tmp && python -m openhands_resolver.send_pull_request \
+              --issue-number ${{ env.ISSUE_NUMBER }} \
+              --pr-type draft | tee pr_result.txt && \
+              --llm-model 2 \
               grep "draft created" pr_result.txt | sed 's/.*\///g' > pr_number.txt
           else
             cd /tmp && python -m openhands_resolver.send_pull_request \
