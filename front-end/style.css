@@ -1,6 +1,26 @@
 .container {
   width: 100vw;
   height: 100vh;
+  background-color: #f0e68c; /* New background color */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "header header"
+    "step1 step3"
+    "step2 step3"
+    ". step3"
+    "footer footer"
+    "dog_box ."; /* New grid area for the dog box */
+  align-items: start;
+  align-content: start;
+  /* padding-top: 56.25%; */
+  overflow: auto;
+}
+
+}
+
+
+  height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
@@ -450,3 +470,6 @@
 .chart img {
   width: 100%;
 }
+
+
+
