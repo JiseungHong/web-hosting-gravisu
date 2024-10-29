@@ -92,14 +92,14 @@ jobs:
         id: check_results
         run: |
           if cd /tmp && grep -q '"success":true' output/output1.jsonl; then
-            echo "MODEL1_RESOLUTION_SUCCESS=true" >> $GITHUB_OUTPUT
+            echo "MODEL1_RESOLUTION_SUCCESS=true" >> $GITHUB_ENV
           else
-            echo "MODEL1_RESOLUTION_SUCCESS=false" >> $GITHUB_OUTPUT
+            echo "MODEL1_RESOLUTION_SUCCESS=false" >> $GITHUB_ENV
           fi
           if cd /tmp && grep -q '"success":true' output/output2.jsonl; then
-            echo "MODEL2_RESOLUTION_SUCCESS=true" >> $GITHUB_OUTPUT
+            echo "MODEL2_RESOLUTION_SUCCESS=true" >> $GITHUB_ENV
           else
-            echo "MODEL2_RESOLUTION_SUCCESS=false" >> $GITHUB_OUTPUT
+            echo "MODEL2_RESOLUTION_SUCCESS=false" >> $GITHUB_ENV
           fi
 
       - name: Create draft PR or branch for model 1
