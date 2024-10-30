@@ -438,9 +438,8 @@
   text-align: center;
   font-family: Montserrat;
   font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+body {
+  background-color: #f2c464; /* Change the background color to a more colorful one */
 }
 
 .chart {
@@ -450,3 +449,40 @@
 .chart img {
   width: 100%;
 }
+
+.box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-image: url('https://example.com/dog.jpg');
+}
+
+.box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-image: url('https://example.com/dog.jpg');
+}
+
+
+
