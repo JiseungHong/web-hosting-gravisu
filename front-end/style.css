@@ -450,3 +450,30 @@
 .chart img {
   width: 100%;
 }
+
+
+/* Change background color */
+body {
+    background-color: #f0e68c; /* Light goldenrod yellow */
+}
+
+/* New component styles */
+.dog-box {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 150px;
+    height: 150px;
+    background-color: #ffebcd; /* Blanched almond */
+    border: 2px solid #8b4513; /* Saddle brown */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dog-box img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+}
+
