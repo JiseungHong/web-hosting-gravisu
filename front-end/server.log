@@ -1,0 +1,16 @@
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/help_circle.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/tag.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/help_image.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/help_model.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/help_result.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/background.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/left_arrow.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/dog.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/number_line.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/right_arrow.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:06] "GET /assets/imageframe.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Oct/2024 16:40:44] "GET / HTTP/1.1" 200 -
