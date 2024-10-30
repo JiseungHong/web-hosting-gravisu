@@ -46,6 +46,10 @@
   top: 0px;
   background: #262626;
   margin-bottom: 10px;
+  background-color: #f0f0f0;
+
+
+  margin-bottom: 10px;
 }
 .footer {
   position: relative;
@@ -447,6 +451,32 @@
   position: relative;
   top: 90px;
 }
+
+.dog-box {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 150px;
+  height: 150px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dog-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+
+}
 .chart img {
   width: 100%;
 }
+
+
