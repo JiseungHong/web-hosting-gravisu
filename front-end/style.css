@@ -8,12 +8,16 @@
     "step1 step3"
     "step2 step3"
     ". step3"
-    "footer footer";
+    "footer footer"
+    "dog-box ."; /* Added dog-box area */
   align-items: start;
   align-content: start;
   /* padding-top: 56.25%; */
   overflow: auto;
+  background: linear-gradient(135deg, #f06, #09f);
 }
+
+
 @media (max-width: 1000px) {
   .container {
     grid-template-columns: 1fr;
@@ -24,6 +28,8 @@
       "step3"
       "footer";
   }
+}
+
 }
 
 .step1 {
@@ -447,6 +453,28 @@
   position: relative;
   top: 90px;
 }
+
+.dog-box {
+    grid-area: dog-box;
+    position: relative;
+    align-self: end;
+    justify-self: start;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.dog-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
 .chart img {
   width: 100%;
 }
+
+
+
