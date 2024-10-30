@@ -16,8 +16,6 @@ import tensorflow as tf
 import pandas as pd 
 from collections import Counter
 import matplotlib.pyplot as plt
-from lavis.models import load_model_and_preprocess
-
 
 def find_last_conv_layer(model) : 
     layers = model.layers
@@ -27,8 +25,6 @@ def find_last_conv_layer(model) :
             last_conv_layer = layer
             break
     return last_conv_layer.name 
-
-
 
 def preprocess_image(img_path, target_size=(224, 224)):
     img = image.load_img(img_path, target_size=target_size)
@@ -102,7 +98,6 @@ def new_grad_cam_plus(model, img, label_name=None, category_id=None):
 
     return category_id, heatmap
 
-
 # when model update, 1) renew model_location folder, 2) return model_location 
 def renew_model(model_folder) :
     #if os.path.exists(model_folder):
@@ -115,12 +110,10 @@ def renew_model(model_folder) :
     
     assert len(models), f"There's no model in {model_folder}" 
 
-
     model_name = models[0]
     model_location = os.path.join(model_folder, model_name).replace('\\', '/')
 
     return model_location 
-
 
 # Input : model_location / user_imagese_folder / save_heatmap 
 # output : dataframe
@@ -160,7 +153,6 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
     assert len(images), f"There's no data in {user_images_folder}"
 
     # heatmap 폴더가 이미 존재하면 삭제
-
 
     data = [] 
     for id, img_name in enumerate(images) : 
@@ -212,8 +204,6 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
     data_df.to_csv(csv_location, index=False)
     return num_class
 
-
-
 def resize_and_fill(image_path, target_size):
     # 이미지 로드
     original_image = cv2.imread(image_path)
@@ -242,7 +232,6 @@ def resize_and_fill(image_path, target_size):
 
     return filled_image
 
-
 # 실행 시, 모든 Class 에 대해서 histogram image 를 save_folder 위치에 저장하는 코드로 변경 
 def visual_histogram(num_class, csv_location, save_folder=None) : 
     
@@ -255,7 +244,6 @@ def visual_histogram(num_class, csv_location, save_folder=None) :
     # 무시할 단어 목록 (예: 관사, 조사) 설정하기 
     ignore_words = ["a", "an", "the", "of", "in", "on", "with", "and", "is"]
 
-
     for class_id in range(1, num_class+1) : 
         filtered_df = dataframe[dataframe['prediction'] == class_id]
         save_path = os.path.join(save_folder, f"histogram_{class_id}.png").replace('\\', '/')
@@ -267,8 +255,6 @@ def visual_histogram(num_class, csv_location, save_folder=None) :
 
         result_image_caption = filtered_df['image_caption'].tolist()
 
-    
-    
         all_words = ' '.join(result_image_caption).split()
 
         # 각 단어의 빈도를 계산하며 무시할 단어는 제외합니다.
@@ -294,3 +280,6 @@ def visual_histogram(num_class, csv_location, save_folder=None) :
             plt.savefig(save_path, bbox_inches='tight')
     
     #plt.show()
+
+# from lavis.models import load_model_and_preprocess
+
