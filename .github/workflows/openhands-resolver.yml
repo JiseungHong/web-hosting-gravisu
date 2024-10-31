@@ -196,8 +196,6 @@ jobs:
               });
             }
 
-            const fs = require('fs');
-            const issueNumber = ${{ env.ISSUE_NUMBER }};
             const success = "${{ steps.check_result.outputs.MODEL2_RESOLUTION_SUCCESS }}" === "true";
             
             let prNumber = '';
