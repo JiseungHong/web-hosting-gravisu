@@ -158,34 +158,34 @@ jobs:
           script: |
             const fs = require('fs');
             const issueNumber = ${{ env.ISSUE_NUMBER }};
-            const success = "${{ steps.check_result.outputs.MODEL1_RESOLUTION_SUCCESS }}" === "true";
+            const success1 = "${{ steps.check_result.outputs.MODEL1_RESOLUTION_SUCCESS }}" === "true";
             
-            let prNumber = '';
-            let branchName = '';
+            let prNumber1 = '';
+            let branchName1 = '';
             
             try {
-              if (success) {
-                prNumber = fs.readFileSync('/tmp/pr_number1.txt', 'utf8').trim();
+              if (success1) {
+                prNumber1 = fs.readFileSync('/tmp/pr_number1.txt', 'utf8').trim();
               } else {
-                branchName = fs.readFileSync('/tmp/branch_name1.txt', 'utf8').trim();
+                branchName1 = fs.readFileSync('/tmp/branch_name1.txt', 'utf8').trim();
               }
             } catch (error) {
               console.error('Error reading file:', error);
             }
             
-            if (success && prNumber) {
+            if (success1 && prNumber1) {
               github.rest.issues.createComment({
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `A potential fix has been generated and a draft PR #${prNumber} has been created. Please review the changes.`
+                body: `A potential fix has been generated and a draft PR #${prNumber1} has been created. Please review the changes.`
               });
-            } else if (!success && branchName) {
+            } else if (!success1 && branchName1) {
               github.rest.issues.createComment({
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName}). Manual intervention may be required.`
+                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName1}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName}). Manual intervention may be required.`
               });
             } else {
               github.rest.issues.createComment({
@@ -196,34 +196,34 @@ jobs:
               });
             }
 
-            const success = "${{ steps.check_result.outputs.MODEL2_RESOLUTION_SUCCESS }}" === "true";
+            const success2 = "${{ steps.check_result.outputs.MODEL2_RESOLUTION_SUCCESS }}" === "true";
             
-            let prNumber = '';
-            let branchName = '';
+            let prNumber2 = '';
+            let branchName2 = '';
             
             try {
-              if (success) {
-                prNumber = fs.readFileSync('/tmp/pr_number2.txt', 'utf8').trim();
+              if (success2) {
+                prNumber2 = fs.readFileSync('/tmp/pr_number2.txt', 'utf8').trim();
               } else {
-                branchName = fs.readFileSync('/tmp/branch_name2.txt', 'utf8').trim();
+                branchName2 = fs.readFileSync('/tmp/branch_name2.txt', 'utf8').trim();
               }
             } catch (error) {
               console.error('Error reading file:', error);
             }
             
-            if (success && prNumber) {
+            if (success2 && prNumber2) {
               github.rest.issues.createComment({
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `A potential fix has been generated and a draft PR #${prNumber} has been created. Please review the changes.`
+                body: `A potential fix has been generated and a draft PR #${prNumber2} has been created. Please review the changes.`
               });
-            } else if (!success && branchName) {
+            } else if (!success2 && branchName2) {
               github.rest.issues.createComment({
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName}). Manual intervention may be required.`
+                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName2}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName}). Manual intervention may be required.`
               });
             } else {
               github.rest.issues.createComment({
