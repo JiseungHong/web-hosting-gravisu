@@ -185,7 +185,7 @@ jobs:
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName1}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName}). Manual intervention may be required.`
+                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName1}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName1}). Manual intervention may be required.`
               });
             } else {
               github.rest.issues.createComment({
@@ -223,7 +223,7 @@ jobs:
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName2}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName}). Manual intervention may be required.`
+                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName2}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName2}). Manual intervention may be required.`
               });
             } else {
               github.rest.issues.createComment({
