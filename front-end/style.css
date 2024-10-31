@@ -1,4 +1,10 @@
 .container {
+}
+
+body {
+  background-color: #f2f2f2; /* light gray background color */
+}
+
   width: 100vw;
   height: 100vh;
   display: grid;
@@ -444,9 +450,27 @@
 }
 
 .chart {
+}
+
+.dog-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
   position: relative;
   top: 90px;
 }
 .chart img {
   width: 100%;
 }
+
+
