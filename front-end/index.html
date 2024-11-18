@@ -1,120 +1,47 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="description" content="Gra-Visu page">
-    <title>Gra-Visu</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
     <div class="container">
-
         <div class="header">
-            <img class="title_icon" src="./assets/tag.png" onClick="window.location.reload()" />
-            <div class="title" onClick="window.location.reload()">
-                Gra-Visu
+            <img src="./assets/title_icon.svg" alt="title icon" class="title_icon">
+            <div class="title">
+                OpenHands AI
             </div>
         </div>
-
         <div class="step1">
-            <div class='myField'>
-                <div class="step_title"> 1. Upload Your Image Dataset <img class="help_button"
-                        src="assets/help_circle.png" /><img class="help_image" src="assets/help_image.png" />
-                </div>
-                <form method="post">
-                    <div id='fileBox' class="imgFileBox">
-                        <div class="child">
-                            <div id="img_drop" class="drag_drop">Drag and drop files here<br>OR</div>
-                            <div class="fileButton">
-                                Browse
-                                <input class="imageClass hidden" id='fileSystem1' type="file" multiple accept="image/*"
-                                    enctype='multipart/form-data' required></input>
-                            </div>
-                            <div class="text_response" id="imageNumber"></div>
-                        </div>
-                    </div>
-                    <button type="button" class="upload-button" id="submitButton" onClick="function1(event)"
-                        disabled>Upload</button>
-                </form>
+            <div class="step_title">Step 1</div>
+            <div class="myField">
+                <input type="text" placeholder="Enter your text here">
             </div>
         </div>
-
         <div class="step2">
-            <div class='myField'>
-                <div class="step_title"> 2. Input Your Training Model Information <img class="help_button"
-                        src="assets/help_circle.png" /><img class="help_model" src="assets/help_model.png" />
-                </div>
-                <form method="post">
-                    <div id='fileBox' class="modelFileBox">
-                        <div class="child">
-                            <div id="model_drop" class="drag_drop">Drag and drop files here<br>OR</div>
-                            <div class="fileButton">
-                                Browse
-                                <input class="hidden" id='fileSystem2' type="file" accept=".zip" required></input>
-                            </div>
-                            <div class="text_response" id="modelLoading"></div>
-                        </div>
-                    </div>
-                    <button type="button" class="save-model-button" id="submitButton" onClick="function2(event)"
-                        disabled>Upload</button>
-                </form>
-                <button type="button" class="run-button" id="submitButton" onClick="function3(event)" disabled>Run
-                    Gra-Visu</button>
+            <div class="step_title">Step 2</div>
+            <div class="myField">
+                <textarea placeholder="Enter your text here"></textarea>
             </div>
         </div>
-
         <div class="step3">
-            <div class='myField'>
-                <div class="step_title"> 3. Image Classification Result <img class="help_button"
-                        src="assets/help_circle.png" /><img class="help_result" src="assets/help_result.png" /></div>
-                <div class="inst_text" id="class_num">Images of <input class="inst_num" type="number" min="1" max="1"
-                        oninput="handleInputChange(event)"></input>th class
-                    <!-- TODO: Receive min&max value from server -->
-                </div>
-                <div class="gallery">
-                    <!-- show result of four images -->
-                    <div class="result1">
-                        <div class="mask">
-                            <img class="im" src="assets/background.png" onClick="window.open(this.src)" />
-                        </div>
-                    </div>
-                    <div class="result2">
-                        <div class="mask">
-                            <img class="im" src="assets/background.png" onClick="window.open(this.src)" />
-                        </div>
-                    </div>
-                    <div class="result3">
-                        <div class="mask">
-                            <img class="im" src="assets/background.png" onClick="window.open(this.src)" />
-                        </div>
-                    </div>
-                    <div class="result4">
-                        <div class="mask">
-                            <img class="im" src="assets/background.png" onClick="window.open(this.src)" />
-                        </div>
-                    </div>
-                </div>
-                <div class="pagination">
-                    <button type="button" class="left_arrow" id="arrow" onClick="move_prev(event)" disabled><img
-                            src="assets/left_arrow.png" alt="left"></button>
-                    <div id="current_column">0</div> <!-- TODO: Receive current column from server -->
-                    <div class="border"><img src="assets/number_line.png" alt="border"></div>
-                    <div id="max_column">0</div> <!-- TODO: Receive max column from server -->
-                    <button type="button" class="right_arrow" id="arrow" onClick="move_next(event)" disabled><img
-                            src="assets/right_arrow.png" alt="right"></button>
-                </div>
-                <!-- <div id='resultDiv'> </div> -->
-                <div class="stat_text">Keyword Statistics</div>
-                <!-- TODO: input chart image here (appendchild도 가능할 것 같습니다!) -->
-                <div class="chart"><img class="chart_content" src="assets/background.png" /></div>
+            <div class="step_title">Step 3</div>
+            <div class="myField">
+                <button class="help_button">Help</button>
             </div>
         </div>
-
-        <div class="footer"><br></div>
+        <div class="footer">
+            <div class="dog-box">
+                <img src="./assets/dog.png" alt="Dog Image">
+            </div>
+        </div>
     </div>
+    <script src="./script.js"></script>
 </body>
-<script src="script.js"></script>
 
 </html>
+
