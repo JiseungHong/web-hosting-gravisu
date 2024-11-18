@@ -450,3 +450,30 @@
 .chart img {
   width: 100%;
 }
+
+
+/* Add colorful background */
+body {
+    background-color: #f0f8ff; /* Light blue background */
+}
+
+/* New component for the dog image */
+.dog-box {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 150px;
+    height: 150px;
+    background-color: #ffebcd; /* Blanched Almond background */
+    border: 2px solid #000; /* Black border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dog-box img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px; /* Rounded corners */
+}
+
