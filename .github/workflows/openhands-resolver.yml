@@ -113,8 +113,8 @@ jobs:
           if [ "${{ env.MODEL1_RESOLUTION_SUCCESS }}" == "true" ]; then
             cd /tmp && python -m openhands_resolver.send_pull_request \
               --issue-number ${{ env.ISSUE_NUMBER }} \
-              --pr-type draft | tee pr_result1.txt && \
               --model-number 1 \
+              --pr-type draft | tee pr_result1.txt && \
               grep "draft created" pr_result1.txt | sed 's/.*\///g' > pr_number1.txt
           else
             cd /tmp && python -m openhands_resolver.send_pull_request \
@@ -127,8 +127,8 @@ jobs:
           if [ "${{ env.MODEL2_RESOLUTION_SUCCESS }}" == "true" ]; then
             cd /tmp && python -m openhands_resolver.send_pull_request \
               --issue-number ${{ env.ISSUE_NUMBER }} \
-              --pr-type draft | tee pr_result2.txt && \
               --model-number 2 \
+              --pr-type draft | tee pr_result2.txt && \
               grep "draft created" pr_result2.txt | sed 's/.*\///g' > pr_number2.txt
           else
             cd /tmp && python -m openhands_resolver.send_pull_request \
