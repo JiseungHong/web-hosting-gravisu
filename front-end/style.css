@@ -1,4 +1,11 @@
+body {
+    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
+    margin: 0;
+    padding: 0;
+}
+
 .container {
+
   width: 100vw;
   height: 100vh;
   display: grid;
@@ -450,3 +457,26 @@
 .chart img {
   width: 100%;
 }
+
+
+
+.dog-box {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 200px;
+    height: 200px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+}
+
+.dog-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
