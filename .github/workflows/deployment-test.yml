@@ -1,16 +1,19 @@
 name: Deployment-Test
 
 on:
-    workflow_call:
-        inputs:
-            issue_number:
-                required: true
-                type: number
+  workflow_call:
+    inputs:
+      issue_number:
+        required: true
+        type: number
+    
+  issues:
+    types: [labeled]
 
 permissions:
-    contents: write
-    pull-requests: write
-    issues: write
+  contents: write
+  pull-requests: write
+  issues: write
 
 jobs:
     auto-fix:
