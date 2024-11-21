@@ -13,7 +13,27 @@
   align-content: start;
   /* padding-top: 56.25%; */
   overflow: auto;
+  background-color: #f0f8ff; /* Light blue background color */
 }
+
+.new-component {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 150px;
+  height: 150px;
+  background-color: #ffebcd; /* Blanched Almond background color */
+  border: 2px solid #000; /* Black border */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-component img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 @media (max-width: 1000px) {
   .container {
     grid-template-columns: 1fr;
@@ -450,3 +470,4 @@
 .chart img {
   width: 100%;
 }
+
