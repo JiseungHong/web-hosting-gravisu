@@ -228,7 +228,7 @@ jobs:
     
       - name: Send PR/Branch Info to Firebase
         run: |
-          curl -X POST https://pr-arena.cloudfunctions.net/api/receive-data \
+          curl -X POST https://us-central1-pr-arena.cloudfunctions.net/api/receive-data \
           -H "Content-Type: application/json" \
           -d '{
             "repo": "${{ env.REPO_NAME }}",
