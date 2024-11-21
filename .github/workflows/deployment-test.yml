@@ -1,7 +1,7 @@
 name: Deployment-Test
 
 on:
-    workflow:
+    workflow_call:
         inputs:
             issue_number:
                 required: true
