@@ -34,7 +34,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{
             "repo": "${{ env.REPO_NAME }}",
-            "issueNumber": "${{ env.ISSUE_NUMBER }}",
+            "issueNumber": "${{ env.ISSUE_NUMBER }}"
             }'
 
         - name: Post Webpage Link to GitHub Issue

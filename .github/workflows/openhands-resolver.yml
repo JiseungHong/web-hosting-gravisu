@@ -76,7 +76,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install git+https://github.com/JiseungHong/openhands-resolver.git
 
-      - name: Attempt to resolve issue
+      - name: Attempt to resolve issues
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LLM_MODELS: ${{ secrets.LLM_MODELS }}
@@ -87,6 +87,7 @@ jobs:
           cd /tmp && python -m openhands_resolver.resolve_issues \
             --repo ${{ github.repository }} \
             --issue-numbers ${{ env.ISSUE_NUMBER }}
+          
 
       - name: Check resolution results
         id: check_results
@@ -101,8 +102,19 @@ jobs:
           else
             echo "MODEL2_RESOLUTION_SUCCESS=false" >> $GITHUB_ENV
           fi
+      
+      - name: Send Git Patch, Model Name to the Firebase
+        run: |
+          cd /tmp && python -m openhands_resolver.send_to_firebase.py \
+          --github-token ${{ secrets.GITHUB_TOKEN }} \
+          --output-dir output \
+          --issue-number ${{ env.ISSUE_NUMBER }} \
 
-      - name: Create draft PR or branch
+      - name: Assume model number 1 is selected
+        run: |
+          echo "SELECTED_MODEL=1" >> $GITHUB_ENV
+
+      - name: (Work-In-Progress) Create Pull Request for selected branch
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
           LLM_MODELS: ${{ secrets.LLM_MODELS }}
@@ -113,31 +125,16 @@ jobs:
           if [ "${{ env.MODEL1_RESOLUTION_SUCCESS }}" == "true" ]; then
             cd /tmp && python -m openhands_resolver.send_pull_request \
               --issue-number ${{ env.ISSUE_NUMBER }} \
-              --model-number 1 \
+              --model-number ${{ env.SELECTED_MODEL }} \
               --pr-type draft | tee pr_result1.txt && \
-              grep "draft created" pr_result1.txt | sed 's/.*\///g' > pr_number1.txt
+              grep "draft created" pr_result1.txt | sed 's/.*\///g' > pr_number.txt
           else
             cd /tmp && python -m openhands_resolver.send_pull_request \
               --issue-number ${{ env.ISSUE_NUMBER }} \
               --pr-type branch \
-              --model-number 1 \
+              --model-number ${{ env.SELECTED_MODEL }} \
               --send-on-failure | tee branch_result.txt && \
-              grep "branch created" branch_result.txt | sed 's/.*\///g; s/.expand=1//g' > branch_name1.txt
-          fi
-          if [ "${{ env.MODEL2_RESOLUTION_SUCCESS }}" == "true" ]; then
-            cd /tmp && python -m openhands_resolver.send_pull_request \
-              --issue-number ${{ env.ISSUE_NUMBER }} \
-              --model-number 2 \
-              --pr-type draft | tee pr_result2.txt && \
-              grep "draft created" pr_result2.txt | sed 's/.*\///g' > pr_number2.txt
-          else
-            cd /tmp && python -m openhands_resolver.send_pull_request \
-              --issue-number ${{ env.ISSUE_NUMBER }} \
-              --pr-type branch \
-              --model-number 2 \
-              --send-on-failure | tee branch_result.txt && \
-              grep "branch created" branch_result.txt | sed 's/.*\///g; s/.expand=1//g' > branch_name2.txt
-          fi
+              grep "branch created" branch_result.txt | sed 's/.*\///g; s/.expand=1//g' > branch_name.txt
 
       - name: Comment on issue
         uses: actions/github-script@v7
@@ -146,34 +143,34 @@ jobs:
           script: |
             const fs = require('fs');
             const issueNumber = ${{ env.ISSUE_NUMBER }};
-            const success1 = "${{ env.MODEL1_RESOLUTION_SUCCESS }}" === "true";
+            const success = "${{ env.MODEL1_RESOLUTION_SUCCESS }}" === "true";
             
-            let prNumber1 = '';
-            let branchName1 = '';
+            let prNumber = '';
+            let branchName = '';
             
             try {
-              if (success1) {
-                prNumber1 = fs.readFileSync('/tmp/pr_number1.txt', 'utf8').trim();
+              if (success) {
+                prNumber = fs.readFileSync('/tmp/pr_number.txt', 'utf8').trim();
               } else {
-                branchName1 = fs.readFileSync('/tmp/branch_name1.txt', 'utf8').trim();
+                branchName = fs.readFileSync('/tmp/branch_name1.txt', 'utf8').trim();
               }
             } catch (error) {
               console.error('Error reading file:', error);
             }
             
-            if (success1 && prNumber1) {
+            if (success && prNumber) {
               github.rest.issues.createComment({
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `A potential fix has been generated and a draft PR #${prNumber1} has been created. Please review the changes.`
+                body: `A potential fix has been generated and a draft PR #${prNumber} has been created. Please review the changes.`
               });
-            } else if (!success1 && branchName1) {
+            } else if (!success && branchName) {
               github.rest.issues.createComment({
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName1}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName1}). Manual intervention may be required.`
+                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName}). Manual intervention may be required.`
               });
             } else {
               github.rest.issues.createComment({
@@ -184,76 +181,38 @@ jobs:
               });
             }
 
-            const success2 = "${{ env.MODEL2_RESOLUTION_SUCCESS }}" === "true";
-            
-            let prNumber2 = '';
-            let branchName2 = '';
-            
-            try {
-              if (success2) {
-                prNumber2 = fs.readFileSync('/tmp/pr_number2.txt', 'utf8').trim();
-              } else {
-                branchName2 = fs.readFileSync('/tmp/branch_name2.txt', 'utf8').trim();
-              }
-            } catch (error) {
-              console.error('Error reading file:', error);
-            }
-            
-            if (success2 && prNumber2) {
-              github.rest.issues.createComment({
-                issue_number: issueNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `A potential fix has been generated and a draft PR #${prNumber2} has been created. Please review the changes.`
-              });
-            } else if (!success2 && branchName2) {
-              github.rest.issues.createComment({
-                issue_number: issueNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `An attempt was made to automatically fix this issue, but it was unsuccessful. A branch named '${branchName2}' has been created with the attempted changes. You can view the branch [here](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName2}). Manual intervention may be required.`
-              });
-            } else {
-              github.rest.issues.createComment({
-                issue_number: issueNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `The workflow to fix this issue encountered an error. Please check the workflow logs for more information.`
-              });
-            }
-
-      - name: Set issue number and repo information
-        run: |
-          echo "REPO_NAME=${{ github.repository }}" >> $GITHUB_ENV
+      # - name: Set issue number and repo information
+      #   run: |
+      #     echo "REPO_NAME=${{ github.repository }}" >> $GITHUB_ENV
     
-      - name: Send PR/Branch Info to Firebase
-        run: |
-          curl -X POST https://us-central1-pr-arena.cloudfunctions.net/api/receive-data \
-          -H "Content-Type: application/json" \
-          -d '{
-            "repo": "${{ env.REPO_NAME }}",
-            "issueNumber": "${{ env.ISSUE_NUMBER }}",
-            "prNumbers": [
-              { "prNumber": "pr_number1", "url": "https://github.com/${{ env.REPO_NAME }}/pull/pr_number1" },
-              { "prNumber": "pr_number2", "url": "https://github.com/${{ env.REPO_NAME }}/pull/pr_number2" }
-            ],
-            "branches": [
-              { "branchName": "branch_name1", "url": "https://github.com/${{ env.REPO_NAME }}/tree/branch_name1" },
-              { "branchName": "branch_name2", "url": "https://github.com/${{ env.REPO_NAME }}/tree/branch_name2" }
-            ]
-          }'
+      # - name: Send PR/Branch Info to Firebase
+      #   run: |
+      #     curl -X POST https://us-central1-pr-arena.cloudfunctions.net/api/receive-data \
+      #     -H "Content-Type: application/json" \
+      #     -d '{
+      #       "repo": "${{ env.REPO_NAME }}",
+      #       "issueNumber": "${{ env.ISSUE_NUMBER }}",
+      #       "prNumbers": [
+      #         { "prNumber": "pr_number", "url": "https://github.com/${{ env.REPO_NAME }}/pull/pr_number" },
+      #         { "prNumber": "pr_number2", "url": "https://github.com/${{ env.REPO_NAME }}/pull/pr_number2" }
+      #       ],
+      #       "branches": [
+      #         { "branchName": "branch_name1", "url": "https://github.com/${{ env.REPO_NAME }}/tree/branch_name1" },
+      #         { "branchName": "branch_name2", "url": "https://github.com/${{ env.REPO_NAME }}/tree/branch_name2" }
+      #       ]
+      #     }'
 
-      - name: Post Webpage Link to GitHub Issue
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const issueNumber = ${{ env.ISSUE_NUMBER }};
-            const firebaseWebpageURL = `https://pr-arena.web.app?issueNumber=${issueNumber}`;
+      # - name: Post Webpage Link to GitHub Issue
+      #   uses: actions/github-script@v7
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const issueNumber = ${{ env.ISSUE_NUMBER }};
+      #       const firebaseWebpageURL = `https://pr-arena.web.app?issueNumber=${issueNumber}`;
 
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: `OpenHands has started processing this issue! You can view the proposed fixes and make a decision at [this link](${firebaseWebpageURL}).`
-            });
+      #       github.rest.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: issueNumber,
+      #         body: `OpenHands has started processing this issue! You can view the proposed fixes and make a decision at [this link](${firebaseWebpageURL}).`
+      #       });
