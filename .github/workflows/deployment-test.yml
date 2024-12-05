@@ -78,7 +78,7 @@ jobs:
             run: |
               cd /tmp && python -m openhands_resolver.test_firebase \
                 --repo ${{ github.repository }} \
-                --issue-numbers ${{ env.ISSUE_NUMBER }}
+                --issue-number ${{ env.ISSUE_NUMBER }}
            
           # - name: Post Webpage Link to GitHub Issue
           #   uses: actions/github-script@v7
