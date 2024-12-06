@@ -73,6 +73,7 @@ jobs:
               LLM_MODELS: ${{ secrets.LLM_MODELS }}
               LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
               LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+              GITHUB_USERNAME: ${{ secrets.PAT_USERNAME }}
               PYTHONPATH: ""
               FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
             run: |
