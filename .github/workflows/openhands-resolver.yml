@@ -1,0 +1,15 @@
+name: OpenHands Resolver
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Run OpenHands Resolver
+        run: echo "Executing OpenHands Resolver."
