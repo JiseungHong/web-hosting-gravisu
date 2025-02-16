@@ -1,0 +1,79 @@
+name: Test Input Passing and Repository Installation
+
+on:
+  workflow_call:
+    inputs:
+      issue_number:
+        required: true
+        type: number
+      llm_models:
+        required: true
+        type: string
+      llm_api_key:
+        required: true
+        type: string
+      firebase_config:
+        required: true
+        type: string
+      base_url:
+        required: true
+        type: string
+      pat_token:
+        required: true
+        type: string
+      pat_username:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  test-inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print all inputs (For Debugging)
+        run: |
+          echo "Issue Number: ${{ inputs.issue_number }}"
+          echo "LLM Models: ${{ inputs.llm_models }}"
+          echo "LLM API Key: ${{ inputs.llm_api_key }}"
+          echo "Firebase Config: ${{ inputs.firebase_config }}"
+          echo "Base URL: ${{ inputs.base_url }}"
+          echo "PAT Token: ${{ inputs.pat_token }}"
+          echo "PAT Username: ${{ inputs.pat_username }}"
+
+      - name: Check required inputs
+        run: |
+          required_vars=("issue_number" "llm_models" "llm_api_key" "firebase_config" "base_url" "pat_token" "pat_username")
+          for var in "${required_vars[@]}"; do
+            if [ -z "${{ inputs[$var] }}" ]; then
+              echo "Error: Required input $var is not set."
+              exit 1
+            fi
+          done
+        shell: bash
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Repository (Test pip Install)
+        run: |
+          python -m pip install --upgrade pip
+          pip install git+https://github.com/JiseungHong/test.git
+
+      - name: Execute Test Python File
+        env:
+          GITHUB_TOKEN: ${{ inputs.pat_token }}
+          LLM_MODELS: ${{ inputs.llm_models }}
+          LLM_API_KEY: ${{ inputs.llm_api_key }}
+          LLM_BASE_URL: ${{ inputs.base_url }}
+          GITHUB_USERNAME: ${{ inputs.pat_username }}
+          PYTHONPATH: ""
+          FIREBASE_CONFIG: ${{ inputs.firebase_config }}
+        run: |
+          cd /tmp && python -m test-python
+
+      - name: Confirm Successful Execution
+        run: echo "✅ Successfully verified input passing and repository installation."
