@@ -1,7 +1,7 @@
 name: Test Input Passing and Repository Installation
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       issue_number:
         required: true
