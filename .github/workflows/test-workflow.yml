@@ -32,6 +32,14 @@ jobs:
   test-inputs:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          
       - name: Print all inputs (For Debugging)
         run: |
           echo "Issue Number: ${{ inputs.issue_number }}"
@@ -42,21 +50,36 @@ jobs:
           echo "PAT Token: ${{ inputs.pat_token }}"
           echo "PAT Username: ${{ inputs.pat_username }}"
 
-      - name: Check required inputs
+      - name: Check required environment variables
+        env:
+          LLM_MODELS: ${{ inputs.llm_models }}
+          LLM_API_KEY: ${{ inputs.llm_api_key }}
+          LLM_BASE_URL: ${{ inputs.base_url }}
+          PAT_TOKEN: ${{ inputs.pat_token }}
+          PAT_USERNAME: ${{ inputs.pat_username }}
         run: |
-          required_vars=("issue_number" "llm_models" "llm_api_key" "firebase_config" "base_url" "pat_token" "pat_username")
+          required_vars=("LLM_MODELS" "LLM_API_KEY" "PAT_TOKEN" "PAT_USERNAME" "LLM_BASE_URL")
           for var in "${required_vars[@]}"; do
-            if [ -z "${{ inputs[$var] }}" ]; then
-              echo "Error: Required input $var is not set."
+            if [ -z "${!var}" ]; then
+              echo "Error: Required environment variable $var is not set."
               exit 1
             fi
           done
-        shell: bash
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set issue number
+        run: echo "ISSUE_NUMBER=${{ inputs.issue_number }}" >> $GITHUB_ENV
+
+      - name: Comment on issue with start message
+        uses: actions/github-script@v7
         with:
-          python-version: '3.12'
+          github-token: ${{ inputs.pat_token }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: ${{ env.ISSUE_NUMBER }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Test Workflow is triggered! You can monitor the progress [here](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
+            });
 
       - name: Install Repository (Test pip Install)
         run: |
