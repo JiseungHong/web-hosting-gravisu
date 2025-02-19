@@ -39,17 +39,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          
-      - name: Print all inputs (For Debugging)
-        run: |
-          echo "Issue Number: ${{ inputs.issue_number }}"
-          echo "LLM Models: ${{ inputs.llm_models }}"
-          echo "LLM API Key: ${{ inputs.llm_api_key }}"
-          echo "Firebase Config: ${{ inputs.firebase_config }}"
-          echo "Base URL: ${{ inputs.base_url }}"
-          echo "PAT Token: ${{ inputs.pat_token }}"
-          echo "PAT Username: ${{ inputs.pat_username }}"
-
       - name: Check required environment variables
         env:
           LLM_MODELS: ${{ inputs.llm_models }}
