@@ -40,6 +40,16 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Print all inputs (For Debugging)
+        run: |
+          echo "Issue Number: ${{ inputs.issue_number }}"
+          echo "LLM Models: ${{ inputs.llm_models }}"
+          echo "LLM API Key: ${{ inputs.llm_api_key }}"
+          echo "Firebase Config: ${{ inputs.firebase_config }}"
+          echo "Base URL: ${{ inputs.base_url }}"
+          echo "PAT Token: ${{ inputs.pat_token }}"
+          echo "PAT Username: ${{ inputs.pat_username }}"
+
       - name: Check required environment variables
         env:
           LLM_MODELS: ${{ inputs.llm_models }}
@@ -71,22 +81,22 @@ jobs:
               body: `Test Workflow is triggered! You can monitor the progress [here](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
             });
 
-      - name: Install Repository (Test pip Install)
-        run: |
-          python -m pip install --upgrade pip
-          pip install git+https://github.com/JiseungHong/test.git
+      # - name: Install Repository (Test pip Install)
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install git+https://github.com/JiseungHong/test.git
 
-      - name: Execute Test Python File
-        env:
-          GITHUB_TOKEN: ${{ inputs.pat_token }}
-          LLM_MODELS: ${{ inputs.llm_models }}
-          LLM_API_KEY: ${{ inputs.llm_api_key }}
-          LLM_BASE_URL: ${{ inputs.base_url }}
-          GITHUB_USERNAME: ${{ inputs.pat_username }}
-          PYTHONPATH: ""
-          FIREBASE_CONFIG: ${{ inputs.firebase_config }}
-        run: |
-          cd /tmp && python -m test-python
+      # - name: Execute Test Python File
+      #   env:
+      #     GITHUB_TOKEN: ${{ inputs.pat_token }}
+      #     LLM_MODELS: ${{ inputs.llm_models }}
+      #     LLM_API_KEY: ${{ inputs.llm_api_key }}
+      #     LLM_BASE_URL: ${{ inputs.base_url }}
+      #     GITHUB_USERNAME: ${{ inputs.pat_username }}
+      #     PYTHONPATH: ""
+      #     FIREBASE_CONFIG: ${{ inputs.firebase_config }}
+      #   run: |
+      #     cd /tmp && python -m test-python
 
       - name: Confirm Successful Execution
         run: echo "✅ Successfully verified input passing and repository installation."
