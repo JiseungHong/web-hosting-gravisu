@@ -8,6 +8,12 @@
     "step1 step3"
     "step2 step3"
     ". step3"
+}
+
+body {
+  background-color: #f2c464; /* changed to a more colorful background color */
+}
+
     "footer footer";
   align-items: start;
   align-content: start;
@@ -450,3 +456,4 @@
 .chart img {
   width: 100%;
 }
+
