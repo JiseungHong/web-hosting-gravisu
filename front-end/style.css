@@ -13,7 +13,17 @@
   align-content: start;
   /* padding-top: 56.25%; */
   overflow: auto;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b, #ff7e5f, #feb47b);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
 }
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 @media (max-width: 1000px) {
   .container {
     grid-template-columns: 1fr;
@@ -450,3 +460,4 @@
 .chart img {
   width: 100%;
 }
+
