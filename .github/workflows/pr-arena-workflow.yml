@@ -89,7 +89,7 @@ jobs:
               issue_number: ${{ inputs.issue_number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `❌ PR-Arena has has failed due to the agent error. Please remove the 'pr-arena' label and add it back to retry.`
+              body: `❌ PR-Arena has failed due to the agent error. Please remove the 'pr-arena' label and add it back to retry.`
             });
 
       - name: Exit workflow if failed
