@@ -155,6 +155,9 @@ async def upload_model(zipFile: UploadFile):
 
 @app.post("/run-gradcam")
 async def run_gradcam():
+    import time
+    start_time = time.time()
+    
     model_location = renew_model(model_folder) 
 
     # 1) renew save_heatmap folder 
@@ -162,6 +165,13 @@ async def run_gradcam():
     # 3) save csv with infomation at 'csv_location' 
     num_class = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
     visual_histogram(num_class, csv_location, save_folder = histogram_save_location)
+    
+    # Calculate the elapsed time
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    minutes = int(elapsed_time // 60)
+    seconds = int(elapsed_time % 60)
+    duration = f"{minutes} m {seconds} s"
     
     df = pd.read_csv(csv_location)
 
@@ -190,7 +200,9 @@ async def run_gradcam():
     print('RUN')
     print("class:", global_class_id, "column:", global_column_id)
     print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+    print(f"Processing time: {duration}")
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:], 'duration': duration}
+
 
 @app.post("/next-button")
 async def next_button():
