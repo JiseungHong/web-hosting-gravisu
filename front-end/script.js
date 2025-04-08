@@ -248,12 +248,27 @@ function function3(e) {
         console.log("Chart src updated for", chartElement);
       } else {
         console.log("No chart element found for chart_element");
+      } else {
+        console.log("No chart element found for chart_element");
       }
-
       runButton.textContent = "Run Gra-Visu";
       runButton.disabled = false;
       submitButton1.disabled = false;
       submitButton2.disabled = false;
+      
+      // Show processing time popup
+      if (data.processing_time) {
+        alert(`Processing completed in ${data.processing_time}`);
+      }
+    })
+
+
+
+        alert(`Processing completed in ${data.processing_time}`);
+      }
+
+    })
+
     })
     .catch((error) => {
       console.error(error);
@@ -441,3 +456,9 @@ function handleInputChange(event) {
       console.error(error);
     });
 }
+
+
+
+
+
+
