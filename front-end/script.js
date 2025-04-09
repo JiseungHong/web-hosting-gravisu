@@ -187,9 +187,6 @@ function function3(e) {
   submitButton2.disabled = true;
 
   fetch("http://110.76.86.172:8000/run-gradcam", {
-    //////////////////////////// test
-    // fetch("http://110.76.86.172:8000/test", {
-    //////////////////////////// test
     method: "POST",
   })
     .then((response) => {
@@ -199,6 +196,17 @@ function function3(e) {
         throw new Error("Failed to fetch image paths from the server.");
       }
     })
+    .then((data) => {
+      // Display the duration in a pop-up message
+      alert(`Time taken: ${data.duration}`);
+      // Handle the rest of the data (e.g., image paths, max value, histogram)
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error.message);
+    });
+}
+
     .then((data) => {
       console.log("Gra-Visu running...");
       const imagePaths = data.image_paths;
@@ -441,3 +449,4 @@ function handleInputChange(event) {
       console.error(error);
     });
 }
+
