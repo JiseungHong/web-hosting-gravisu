@@ -250,6 +250,11 @@ function function3(e) {
         console.log("No chart element found for chart_element");
       }
 
+      // Display processing time in a pop-up message
+      if (data.processing_time) {
+        alert(`GRAVISU processing completed in: ${data.processing_time}`);
+      }
+
       runButton.textContent = "Run Gra-Visu";
       runButton.disabled = false;
       submitButton1.disabled = false;
@@ -259,6 +264,7 @@ function function3(e) {
       console.error(error);
     });
 }
+
 
 // Next Button
 function move_next(e) {
@@ -441,3 +447,6 @@ function handleInputChange(event) {
       console.error(error);
     });
 }
+
+
+
