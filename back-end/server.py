@@ -155,6 +155,9 @@ async def upload_model(zipFile: UploadFile):
 
 @app.post("/run-gradcam")
 async def run_gradcam():
+    import time
+    start_time = time.time()
+    
     model_location = renew_model(model_folder) 
 
     # 1) renew save_heatmap folder 
@@ -187,10 +190,19 @@ async def run_gradcam():
     
     result = [img[8:] for img in result]
     
-    print('RUN')
-    print("class:", global_class_id, "column:", global_column_id)
-    print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+    # Calculate processing time
+    processing_time = time.time() - start_time
+    minutes = int(processing_time // 60)
+    seconds = int(processing_time % 60)
+    time_str = f"{minutes}m {seconds}s"
+    
+    return {
+        'image_paths': result, 
+        'max_value': max_column_id, 
+        'histogram': histogram_path[8:],
+        'processing_time': time_str
+    }
+
 
 @app.post("/next-button")
 async def next_button():

@@ -219,7 +219,13 @@ function function3(e) {
         }
       });
 
+      // Show processing time popup
+      if (data.processing_time) {
+        alert(`Gra-Visu completed in ${data.processing_time}`);
+      }
+
       Maximum_Classes = data.max_value;
+
       current_column = 1;
       current_class = 0;
 
@@ -441,3 +447,4 @@ function handleInputChange(event) {
       console.error(error);
     });
 }
+
