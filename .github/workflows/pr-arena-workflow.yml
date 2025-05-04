@@ -28,7 +28,7 @@ jobs:
   call-pr-arena-resolver:
     uses: neulab/pr-arena/.github/workflows/pr-arena-resolver.yml@main
     with:
-      issue_number: ${{ inputs.issue_number }}
+      issue_number: ${{ fromJson(inputs.issue_number) }}
       llm_models: ${{ inputs.llm_models }}
       base_url: ${{ inputs.base_url }}
       pat_token: ${{ inputs.pat_token }}
