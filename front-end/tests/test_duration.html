@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Duration Popup Test</title>
+    <script>
+        function testDurationPopup() {
+            // Mock data with duration
+            const mockData = {
+                image_paths: ['img1.png', 'img2.png', 'img3.png', 'img4.png'],
+                max_value: [3, 2, 1],
+                histogram: 'histogram_1.png',
+                duration: '2 m 30 s'
+            };
+            
+            // Display the popup
+            if (mockData.duration) {
+                alert(`GRAVISU processing time: ${mockData.duration}`);
+                document.getElementById('result').textContent = 'Popup displayed with message: GRAVISU processing time: ' + mockData.duration;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Duration Popup Test</h1>
+    <button onclick="testDurationPopup()">Test Popup</button>
+    <div id="result"></div>
+</body>
+</html>
