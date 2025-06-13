@@ -201,6 +201,7 @@ function function3(e) {
     })
     .then((data) => {
       console.log("Gra-Visu running...");
+      alert(`Processing completed in ${data.duration}`);
       const imagePaths = data.image_paths;
       const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
 
