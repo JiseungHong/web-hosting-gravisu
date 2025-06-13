@@ -251,6 +251,7 @@ function function3(e) {
       }
 
       runButton.textContent = "Run Gra-Visu";
+    alert(`Processing completed in ${data.duration}`);
       runButton.disabled = false;
       submitButton1.disabled = false;
       submitButton2.disabled = false;
