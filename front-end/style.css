@@ -450,3 +450,12 @@
 .chart img {
   width: 100%;
 }
+.duration-text {
+    position: relative;
+    top: 100px;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 14px;
+    color: #262626;
+    margin-bottom: 20px;
+}

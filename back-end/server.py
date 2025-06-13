@@ -160,7 +160,7 @@ async def run_gradcam():
     # 1) renew save_heatmap folder 
     # 2) make gradcam & save heatmap in save_heatmap folder
     # 3) save csv with infomation at 'csv_location' 
-    num_class = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
+    num_class, duration = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
     visual_histogram(num_class, csv_location, save_folder = histogram_save_location)
     
     df = pd.read_csv(csv_location)
@@ -190,7 +190,7 @@ async def run_gradcam():
     print('RUN')
     print("class:", global_class_id, "column:", global_column_id)
     print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:], 'duration': duration}
 
 @app.post("/next-button")
 async def next_button():
