@@ -160,9 +160,12 @@ async def run_gradcam():
     # 1) renew save_heatmap folder 
     # 2) make gradcam & save heatmap in save_heatmap folder
     # 3) save csv with infomation at 'csv_location' 
-    num_class = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
+    num_class, duration = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
     visual_histogram(num_class, csv_location, save_folder = histogram_save_location)
     
+    # Return duration information
+    return {"message": "GradCAM processing completed", "duration": duration}
+
     df = pd.read_csv(csv_location)
 
     max_column_id = [] 

@@ -8,25 +8,25 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.utils import get_file
 from tensorflow.keras import Model
 
-from tensorflow import keras 
+from tensorflow import keras
 import shutil
 import numpy as np
 import torch
 import tensorflow as tf
-import pandas as pd 
+import pandas as pd
 from collections import Counter
 import matplotlib.pyplot as plt
 from lavis.models import load_model_and_preprocess
 
 
-def find_last_conv_layer(model) : 
+def find_last_conv_layer(model) :
     layers = model.layers
     last_conv_layer = None
     for layer in reversed(layers):
         if 'conv' in layer.name.lower():  # 합성곱 레이어의 이름에 "conv2d"가 포함되어 있는 경우
             last_conv_layer = layer
             break
-    return last_conv_layer.name 
+    return last_conv_layer.name
 
 
 
@@ -56,7 +56,7 @@ def show_imgwithheat(img_path, heatmap,alpha=0.4):
     return superimposed_img
 
     # Save the result image
-    
+
 
 def new_grad_cam_plus(model, img, label_name=None, category_id=None):
     img_tensor = np.expand_dims(img, axis=0)
@@ -103,52 +103,55 @@ def new_grad_cam_plus(model, img, label_name=None, category_id=None):
     return category_id, heatmap
 
 
-# when model update, 1) renew model_location folder, 2) return model_location 
+# when model update, 1) renew model_location folder, 2) return model_location
 def renew_model(model_folder) :
     #if os.path.exists(model_folder):
-    #    shutil.rmtree(model_folder) 
+    #    shutil.rmtree(model_folder)
     #os.makedirs(model_folder)
 
-    models = [] 
+    models = []
     for model_name in os.listdir(model_folder):
         models.append(model_name)
-    
-    assert len(models), f"There's no model in {model_folder}" 
+
+    assert len(models), f"There's no model in {model_folder}"
 
 
     model_name = models[0]
     model_location = os.path.join(model_folder, model_name).replace('\\', '/')
 
-    return model_location 
+    return model_location
 
 
-# Input : model_location / user_imagese_folder / save_heatmap 
+# Input : model_location / user_imagese_folder / save_heatmap
 # output : dataframe
-def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location, masking = False) : 
+def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location, masking = False) :
+    import time
+    start_time = time.time()
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     loaded_model = keras.models.load_model(model_location)
     #loaded_model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    
+
     num_class = loaded_model.layers[-1].output_shape[1]
 
-    images = [] 
+    images = []
 
-    # 이 부분을 수정해야함. 
+    # 이 부분을 수정해야함.
     exception_file = ["white.png", "no_data.png"]
     if os.path.exists(save_heatmap):
         for file_name in os.listdir(save_heatmap):
             file_path = os.path.join(save_heatmap, file_name)
             if os.path.isfile(file_path) and file_name not in exception_file:
                 os.remove(file_path)
-    
-    else : 
+
+    else :
         os.makedirs(save_heatmap)
 
-    # heatmap 폴더 안에 converted 폴더 만들기 
+    # heatmap 폴더 안에 converted 폴더 만들기
     conv_folder = os.path.join(save_heatmap, "converted_").replace('\\', '/')
     if os.path.exists(conv_folder):
         shutil.rmtree(conv_folder)
-   
+
     allowed_extensions = ['.png', '.jpg', '.jpeg']
     for image_name in os.listdir(user_images_folder):
         _, extension = os.path.splitext(image_name)
@@ -156,28 +159,28 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
             images.append(image_name)
 
     os.makedirs(conv_folder)
-    
+
     assert len(images), f"There's no data in {user_images_folder}"
 
     # heatmap 폴더가 이미 존재하면 삭제
 
 
-    data = [] 
-    for id, img_name in enumerate(images) : 
+    data = []
+    for id, img_name in enumerate(images) :
         img_path = os.path.join(user_images_folder, img_name).replace('\\', '/')
         #img_path = img_path.replace('\\', '/')
 
         img = preprocess_image(img_path)
         category_id, heatmap = new_grad_cam_plus(loaded_model, img)
-        
+
         imposed_img = show_imgwithheat(img_path, heatmap)
         save_path = os.path.join(save_heatmap, img_name).replace('\\', '/')
         #save_path = img_path.replace('\\', '/')
-        # cv2 는 한글 주소 못 읽어냄.. ㅂㄷㅂㄷ 
+        # cv2 는 한글 주소 못 읽어냄.. ㅂㄷㅂㄷ
         cv2.imwrite(save_path, imposed_img)
 
-        # Grad cam 결과로 masking 이미지 만들기 
-        if masking is True : 
+        # Grad cam 결과로 masking 이미지 만들기
+        if masking is True :
             target_size = (400, 300)
             conv_img = resize_and_fill(save_path, target_size)
             conv_img_path = os.path.join(conv_folder, img_name).replace('\\', '/')
@@ -189,28 +192,35 @@ def renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_loc
         raw_image = Image.open(img_path).convert("RGB")
         image = vis_processors["eval"](raw_image).unsqueeze(0).to(device)
         image_caption_result =model.generate({"image": image})
-        # category_id 1부터 시작하도록 수정 
-        data.append([id+1, img_name, category_id+1, save_path, conv_img_path, image_caption_result[0], 1]) 
-       
+        # category_id 1부터 시작하도록 수정
+        data.append([id+1, img_name, category_id+1, save_path, conv_img_path, image_caption_result[0], 1])
+
     data_df = pd.DataFrame(data, columns=['id', 'img_name', 'prediction', 'heatmap_path', 'conv_heatmap_path',  'image_caption', 'column_id'])
 
-    # make column_num 
-    for class_ in range(num_class) : 
+    # make column_num
+    for class_ in range(num_class) :
         selected_rows= data_df[data_df['prediction']==class_ +1]
         num_data = len(selected_rows)
         num_iterations = num_data // 4
 
         # 4개씩 묶어서 column_id 값을 부여
-        column_id = 1 
+        column_id = 1
         for i in range(num_iterations):
             data_df.loc[selected_rows.index[i * 4: (i + 1) * 4], 'column_id'] = column_id
             column_id += 1
-        
+
         if num_data % 4 > 0:
             data_df.loc[selected_rows.index[num_iterations * 4:], 'column_id'] = column_id
-    
+
     data_df.to_csv(csv_location, index=False)
-    return num_class
+
+    # Calculate and format duration
+    duration_sec = time.time() - start_time
+    minutes = int(duration_sec // 60)
+    seconds = int(duration_sec % 60)
+    duration_str = f"{minutes} m {seconds} s"
+
+    return num_class, duration_str
 
 
 
@@ -243,38 +253,38 @@ def resize_and_fill(image_path, target_size):
     return filled_image
 
 
-# 실행 시, 모든 Class 에 대해서 histogram image 를 save_folder 위치에 저장하는 코드로 변경 
-def visual_histogram(num_class, csv_location, save_folder=None) : 
-    
-    if save_folder is not None : 
+# 실행 시, 모든 Class 에 대해서 histogram image 를 save_folder 위치에 저장하는 코드로 변경
+def visual_histogram(num_class, csv_location, save_folder=None) :
+
+    if save_folder is not None :
         if os.path.exists(save_folder): shutil.rmtree(save_folder)
         os.makedirs(save_folder)
-        
+
 
     dataframe = pd.read_csv(csv_location)
-    # 무시할 단어 목록 (예: 관사, 조사) 설정하기 
+    # 무시할 단어 목록 (예: 관사, 조사) 설정하기
     ignore_words = ["a", "an", "the", "of", "in", "on", "with", "and", "is"]
 
 
-    for class_id in range(1, num_class+1) : 
+    for class_id in range(1, num_class+1) :
         filtered_df = dataframe[dataframe['prediction'] == class_id]
         save_path = os.path.join(save_folder, f"histogram_{class_id}.png").replace('\\', '/')
 
-        # 데이터가 없는 Class의 경우 생략하기 
-        # 다른 함수에서 image 파일이 없을 경우, no_data 이미지가 나올 수 있도록 수정하기 
-        if len(filtered_df) == 0 : 
+        # 데이터가 없는 Class의 경우 생략하기
+        # 다른 함수에서 image 파일이 없을 경우, no_data 이미지가 나올 수 있도록 수정하기
+        if len(filtered_df) == 0 :
             continue
 
         result_image_caption = filtered_df['image_caption'].tolist()
 
-    
-    
+
+
         all_words = ' '.join(result_image_caption).split()
 
         # 각 단어의 빈도를 계산하며 무시할 단어는 제외합니다.
         word_frequencies = Counter(word for word in all_words if word not in ignore_words)
 
-        # 빈도 수가 상위 10개인 값만 가져오기 
+        # 빈도 수가 상위 10개인 값만 가져오기
 
         top_words = word_frequencies.most_common(10)
 
@@ -292,5 +302,5 @@ def visual_histogram(num_class, csv_location, save_folder=None) :
             plt.show()
         else :
             plt.savefig(save_path, bbox_inches='tight')
-    
+
     #plt.show()
