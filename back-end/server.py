@@ -5,7 +5,8 @@ from pydantic import BaseModel
 import uvicorn, os
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
-import pandas as pd 
+import pandas as pd
+import time
 
 from new_utils import renew_model, renew_make_gradcam, visual_histogram
 import shutil, zipfile, uuid
@@ -160,8 +161,14 @@ async def run_gradcam():
     # 1) renew save_heatmap folder 
     # 2) make gradcam & save heatmap in save_heatmap folder
     # 3) save csv with infomation at 'csv_location' 
+    start_time = time.time()
     num_class = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
     visual_histogram(num_class, csv_location, save_folder = histogram_save_location)
+    end_time = time.time()
+    duration = end_time - start_time
+    minutes = int(duration // 60)
+    seconds = int(duration % 60)
+    formatted_duration = f"{minutes:02d} m {seconds:02d} s"
     
     df = pd.read_csv(csv_location)
 
@@ -190,7 +197,7 @@ async def run_gradcam():
     print('RUN')
     print("class:", global_class_id, "column:", global_column_id)
     print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:], 'duration': formatted_duration}
 
 @app.post("/next-button")
 async def next_button():

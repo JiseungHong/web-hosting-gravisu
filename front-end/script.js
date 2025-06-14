@@ -250,6 +250,21 @@ function function3(e) {
         console.log("No chart element found for chart_element");
       }
 
+      // Create and show duration popup
+      const durationPopup = document.createElement('div');
+      durationPopup.textContent = `Processing time: ${data.duration}`;
+      durationPopup.style.position = 'fixed';
+      durationPopup.style.bottom = '20px';
+      durationPopup.style.right = '20px';
+      durationPopup.style.backgroundColor = '#4CAF50';
+      durationPopup.style.color = 'white';
+      durationPopup.style.padding = '15px';
+      durationPopup.style.borderRadius = '5px';
+      document.body.appendChild(durationPopup);
+      setTimeout(() => {
+          document.body.removeChild(durationPopup);
+      }, 5000);
+
       runButton.textContent = "Run Gra-Visu";
       runButton.disabled = false;
       submitButton1.disabled = false;
