@@ -254,6 +254,11 @@ function function3(e) {
       runButton.disabled = false;
       submitButton1.disabled = false;
       submitButton2.disabled = false;
+
+      // Display duration in a pop-up
+      if (data.duration) {
+        alert(`GRAVISU processing time: ${data.duration}`);
+      }
     })
     .catch((error) => {
       console.error(error);
