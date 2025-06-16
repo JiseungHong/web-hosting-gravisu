@@ -237,4 +237,4 @@ async def class_dropdown(class_num: int = Form(...)):
     return {'image_paths': result, 'histogram': histogram_path[8:]}
 
 if __name__=='__main__':
-    uvicorn.run(app, host='110.76.86.172', port = 8000)
+    uvicorn.run(app, host='0.0.0.0', port = 50659)

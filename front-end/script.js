@@ -186,7 +186,7 @@ function function3(e) {
   submitButton1.disabled = true;
   submitButton2.disabled = true;
 
-  fetch("http://110.76.86.172:8000/run-gradcam", {
+  fetch("http://localhost:8000/run-gradcam", {
     //////////////////////////// test
     // fetch("http://110.76.86.172:8000/test", {
     //////////////////////////// test
