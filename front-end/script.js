@@ -5,6 +5,19 @@ let imgDrop = [];
 let modelDrop;
 let modelUpload = new DataTransfer();
 
+// Function to format duration in "XX m XX s" format
+function formatDuration(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes} m ${remainingSeconds} s`;
+}
+
+// Function to show duration popup
+function showDurationPopup(duration) {
+  const formattedDuration = formatDuration(duration);
+  alert(`GRAVISU processing completed!\nDuration: ${formattedDuration}`);
+}
+
 const dragDropImg = document.querySelector(".imgFileBox");
 const dragDropModel = document.querySelector(".modelFileBox");
 
@@ -254,6 +267,11 @@ function function3(e) {
       runButton.disabled = false;
       submitButton1.disabled = false;
       submitButton2.disabled = false;
+
+      // Show duration popup if duration is available
+      if (data.duration_seconds !== undefined) {
+        showDurationPopup(data.duration_seconds);
+      }
     })
     .catch((error) => {
       console.error(error);
