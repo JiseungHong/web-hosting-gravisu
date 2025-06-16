@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 import pandas as pd 
 
+import time
 from new_utils import renew_model, renew_make_gradcam, visual_histogram
 import shutil, zipfile, uuid
 
@@ -155,6 +156,7 @@ async def upload_model(zipFile: UploadFile):
 
 @app.post("/run-gradcam")
 async def run_gradcam():
+    start_time = time.time()
     model_location = renew_model(model_folder) 
 
     # 1) renew save_heatmap folder 
@@ -187,10 +189,16 @@ async def run_gradcam():
     
     result = [img[8:] for img in result]
     
+    end_time = time.time()
+    duration = end_time - start_time
+    minutes, seconds = divmod(duration, 60)
+    formatted_duration = f"{int(minutes)} m {int(seconds)} s"
+
     print('RUN')
     print("class:", global_class_id, "column:", global_column_id)
     print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+    print("Duration:", formatted_duration)
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:], 'duration': formatted_duration}
 
 @app.post("/next-button")
 async def next_button():
