@@ -178,6 +178,90 @@ let left_arrow = document.getElementsByClassName("left_arrow")[0];
 let right_arrow = document.getElementsByClassName("right_arrow")[0];
 
 // Run GradCam++.
+
+let startTime;
+let endTime;
+
+function function3(e) {
+  e.preventDefault();
+
+  startTime = performance.now(); // Start timing
+  runButton.textContent = "Running...";
+  runButton.disabled = true;
+  submitButton1.disabled = true;
+  submitButton2.disabled = true;
+
+  fetch("http://110.76.86.172:8000/run-gradcam", {
+    method: "POST",
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json(); // Parse JSON response
+      } else {
+        throw new Error("Failed to fetch image paths from the server.");
+      }
+    })
+    .then((data) => {
+      endTime = performance.now(); // End timing
+      const duration = ((endTime - startTime) / 1000).toFixed(2);
+      alert(`Processing time: ${Math.floor(duration / 60)} m ${duration % 60} s`);
+
+      console.log("Gra-Visu running...");
+      const imagePaths = data.image_paths;
+      const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
+
+      // Loop through each imagePath and set it as the background for the corresponding result div
+      imagePaths.forEach((path, index) => {
+        // Construct the full image URL
+        const imageUrl = baseUrl + path;
+        const imgElement = document.querySelector(
+          ".result" + (index + 1) + " .mask .im"
+        );
+        if (imgElement) {
+          imgElement.src = imageUrl;
+          console.log("Image src updated for", imgElement);
+        } else {
+          console.log("No img element found for result" + (index + 1));
+        }
+      });
+
+      Maximum_Classes = data.max_value;
+      current_column = 1;
+      current_class = 0;
+
+      document.getElementById("current_column").textContent = current_column;
+      max_column = Maximum_Classes[current_class];
+      if (max_column == 0 || max_column == 1) {
+        document.getElementById("max_column").textContent = 1;
+        left_arrow.disabled = true;
+        right_arrow.disabled = true;
+      } else {
+        document.getElementById("max_column").textContent = max_column;
+        left_arrow.disabled = true;
+        right_arrow.disabled = false;
+      }
+
+      const drop_down = document.querySelector(".inst_text .inst_num");
+      drop_down.value = current_class + 1;
+      drop_down.max = Maximum_Classes.length;
+
+      const chartElement = document.querySelector(".chart .chart_content");
+      if (chartElement) {
+        chartElement.src = baseUrl + data.histogram;
+        console.log("Chart src updated for", chartElement);
+      } else {
+        console.log("No chart element found for chart_element");
+      }
+
+      runButton.textContent = "Run Gra-Visu";
+      runButton.disabled = false;
+      submitButton1.disabled = false;
+      submitButton2.disabled = false;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 function function3(e) {
   e.preventDefault();
 
