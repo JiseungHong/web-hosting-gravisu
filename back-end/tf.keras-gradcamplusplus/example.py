@@ -22,7 +22,7 @@ model = vgg16_mura_model()
 model.summary()
 
 # %%
-img_path = 'images/4320878114_30a836d428_z.jpg'
+img_path = '/workspace/back-end/tf.keras-gradcamplusplus/images/test.jpg'
 img = preprocess_image(img_path)
 
 # %% result of grad cam
@@ -33,6 +33,12 @@ img = preprocess_image(img_path)
 # show_imgwithheat(img_path, heatmap)
 
 # %% result of grad cam++
+import time
+start_time = time.time()
 heatmap_plus = grad_cam_plus(model, img,
                              label_name=['WRIST', 'ELBOW', 'SHOULDER'])
+processing_time = time.time() - start_time
+minutes = int(processing_time // 60)
+seconds = int(processing_time % 60)
+print(f"Processing completed in {minutes}m {seconds}s")
 show_imgwithheat(img_path, heatmap_plus)
