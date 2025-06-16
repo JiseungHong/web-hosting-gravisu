@@ -250,6 +250,9 @@ function function3(e) {
         console.log("No chart element found for chart_element");
       }
 
+      // Show processing time alert
+      alert(`Processing completed in: ${data.duration}`);
+
       runButton.textContent = "Run Gra-Visu";
       runButton.disabled = false;
       submitButton1.disabled = false;
