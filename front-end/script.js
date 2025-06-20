@@ -250,6 +250,10 @@ function function3(e) {
         console.log("No chart element found for chart_element");
       }
 
+      // Show duration popup
+      const duration = data.duration;
+      alert(`Processing completed in ${duration}`);
+
       runButton.textContent = "Run Gra-Visu";
       runButton.disabled = false;
       submitButton1.disabled = false;
