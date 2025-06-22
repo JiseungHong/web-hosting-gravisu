@@ -202,6 +202,11 @@ function function3(e) {
     .then((data) => {
       console.log("Gra-Visu running...");
       const imagePaths = data.image_paths;
+      const duration = data.duration; // Get duration from response
+      const minutes = Math.floor(duration / 60);
+      const seconds = Math.floor(duration % 60);
+      alert(`Processing completed in ${minutes} m ${seconds} s`); // Display duration in alert
+
       const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
 
       // Loop through each imagePath and set it as the background for the corresponding result div
