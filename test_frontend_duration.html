@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Duration Feature</title>
+</head>
+<body>
+    <h1>GRAVISU Duration Feature Test</h1>
+    <button onclick="testDurationFormatting()">Test Duration Formatting</button>
+    <button onclick="testDurationPopup()">Test Duration Popup</button>
+    <div id="results"></div>
+
+    <script>
+        // Copy the duration functions from script.js
+        function formatDuration(seconds) {
+          const minutes = Math.floor(seconds / 60);
+          const remainingSeconds = Math.floor(seconds % 60);
+          return `${minutes} m ${remainingSeconds} s`;
+        }
+
+        function showDurationPopup(durationSeconds) {
+          const formattedDuration = formatDuration(durationSeconds);
+          alert(`GRAVISU processing completed!\n\nTime taken: ${formattedDuration}`);
+        }
+
+        function testDurationFormatting() {
+            const testCases = [
+                [0, "0 m 0 s"],
+                [30, "0 m 30 s"],
+                [60, "1 m 0 s"],
+                [90, "1 m 30 s"],
+                [125, "2 m 5 s"],
+                [3661, "61 m 1 s"]
+            ];
+
+            let results = "<h2>Duration Formatting Test Results:</h2>";
+            let allPassed = true;
+
+            testCases.forEach(([seconds, expected]) => {
+                const result = formatDuration(seconds);
+                const passed = result === expected;
+                allPassed = allPassed && passed;
+
+                results += `<p style="color: ${passed ? 'green' : 'red'}">
+                    ${seconds}s -> "${result}" ${passed ? '✓' : '✗ (expected: "' + expected + '")'}
+                </p>`;
+            });
+
+            results += `<p><strong>Overall: ${allPassed ? 'All tests passed! ✓' : 'Some tests failed! ✗'}</strong></p>`;
+            document.getElementById('results').innerHTML = results;
+        }
+
+        function testDurationPopup() {
+            // Test with a sample duration
+            showDurationPopup(125.5); // Should show "2 m 5 s"
+        }
+    </script>
+</body>
+</html>

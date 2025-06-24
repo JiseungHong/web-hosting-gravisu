@@ -5,6 +5,19 @@ let imgDrop = [];
 let modelDrop;
 let modelUpload = new DataTransfer();
 
+// Function to format duration from seconds to "XX m XX s" format
+function formatDuration(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes} m ${remainingSeconds} s`;
+}
+
+// Function to show duration popup
+function showDurationPopup(durationSeconds) {
+  const formattedDuration = formatDuration(durationSeconds);
+  alert(`GRAVISU processing completed!\n\nTime taken: ${formattedDuration}`);
+}
+
 const dragDropImg = document.querySelector(".imgFileBox");
 const dragDropModel = document.querySelector(".modelFileBox");
 
@@ -248,6 +261,11 @@ function function3(e) {
         console.log("Chart src updated for", chartElement);
       } else {
         console.log("No chart element found for chart_element");
+      }
+
+      // Show duration popup if duration is provided
+      if (data.duration_seconds !== undefined) {
+        showDurationPopup(data.duration_seconds);
       }
 
       runButton.textContent = "Run Gra-Visu";
