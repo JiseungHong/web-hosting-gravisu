@@ -155,42 +155,51 @@ async def upload_model(zipFile: UploadFile):
 
 @app.post("/run-gradcam")
 async def run_gradcam():
-    model_location = renew_model(model_folder) 
+    import time
+    start_time = time.time()
+    model_location = renew_model(model_folder)
 
-    # 1) renew save_heatmap folder 
+    # 1) renew save_heatmap folder
     # 2) make gradcam & save heatmap in save_heatmap folder
-    # 3) save csv with infomation at 'csv_location' 
+    # 3) save csv with infomation at 'csv_location'
     num_class = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
     visual_histogram(num_class, csv_location, save_folder = histogram_save_location)
-    
+
     df = pd.read_csv(csv_location)
 
-    max_column_id = [] 
-    for c_id in range(num_class) : 
+    max_column_id = []
+    for c_id in range(num_class):
         c_column_id = df.loc[df['prediction'] == c_id + 1, 'column_id'].tolist()
-        if len(c_column_id) == 0 : 
-            class_max_column_id = 0 
-        else : 
+        if len(c_column_id) == 0:
+            class_max_column_id = 0
+        else:
             class_max_column_id = max(c_column_id)
-        
         max_column_id.append(class_max_column_id)
-        
+
     # Initialize global column/ class id.
-    global global_column_id 
+    global global_column_id
     global_column_id = 1
-    
+
     global global_class_id
     global_class_id = 1
 
     result = select_images(csv_location, white_image_loc)
-    histogram_path = load_histogram(class_id = 1, histogram_save_location= histogram_save_location, save_heatmap= save_heatmap)
-    
+    histogram_path = load_histogram(class_id=1, histogram_save_location=histogram_save_location, save_heatmap=save_heatmap)
+
     result = [img[8:] for img in result]
-    
+
+    end_time = time.time()
+    duration = int(end_time - start_time)
+
     print('RUN')
     print("class:", global_class_id, "column:", global_column_id)
     print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+    return {
+        'image_paths': result,
+        'max_value': max_column_id,
+        'histogram': histogram_path[8:],
+        'duration': duration
+    }
 
 @app.post("/next-button")
 async def next_button():

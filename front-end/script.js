@@ -219,6 +219,14 @@ function function3(e) {
         }
       });
 
+
+      // Show duration popup
+      if (typeof data.duration === "number") {
+        const minutes = Math.floor(data.duration / 60);
+        const seconds = data.duration % 60;
+        alert(`Model run completed in ${minutes} m ${seconds} s`);
+      }
+
       Maximum_Classes = data.max_value;
       current_column = 1;
       current_class = 0;
