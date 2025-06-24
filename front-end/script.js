@@ -219,6 +219,13 @@ function function3(e) {
         }
       });
 
+      // Show duration pop-up if available
+      if (data.duration && typeof data.duration.minutes !== 'undefined' && typeof data.duration.seconds !== 'undefined') {
+        const durationStr = `${data.duration.minutes} m ${data.duration.seconds} s`;
+        alert(`Model run and image processing completed in: ${durationStr}`);
+      }
+
+
       Maximum_Classes = data.max_value;
       current_column = 1;
       current_class = 0;
