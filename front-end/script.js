@@ -203,6 +203,11 @@ function function3(e) {
       console.log("Gra-Visu running...");
       const imagePaths = data.image_paths;
       const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
+\
+      // Display duration in a pop-up
+      if (data.duration) {
+        alert(`Processing completed in: ${data.duration}`);
+      }
 
       // Loop through each imagePath and set it as the background for the corresponding result div
       imagePaths.forEach((path, index) => {

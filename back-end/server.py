@@ -1,4 +1,5 @@
 from typing import List
+import time
 from fastapi import FastAPI, Form, Request, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -160,8 +161,11 @@ async def run_gradcam():
     # 1) renew save_heatmap folder 
     # 2) make gradcam & save heatmap in save_heatmap folder
     # 3) save csv with infomation at 'csv_location' 
+    start_time = time.time()
     num_class = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
     visual_histogram(num_class, csv_location, save_folder = histogram_save_location)
+    end_time = time.time()
+    processing_time = end_time - start_time
     
     df = pd.read_csv(csv_location)
 
@@ -190,7 +194,12 @@ async def run_gradcam():
     print('RUN')
     print("class:", global_class_id, "column:", global_column_id)
     print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+
+    minutes = int(processing_time // 60)
+    seconds = int(processing_time % 60)
+    duration_str = f"{minutes} m {seconds} s"
+
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:], 'duration': duration_str}
 
 @app.post("/next-button")
 async def next_button():
