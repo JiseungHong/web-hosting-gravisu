@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GRAVISU Duration Feature Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .code {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 3px;
+            padding: 10px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>GRAVISU Duration Feature Demo</h1>
+
+    <div class="demo-section">
+        <h2>Feature Overview</h2>
+        <p>This demo shows the new duration display feature for GRAVISU:</p>
+        <ul>
+            <li>After model processing completes, a popup shows the duration</li>
+            <li>Duration is formatted as "XX m XX s" (minutes and seconds)</li>
+            <li>The feature works for both test and production endpoints</li>
+        </ul>
+    </div>
+
+    <div class="demo-section">
+        <h2>Duration Formatting Examples</h2>
+        <button onclick="showExampleDurations()">Show Duration Examples</button>
+        <div id="duration-examples"></div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Popup Demo</h2>
+        <p>Click these buttons to see how the duration popup would appear:</p>
+        <button onclick="showDurationPopup(30)">Quick Process (30s)</button>
+        <button onclick="showDurationPopup(125)">Medium Process (2m 5s)</button>
+        <button onclick="showDurationPopup(3661)">Long Process (61m 1s)</button>
+    </div>
+
+    <div class="demo-section">
+        <h2>Implementation Details</h2>
+        <h3>Backend Changes (server.py):</h3>
+        <div class="code">
+# Track processing time
+start_time = time.time()
+# ... model processing ...
+end_time = time.time()
+duration_seconds = end_time - start_time
+
+# Include duration in response
+return {
+    'image_paths': result,
+    'max_value': max_column_id,
+    'histogram': histogram_path,
+    'duration_seconds': duration_seconds
+}
+        </div>
+
+        <h3>Frontend Changes (script.js):</h3>
+        <div class="code">
+// Format duration function
+function formatDuration(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes} m ${remainingSeconds} s`;
+}
+
+// Show popup with duration
+function showDurationPopup(duration) {
+    const formattedDuration = formatDuration(duration);
+    alert(`GRAVISU processing completed!\nDuration: ${formattedDuration}`);
+}
+
+// In the fetch response handler
+if (data.duration_seconds !== undefined) {
+    showDurationPopup(data.duration_seconds);
+}
+        </div>
+    </div>
+
+    <script>
+        // Copy the duration functions from the main implementation
+        function formatDuration(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes} m ${remainingSeconds} s`;
+        }
+
+        function showDurationPopup(duration) {
+            const formattedDuration = formatDuration(duration);
+            alert(`GRAVISU processing completed!\nDuration: ${formattedDuration}`);
+        }
+
+        function showExampleDurations() {
+            const examples = [
+                [0, "0 m 0 s"],
+                [30, "0 m 30 s"],
+                [60, "1 m 0 s"],
+                [90, "1 m 30 s"],
+                [125, "2 m 5 s"],
+                [3661, "61 m 1 s"]
+            ];
+
+            let html = "<h4>Duration Formatting Examples:</h4><ul>";
+            examples.forEach(([seconds, expected]) => {
+                const result = formatDuration(seconds);
+                html += `<li>${seconds} seconds → "${result}"</li>`;
+            });
+            html += "</ul>";
+
+            document.getElementById('duration-examples').innerHTML = html;
+        }
+    </script>
+</body>
+</html>

@@ -56,7 +56,9 @@ async def test():
     result = ['dog1.png', 'dog2.png', 'dog3.png', 'dog4.png']
     max_column_id = [6, 6, 8]
     histogram_path = 'heatmap/histogram/histogram_1.png'
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+    # Mock duration for testing (e.g., 125.5 seconds = 2m 5s)
+    mock_duration = 125.5
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:], 'duration_seconds': mock_duration}
 
 @app.post("/upload-images")
 async def upload_images(files: List[UploadFile]):
@@ -155,6 +157,9 @@ async def upload_model(zipFile: UploadFile):
 
 @app.post("/run-gradcam")
 async def run_gradcam():
+    import time
+    start_time = time.time()
+
     model_location = renew_model(model_folder) 
 
     # 1) renew save_heatmap folder 
@@ -163,6 +168,9 @@ async def run_gradcam():
     num_class = renew_make_gradcam(model_location, user_images_folder, save_heatmap, csv_location)
     visual_histogram(num_class, csv_location, save_folder = histogram_save_location)
     
+    end_time = time.time()
+    duration_seconds = end_time - start_time
+
     df = pd.read_csv(csv_location)
 
     max_column_id = [] 
@@ -190,7 +198,8 @@ async def run_gradcam():
     print('RUN')
     print("class:", global_class_id, "column:", global_column_id)
     print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+    print(f"Processing duration: {duration_seconds:.2f} seconds")
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:], 'duration_seconds': duration_seconds}
 
 @app.post("/next-button")
 async def next_button():
