@@ -200,6 +200,17 @@ function function3(e) {
       }
     })
     .then((data) => {
+      // Display the duration in a pop-up message
+      alert(`Time taken: ${data.duration}`);
+      // Handle the rest of the response data as needed
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+    .then((data) => {
       console.log("Gra-Visu running...");
       const imagePaths = data.image_paths;
       const baseUrl = "http://110.76.86.172:8000/heatmap/"; // Base URL for serving images
@@ -441,3 +452,4 @@ function handleInputChange(event) {
       console.error(error);
     });
 }
+

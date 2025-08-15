@@ -8,6 +8,11 @@ from fastapi.staticfiles import StaticFiles
 import pandas as pd 
 
 from new_utils import renew_model, renew_make_gradcam, visual_histogram
+
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 import shutil, zipfile, uuid
 
 class textField(BaseModel) :
@@ -153,8 +158,12 @@ async def upload_model(zipFile: UploadFile):
     else:
         return {"error": "Invalid file format. Please upload a .zip file."}
 
+import time  # Add this import at the top of the file
+
 @app.post("/run-gradcam")
 async def run_gradcam():
+    start_time = time.time()  # Start the timer
+
     model_location = renew_model(model_folder) 
 
     # 1) renew save_heatmap folder 
@@ -190,7 +199,13 @@ async def run_gradcam():
     print('RUN')
     print("class:", global_class_id, "column:", global_column_id)
     print(result, histogram_path[8:], max_column_id)
-    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:]}
+
+    end_time = time.time()  # End the timer
+    duration = end_time - start_time  # Calculate the duration
+    duration_formatted = f"{int(duration // 60)} m {int(duration % 60)} s"  # Format the duration
+
+    return {'image_paths': result, 'max_value': max_column_id, 'histogram': histogram_path[8:], 'duration': duration_formatted}
+
 
 @app.post("/next-button")
 async def next_button():
@@ -238,3 +253,4 @@ async def class_dropdown(class_num: int = Form(...)):
 
 if __name__=='__main__':
     uvicorn.run(app, host='110.76.86.172', port = 8000)
+
